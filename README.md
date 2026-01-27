@@ -1,53 +1,80 @@
-NexSite CMS
-===========
+# 🚀 NexSite CMS
 
-NexSite CMS is een modern, lichtgewicht en modulair open‑source Content Management Systeem. 
-Het is ontworpen voor Nederlandse én internationale ontwikkelaars die maximale controle willen 
-over functionaliteit, structuur en uitbreidbaarheid.
+NexSite CMS is een modern, lichtgewicht en modulair open‑source Content Management Systeem.  
+Het is ontworpen voor Nederlandse én internationale ontwikkelaars die maximale controle willen over structuur, functionaliteit en uitbreidbaarheid.
 
-NexSite CMS biedt een Nederlandstalige interface als standaard, maar ondersteunt vanaf de 
-eerste release ook Engels. Extra talen kunnen eenvoudig worden toegevoegd.
+🇳🇱 Standaard Nederlandstalig  
+🇬🇧 Engels direct beschikbaar  
+🗄️ Alle vertalingen worden opgeslagen in de database
 
-Kenmerken
----------
-- Standaard Nederlandstalige admin‑interface
-- Engelse interface direct beschikbaar
-- Volledig meertalig uitbreidbaar
-- Modulair ontwerp voor uitbreidbaarheid
-- Rollen & rechten (Admin, Beheerder, Betaalde gebruiker, Geregistreerde bezoeker, Gast)
-- Lichtgewicht en snel
-- Thema‑ en templatestructuur
-- API‑first architectuur
-- Open‑source onder MIT‑licentie
+---
 
-Taalondersteuning
------------------
-NexSite CMS is vanaf de eerste release tweetalig.
+## ✨ Kenmerken
 
-Beschikbare talen:
-- Nederlands (standaard)
-- Engels
+- 🇳🇱 **Nederlandstalige admin‑interface (standaard)**
+- 🇬🇧 **Engelse interface direct beschikbaar**
+- 🌍 **Volledig meertalig via database‑gestuurde vertalingen**
+- 🧩 **Modulair ontwerp** voor uitbreidbaarheid
+- 🔐 **Rollen & rechten** (Admin, Beheerder, Betaalde gebruiker, Geregistreerde bezoeker, Gast)
+- ⚡ **Lichtgewicht en snel**
+- 🎨 **Thema‑ en templatestructuur**
+- 🌐 **API‑first architectuur**
+- 📦 **Open‑source onder MIT‑licentie**
 
-Structuur:
-resources/lang/nl/
-resources/lang/en/
+---
 
-Nieuwe talen kunnen worden toegevoegd door een extra map aan te maken, bijvoorbeeld:
-resources/lang/de/
+## 🌍 Taalondersteuning (Database‑gestuurd)
 
-Het systeem detecteert automatisch welke talen beschikbaar zijn.
+NexSite CMS gebruikt **geen taalbestanden**, maar slaat alle vertalingen op in de database.
 
-Doel van het project
---------------------
-NexSite CMS is ontwikkeld als een modern alternatief voor WordPress, Joomla en Drupal. 
-Het richt zich op eenvoud, controle, modulariteit, meertaligheid en open‑source toegankelijkheid.
+### Tabellen:
 
-Het CMS is bedoeld voor ontwikkelaars die volledige vrijheid willen zonder afhankelijk te zijn 
-van betaalde plugins of logge ecosystemen.
+**languages**
+- id  
+- code (nl, en, de, fr)  
+- name  
+- is_default  
 
-Installatie
------------
-(Wordt uitgebreid zodra de eerste release beschikbaar is.)
+**translations**
+- id  
+- language_id  
+- group (bijv. auth, dashboard, menu)  
+- key (bijv. login_button, save, logout)  
+- value (de vertaalde tekst)
+
+### Voorbeeld:
+
+| Taal | Key | Waarde |
+|------|-----|--------|
+| nl   | login | Inloggen |
+| en   | login | Login |
+
+### Voordelen:
+- Teksten zijn aanpasbaar via de admin  
+- Geen deploy nodig voor tekstwijzigingen  
+- Modules kunnen automatisch vertalingen registreren  
+- Nieuwe talen kunnen direct worden toegevoegd  
+
+---
+
+## 🎯 Doel van het project
+
+NexSite CMS is ontwikkeld als een modern alternatief voor WordPress, Joomla en Drupal.  
+De focus ligt op:
+
+- 🧠 Eenvoud  
+- 🛠️ Controle  
+- 🧩 Modulariteit  
+- 🌍 Meertaligheid  
+- 🔓 Open‑source toegankelijkheid  
+
+Het CMS is bedoeld voor ontwikkelaars die vrijheid willen zonder betaalde plugins of logge ecosystemen.
+
+---
+
+## 📦 Installatie
+
+*(Wordt uitgebreid zodra de eerste release beschikbaar is.)*
 
 Voorlopige stappen:
 
@@ -58,21 +85,23 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate
 
-Rollen & Rechten
-----------------
+---
+
+## 🔐 Rollen & Rechten
+
 NexSite CMS ondersteunt vijf standaardrollen:
 
-- Admin – volledige toegang
-- Beheerder – beheert een deel van de site
-- Betaalde gebruiker – toegang tot premiumfunctionaliteit
-- Geregistreerde bezoeker – basisfunctionaliteit
-- Gast – alleen openbare content
+- 👑 **Admin** – volledige toegang  
+- 🧭 **Beheerder** – beheert een deel van de site  
+- 💎 **Betaalde gebruiker** – toegang tot premiumfunctionaliteit  
+- 🙋 **Geregistreerde bezoeker** – basisfunctionaliteit  
+- 👤 **Gast** – alleen openbare content  
 
 Rechten worden beheerd via configuratiebestanden en kunnen per onderdeel worden uitgebreid.
 
-Projectstructuur
-----------------
-Een globale structuur van het project:
+---
+
+## 🏗️ Projectstructuur
 
 app/
 modules/
@@ -83,33 +112,44 @@ database/
 docs/
 tests/
 
-Roadmap
--------
-Versie 0.1 (MVP)
-- Homepage‑weergave
-- Basis routing
-- Admin‑login
-- Rollen & rechten
-- Tweetalige interface (NL + EN)
 
-Versie 0.2
-- Pagina‑beheer
-- Navigatie
-- Media‑beheer
+Deze structuur is ontworpen voor overzicht, modulariteit en uitbreidbaarheid.
 
-Versie 0.3
-- Module‑systeem
-- Thema‑systeem
+---
 
-Versie 1.0
-- Documentatie compleet
-- Demo‑website
-- Community‑release
+## 🛣️ Roadmap
 
-Bijdragen
----------
-Bijdragen zijn welkom. Zodra de basis staat, worden CONTRIBUTING‑richtlijnen toegevoegd.
+### 🟢 Versie 0.1 (MVP)
+- 🏠 Homepage‑weergave  
+- 🛣️ Basis routing  
+- 🔐 Admin‑login  
+- 🧩 Rollen & rechten  
+- 🌍 Tweetalige interface (NL + EN)  
+- 🗄️ Database‑gestuurde vertalingen  
 
-Licentie
---------
-NexSite CMS is open‑source software onder de MIT‑licentie.
+### 🟡 Versie 0.2
+- 📄 Pagina‑beheer  
+- 🧭 Navigatie  
+- 🖼️ Media‑beheer  
+
+### 🟠 Versie 0.3
+- 🧩 Module‑systeem  
+- 🎨 Thema‑systeem  
+
+### 🔵 Versie 1.0
+- 📚 Documentatie compleet  
+- 🖥️ Demo‑website  
+- 🤝 Community‑release  
+
+---
+
+## 🤝 Bijdragen
+
+Bijdragen zijn welkom.  
+Zodra de basis staat, worden CONTRIBUTING‑richtlijnen toegevoegd.
+
+---
+
+## 📜 Licentie
+
+NexSite CMS is open‑source software onder de **MIT‑licentie**.
