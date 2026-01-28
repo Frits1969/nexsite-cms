@@ -1,5 +1,10 @@
 <?php
 
-echo "<h1>NexSite CMS werkt!</h1>";
-echo "<img src='assets/logo/nexsite-logo.png' alt='NexSite logo' style='max-width:200px;'>";
-?>
+require_once __DIR__ . '/../vendor/autoload.php';
+
+
+use NexSite\App;
+
+// Bootstrap the application
+$app = App::getInstance();
+$app->run();
