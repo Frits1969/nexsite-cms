@@ -1,5 +1,4 @@
 # <img width="1024" height="1024" alt="Logo - NexSite CMS" src="https://github.com/user-attachments/assets/4aea970f-7c3e-4d93-93d3-67be3de957a5" />
- NexSite CMS
 
 NexSite CMS is een modern, lichtgewicht en modulair open‑source Content Management Systeem.  
 Het is ontworpen voor Nederlandse én internationale ontwikkelaars die maximale controle willen over structuur, functionaliteit en uitbreidbaarheid.
