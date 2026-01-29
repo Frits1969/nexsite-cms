@@ -1,0 +1,28 @@
+{
+    "name": "nexsite/cms",
+    "description": "NexSite CMS - Modern, lightweight and modular content management system.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "NexSite Contributor"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "NexSite\\": "app/",
+            "NexSite\\Modules\\": "modules/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
