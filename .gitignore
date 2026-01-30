@@ -1,0 +1,19 @@
+# Geen gevoelige gegevens
+.env
+
+# Composer dependencies
+/vendor/
+
+# Cache, logs, tijdelijke bestanden
+/storage/
+.cache/
+logs/
+*.log
+
+# IDE bestanden
+.vscode/
+.idea/
+
+# Systeemrommel
+.DS_Store
+Thumbs.db
