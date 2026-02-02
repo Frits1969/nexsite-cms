@@ -1,10 +1,11 @@
 # <img alt="Logo - NexSite CMS" src="public/assets/logo/nexsite-logo.png" width="300" />
 
-nexsite‑cms
+<h1>nexsite‑cms</h1>
 nexsite‑cms is een modern, modulair en overzichtelijk CMS dat is ontworpen om volledige controle te geven over content, structuur en workflows.
 Het doel is een CMS dat lichtgewicht, begrijpelijk en uitbreidbaar is — zonder de complexiteit van grote frameworks of de beperkingen van SaaS‑platformen.
 
-🎯 Waarom dit project bestaat
+<H2>🎯 Waarom dit project bestaat?</h2>
+
 Veel bestaande CMS‑systemen zijn óf te zwaar, óf te beperkt, óf te complex om echt te begrijpen.
 nexsite‑cms wil dat gat vullen door:
 
@@ -20,7 +21,7 @@ volledige controle over data en workflows
 
 Het is een CMS dat je zelf kunt doorgronden, aanpassen en uitbreiden — precies zoals jij het wilt.
 
-📦 Wat kun je met nexsite‑cms?
+<h2>📦 Wat kun je met nexsite‑cms?</h2>
 nexsite‑cms biedt een basis waarop je elk type website of applicatie kunt bouwen. Denk aan:
 
 blogs
