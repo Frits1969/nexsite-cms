@@ -82,14 +82,30 @@
             position: absolute;
             top: 20px;
             right: 20px;
+            flex-direction: column;
+            /* Stack flags vertically when expanded or simple layout */
+            gap: 10px;
         }
 
         body.selected-mode .lang-select a {
             display: none;
         }
 
+        /* Always show active flag */
         body.selected-mode .lang-select a.active {
             display: block;
+            opacity: 1;
+            order: -1;
+            /* Ensure active flag is top */
+        }
+
+        /* Show all flags when expanded */
+        body.selected-mode .lang-select.expanded a {
+            display: block;
+            opacity: 0.8;
+        }
+
+        body.selected-mode .lang-select.expanded a:hover {
             opacity: 1;
         }
     </style>
@@ -127,12 +143,13 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             const currentParams = new URLSearchParams(window.location.search);
             const currentLang = currentParams.get('lang');
 
-            // If we are already in selected mode (lang matches), reset interface
+            // If user clicks the currently active flag
             if (currentLang === lang) {
-                event.preventDefault();
-                window.location.href = window.location.pathname; // Remove query params to reset
+                event.preventDefault(); // Prevent reload
+                // Toggle the expanded class to show/hide other flags
+                document.querySelector('.lang-select').classList.toggle('expanded');
             }
-            // Otherwise, let the link work to switch language
+            // If user clicks another flag, let the href work naturally (reloads page with new lang)
         }
     </script>
 </body>
