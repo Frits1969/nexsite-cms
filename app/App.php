@@ -20,9 +20,22 @@ class App
         return static::$instance;
     }
 
-    public function run()
-    {
-        // Basis logica om de app te starten
-        echo "NexSite Core is initialized.";
-    }
+	public function run()
+	{
+		session_start();
+
+		// taal bepalen
+		if (isset($_GET['lang'])) {
+			$_SESSION['lang'] = $_GET['lang'];
+		}
+
+		$selected = $_SESSION['lang'] ?? 'nl';
+
+		// taalbestand laden
+		$lang = \NexSite\Language::load($selected);
+
+		// view tonen
+		include __DIR__ . '/Views/splash.php';
+	}
+
 }
