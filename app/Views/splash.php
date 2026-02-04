@@ -21,13 +21,26 @@
         .text {
             font-size: 20px;
             color: #333;
+            margin-bottom: 20px;
+        }
+        .lang-select a {
+            margin: 0 10px;
+            font-size: 18px;
+            text-decoration: none;
+            color: #0077cc;
         }
     </style>
 </head>
 <body>
 
     <img src="/assets/logo/nexsite-logo.png" alt="NexSite Logo">
-    <div class="text">NexSite Core is initialized.</div>
+
+    <div class="text"><?= $lang['welcome']; ?></div>
+
+    <div class="lang-select">
+        <a href="?lang=nl">NL</a>
+        <a href="?lang=en">EN</a>
+    </div>
 
 </body>
 </html>
