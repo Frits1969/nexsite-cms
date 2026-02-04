@@ -4,6 +4,7 @@ namespace NexSite;
 
 class App
 {
+    const VERSION = '0.0.1';
     protected static $instance;
 
     public function __construct()
