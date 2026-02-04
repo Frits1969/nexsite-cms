@@ -22,7 +22,15 @@ class App
 
     public function run()
     {
+        // taal bepalen
+        $selected = $_GET['lang'] ?? 'nl';
+    
+        // taalbestand laden
+        $lang = \NexSite\Language::load($selected);
+    
+        // view tonen
         include __DIR__ . '/Views/splash.php';
     }
+
 
 }
