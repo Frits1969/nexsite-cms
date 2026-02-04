@@ -72,7 +72,6 @@
             padding-top: 20px;
         }
 
-        body.selected-mode .logo-container,
         body.selected-mode .text-container {
             display: none;
             opacity: 0;
