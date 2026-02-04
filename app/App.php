@@ -20,22 +20,22 @@ class App
         return static::$instance;
     }
 
-	public function run()
-	{
-		session_start();
+    public function run()
+    {
+        session_start();
 
-		// taal bepalen
-		if (isset($_GET['lang'])) {
-			$_SESSION['lang'] = $_GET['lang'];
-		}
+        // taal bepalen
+        if (isset($_GET['lang'])) {
+            $_SESSION['lang'] = $_GET['lang'];
+        }
 
-		$selected = $_SESSION['lang'] ?? 'nl';
+        $selected = $_SESSION['lang'] ?? 'nl';
 
-		// taalbestand laden
-		$lang = \NexSite\Language::load($selected);
+        // taalbestand laden
+        $lang = \NexSite\Language::load($selected);
 
-		// view tonen
-		include __DIR__ . '/Views/splash.php';
-	}
+        // view tonen
+        include __DIR__ . '/Views/splash.php';
+    }
 
 }

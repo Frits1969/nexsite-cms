@@ -1,155 +1,192 @@
 # <img alt="Logo - NexSite CMS" src="public/assets/logo/nexsite-logo.png" width="300" />
 
-NexSite CMS is een modern, lichtgewicht en modulair open‑source Content Management Systeem.  
-Het is ontworpen voor Nederlandse én internationale ontwikkelaars die maximale controle willen over structuur, functionaliteit en uitbreidbaarheid.
+<h1>nexsite‑cms</h1>
+nexsite‑cms is een modern, modulair en overzichtelijk CMS dat is ontworpen om volledige controle te geven over content, structuur en workflows.
+Het doel is een CMS dat lichtgewicht, begrijpelijk en uitbreidbaar is — zonder de complexiteit van grote frameworks of de beperkingen van SaaS‑platformen.
 
-🇳🇱 Standaard Nederlandstalig  
-🇬🇧 Engels direct beschikbaar  
-🗄️ Alle vertalingen worden opgeslagen in de database
+<H2>🎯 Waarom dit project bestaat?</h2>
 
----
+Veel bestaande CMS‑systemen zijn óf te zwaar, óf te beperkt, óf te complex om echt te begrijpen.
+nexsite‑cms wil dat gat vullen door:
 
-## ✨ Kenmerken
+een duidelijke en logische structuur
 
-- 🇳🇱 **Nederlandstalige admin‑interface (standaard)**
-- 🇬🇧 **Engelse interface direct beschikbaar**
-- 🌍 **Volledig meertalig via database‑gestuurde vertalingen**
-- 🧩 **Modulair ontwerp** voor uitbreidbaarheid
-- 🔐 **Rollen & rechten** (Admin, Beheerder, Betaalde gebruiker, Geregistreerde bezoeker, Gast)
-- ⚡ **Lichtgewicht en snel**
-- 🎨 **Thema‑ en templatestructuur**
-- 🌐 **API‑first architectuur**
-- 📦 **Open‑source onder MIT‑licentie**
+zelf definieerbare contenttypes
 
----
+eenvoudige uitbreidbaarheid
 
-## 🌍 Taalondersteuning (Database‑gestuurd)
+geen vendor lock‑in
 
-NexSite CMS gebruikt **geen taalbestanden**, maar slaat alle vertalingen op in de database.
+volledige controle over data en workflows
 
-### Tabellen:
+Het is een CMS dat je zelf kunt doorgronden, aanpassen en uitbreiden — precies zoals jij het wilt.
 
-**languages**
-- id  
-- code (nl, en, de, fr)  
-- name  
-- is_default  
+<h2>📦 Wat kun je met nexsite‑cms?</h2>
+nexsite‑cms biedt een basis waarop je elk type website of applicatie kunt bouwen. Denk aan:
 
-**translations**
-- id  
-- language_id  
-- group (bijv. auth, dashboard, menu)  
-- key (bijv. login_button, save, logout)  
-- value (de vertaalde tekst)
+blogs
 
-### Voorbeeld:
+productcatalogi
 
-| Taal | Key | Waarde |
-|------|-----|--------|
-| nl   | login | Inloggen |
-| en   | login | Login |
+kennisbanken
 
-### Voordelen:
-- Teksten zijn aanpasbaar via de admin  
-- Geen deploy nodig voor tekstwijzigingen  
-- Modules kunnen automatisch vertalingen registreren  
-- Nieuwe talen kunnen direct worden toegevoegd  
+bedrijfswebsites
 
----
+maatwerkprojecten
 
-## 🎯 Doel van het project
+De kern bestaat uit:
 
-NexSite CMS is ontwikkeld als een modern alternatief voor WordPress, Joomla en Drupal.  
-De focus ligt op:
+✔ Dynamische contenttypes
+Je bepaalt zelf welke soorten content je nodig hebt.
+Voorbeeld: Blog, Pagina, Product, Teamlid.
 
-- 🧠 Eenvoud  
-- 🛠️ Controle  
-- 🧩 Modulariteit  
-- 🌍 Meertaligheid  
-- 🔓 Open‑source toegankelijkheid  
+✔ Flexibele velden
+Per contenttype kun je velden toevoegen zoals:
 
-Het CMS is bedoeld voor ontwikkelaars die vrijheid willen zonder betaalde plugins of logge ecosystemen.
+tekst
 
----
+rich text
 
-## 📦 Installatie
+media
 
-*(Wordt uitgebreid zodra de eerste release beschikbaar is.)*
+nummer
 
-Voorlopige stappen:
+boolean
 
-git clone https://github.com/<jouw-gebruikersnaam>/nexsite-cms.git
+relatie naar andere content
+
+✔ Draft / Publish workflow
+Content kan eerst als concept worden opgeslagen en later worden gepubliceerd.
+
+✔ Media‑beheer
+Uploaden, beheren en koppelen van afbeeldingen en bestanden.
+
+✔ Rollen & permissies
+Beheer wie wat mag doen binnen het CMS.
+
+✔ REST API
+Alle content is via een API beschikbaar voor websites, apps of externe systemen.
+
+✔ Modulair ontwerp
+Nieuwe modules kunnen eenvoudig worden toegevoegd zonder de kern te vervuilen.
+
+🧱 Architectuur (uitleg)
+nexsite‑cms is opgebouwd met een moderne PHP‑structuur die lijkt op frameworks zoals Laravel, maar zonder onnodige ballast.
+Het doel is een heldere, voorspelbare mappenstructuur die je direct begrijpt.
+
+Belangrijkste onderdelen
+/app → controllers, services, logica
+
+/config → instellingen
+
+/database → migraties en schema’s
+
+/resources → views, templates, vertalingen
+
+/routes → API‑ en web‑routes
+
+/tests → unit- en integratietests
+
+Deze structuur maakt het makkelijk om:
+
+nieuwe features toe te voegen
+
+modules te bouwen
+
+code te begrijpen, ook na maanden
+
+🛠 Installatie
+Vereisten
+PHP 8.x
+
+Composer
+
+MySQL of PostgreSQL
+
+Installeren
+bash
+git clone https://github.com/Frits1969/nexsite-cms
 cd nexsite-cms
 composer install
 cp .env.example .env
-# Database instellen in .env
-# Importeer database structuur (tzt)
+php artisan key:generate
+php artisan migrate
+php artisan serve
+🧪 Teststrategie (uitleg)
+Om te voorkomen dat het CMS een onoverzichtelijke monoliet wordt, wordt elke stap getest.
 
----
+1. Unit tests
+Testen kleine stukjes logica, zoals helpers of services.
 
-## 🔐 Rollen & Rechten
+2. Feature tests
+Testen routes, controllers en API‑gedrag.
 
-NexSite CMS ondersteunt vijf standaardrollen:
+3. Integratietests
+Testen complete flows, zoals:
 
-- 👑 **Admin** – volledige toegang  
-- 🧭 **Beheerder** – beheert een deel van de site  
-- 💎 **Betaalde gebruiker** – toegang tot premiumfunctionaliteit  
-- 🙋 **Geregistreerde bezoeker** – basisfunctionaliteit  
-- 👤 **Gast** – alleen openbare content  
+contenttype aanmaken
 
-Rechten worden beheerd via configuratiebestanden en kunnen per onderdeel worden uitgebreid.
+content invoeren
 
----
+publiceren
 
-## 🏗️ Projectstructuur
+API‑response controleren
 
-app/
-modules/
-public/
-resources/
-config/
-database/
-docs/
-tests/
+Tests draaien met:
 
+bash
+php artisan test
+📅 Roadmap (met uitleg)
+De roadmap is opgedeeld in fases zodat het project overzichtelijk blijft.
 
-Deze structuur is ontworpen voor overzicht, modulariteit en uitbreidbaarheid.
+Fase 1 — Basis (fundament)
+Doel: een werkend CMS‑skelet.
 
----
+[ ] Contenttypes
 
-## 🛣️ Roadmap
+[ ] Velden
 
-### 🟢 Versie 0.1 (MVP)
-- 🏠 Homepage‑weergave  
-- 🛣️ Basis routing  
-- 🔐 Admin‑login  
-- 🧩 Rollen & rechten  
-- 🌍 Tweetalige interface (NL + EN)  
-- 🗄️ Database‑gestuurde vertalingen  
+[ ] CRUD voor content
 
-### 🟡 Versie 0.2
-- 📄 Pagina‑beheer  
-- 🧭 Navigatie  
-- 🖼️ Media‑beheer  
+[ ] Auth & rollen
 
-### 🟠 Versie 0.3
-- 🧩 Module‑systeem  
-- 🎨 Thema‑systeem  
+[ ] API v1
 
-### 🔵 Versie 1.0
-- 📚 Documentatie compleet  
-- 🖥️ Demo‑website  
-- 🤝 Community‑release  
+Fase 2 — Admin UI
+Doel: een gebruiksvriendelijke beheeromgeving.
 
----
+[ ] Dashboard
 
-## 🤝 Bijdragen
+[ ] Contentbeheer
 
-Bijdragen zijn welkom.  
-Zodra de basis staat, worden CONTRIBUTING‑richtlijnen toegevoegd.
+[ ] Media‑manager
 
----
+Fase 3 — Extensies
+Doel: uitbreidbaarheid en integraties.
 
-## 📜 Licentie
+[ ] Module‑systeem
 
-NexSite CMS is open‑source software onder de **MIT‑licentie**.
+[ ] Webhooks
+
+[ ] Custom velden
+
+📚 Documentatie
+Uitgebreide documentatie komt in de map /docs.
+Deze map zal o.a. bevatten:
+
+architecture.md → uitleg over de opbouw
+
+database-schema.md → tabellen en relaties
+
+content-model.md → hoe contenttypes werken
+
+testing-strategy.md → hoe en wat je test
+
+roadmap.md → uitgebreide planning
+
+🤝 Bijdragen
+Iedereen kan bijdragen via issues of pull requests.
+Feedback en ideeën zijn welkom.
+
+📄 Licentie
+MIT License.
