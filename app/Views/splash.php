@@ -83,15 +83,10 @@
             top: 20px;
             right: 20px;
         }
-
-        body.selected-mode .lang-select a {
-            display: none;
-            /* Hide all by default in selected mode */
-        }
-
+        /* body.selected-mode .lang-select a { display: block; } is default behavior, removing the hide logic */
         body.selected-mode .lang-select a.active {
-            display: block;
-            /* Show only active */
+            /* Optional styling for active flag in top bar? maybe opacity? */
+            opacity: 1;
         }
     </style>
 </head>
