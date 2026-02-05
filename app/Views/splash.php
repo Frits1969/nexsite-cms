@@ -247,6 +247,7 @@
         }
 
         /* Setup Container Reset - Remove legacy styles that interfere with puzzle pieces */
+        /* Setup Container Reset - Remove legacy styles that interfere with puzzle pieces */
         .setup-container {
             display: none;
             width: auto;
@@ -255,6 +256,23 @@
             box-shadow: none;
             padding: 0;
             margin: 0;
+            position: relative;
+            z-index: 5;
+            /* Ensure above background elements */
+        }
+
+        /* Enforce pointer events on active piece */
+        .puzzle-piece {
+            pointer-events: auto !important;
+        }
+
+        body.step-2-mode .puzzle-piece.orange {
+            pointer-events: none !important;
+        }
+
+        body.step-3-mode .puzzle-piece.green,
+        body.step-3-mode .puzzle-piece.orange {
+            pointer-events: none !important;
         }
 
         .setup-container::before,
@@ -604,7 +622,11 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                 email: document.querySelector('input[name="email"]').value,
                 password: document.querySelector('input[name="password"]').value,
                 password_repeat: document.querySelector('input[name="password_repeat"]').value,
-                // Step is NOT saved, always restart chain at 1 as requested
+                password: document.querySelector('input[name="password"]').value,
+                password_repeat: document.querySelector('input[name="password_repeat"]').value,
+                step: document.body.classList.contains('step-3-mode') ? 3 : (document.body.classList.contains('step-2-mode') ? 2 : 1),
+
+                // DB Fields
 
                 // DB Fields
                 domain: document.querySelector('input[name="domain"]')?.value || '',
@@ -647,7 +669,25 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                 if (state.db_pass) document.querySelector('input[name="db_pass"]').value = state.db_pass;
                 if (state.db_host) document.querySelector('input[name="db_host"]').value = state.db_host;
 
-                // Step is NOT restored automatically, user starts at Orange (Step 1)
+                if (state.db_host) document.querySelector('input[name="db_host"]').value = state.db_host;
+
+                // Restore summary content
+                document.getElementById('summary-site-name').innerText = state.site_name || '';
+                document.getElementById('summary-site-desc').innerText = state.site_desc || '';
+
+                // Restore Step
+                if (state.step === 2) {
+                    goToStep2(true);
+                } else if (state.step === 3) {
+                    // Manually set step 2 state first without animation delay
+                    document.getElementById('summary-site-name').innerText = state.site_name;
+                    document.getElementById('summary-site-desc').innerText = state.site_desc;
+                    document.body.classList.add('step-2-mode');
+                    document.getElementById('step-1-content').style.display = 'none';
+                    document.getElementById('step-1-summary').style.display = 'block';
+
+                    goToStep3(true);
+                }
             }
         });
 
