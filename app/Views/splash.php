@@ -114,11 +114,70 @@
             display: none;
             opacity: 0;
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             text-align: left;
-            margin-top: 20px;
+            margin: 50px auto 50px auto;
+            position: relative;
+            background-color: #F0951B;
+            /* Puzzle Orange */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            color: #fff;
             animation: fadeIn 0.5s ease forwards;
             animation-delay: 0.3s;
+        }
+
+        /* Puzzle "Outies" (Knobs) */
+        .setup-container::before {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #F0951B;
+            border-radius: 50%;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 -1px 0 #F0951B;
+        }
+
+        .setup-container::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #F0951B;
+            border-radius: 50%;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: -1px 0 0 #F0951B;
+        }
+
+        /* "Innies" (Holes) */
+        .puzzle-hole-right {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .puzzle-hole-bottom {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
         }
 
         body.selected-mode .setup-container {
@@ -133,25 +192,29 @@
 
         .form-group {
             margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
         }
 
         .form-group label {
             font-weight: bold;
             display: block;
             margin-bottom: 8px;
-            color: #333;
+            color: #fff;
             font-size: 16px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .tip {
             font-size: 14px;
-            color: #666;
+            color: #333;
             margin-bottom: 12px;
             line-height: 1.4;
-            background: #f9f9f9;
+            background: rgba(255, 255, 255, 0.95);
             padding: 10px;
-            border-left: 3px solid #007bff;
-            border-radius: 2px;
+            border-left: 4px solid #333;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .form-input {
@@ -179,7 +242,7 @@
         }
 
         .submit-btn {
-            background-color: #007bff;
+            background-color: #333;
             color: white;
             padding: 14px 20px;
             border: none;
@@ -188,11 +251,14 @@
             width: 100%;
             font-size: 18px;
             font-weight: bold;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .submit-btn:hover {
-            background-color: #0056b3;
+            background-color: #000;
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -212,6 +278,10 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
     </div>
 
     <div class="setup-container">
+        <!-- Visual "Holes" for the puzzle piece -->
+        <div class="puzzle-hole-right"></div>
+        <div class="puzzle-hole-bottom"></div>
+
         <form action="/install" method="POST">
             <!-- Question 1 -->
             <div class="form-group">
