@@ -247,7 +247,6 @@
         }
 
         /* Setup Container Reset - Remove legacy styles that interfere with puzzle pieces */
-        /* Setup Container Reset - Remove legacy styles that interfere with puzzle pieces */
         .setup-container {
             display: none;
             width: auto;

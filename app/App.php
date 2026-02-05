@@ -2,6 +2,8 @@
 
 namespace NexSite;
 
+require_once __DIR__ . '/Language.php';
+
 class App
 {
     const VERSION = '0.0.2';
@@ -33,7 +35,7 @@ class App
         $selected = $_SESSION['lang'] ?? 'nl';
 
         // taalbestand laden
-        $lang = \NexSite\Language::load($selected);
+        $lang = Language::load($selected);
 
         // DB Test Action
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'test_db') {
