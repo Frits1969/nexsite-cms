@@ -108,6 +108,92 @@
         body.selected-mode .lang-select.expanded a:hover {
             opacity: 1;
         }
+
+        /* Setup Form Styles */
+        .setup-container {
+            display: none;
+            opacity: 0;
+            width: 100%;
+            max-width: 450px;
+            text-align: left;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        body.selected-mode .setup-container {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .tip {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            background: #f9f9f9;
+            padding: 10px;
+            border-left: 3px solid #007bff;
+            border-radius: 2px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <?php
@@ -123,6 +209,49 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 
     <div class="text-container">
         <div class="text"><?= $lang['welcome']; ?></div>
+    </div>
+
+    <div class="setup-container">
+        <form action="/install" method="POST">
+            <!-- Question 1 -->
+            <div class="form-group">
+                <label><?= $lang['site_name_label'] ?></label>
+                <div class="tip"><?= $lang['site_name_tip'] ?></div>
+                <input type="text" name="site_name" class="form-input" required>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="form-group">
+                <label><?= $lang['site_desc_label'] ?></label>
+                <div class="tip"><?= $lang['site_desc_tip'] ?></div>
+                <textarea name="site_desc" class="form-input" required></textarea>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="form-group">
+                <label><?= $lang['admin_account_label'] ?></label>
+                <div class="tip"><?= $lang['admin_account_tip'] ?></div>
+
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="<?= $lang['username_label'] ?>" class="form-input"
+                        required>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="<?= $lang['email_label'] ?>" class="form-input"
+                        required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" placeholder="<?= $lang['password_label'] ?>"
+                        class="form-input" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password_repeat" placeholder="<?= $lang['password_repeat_label'] ?>"
+                        class="form-input" required>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn"><?= $lang['start_install'] ?></button>
+        </form>
     </div>
 
     <div class="lang-select">
