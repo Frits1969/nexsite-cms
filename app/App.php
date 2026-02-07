@@ -3,12 +3,13 @@
 namespace NexSite;
 
 require_once __DIR__ . '/Language.php';
+require_once __DIR__ . '/Installer.php';
 
 use NexSite\Language;
 
 class App
 {
-    const VERSION = '0.0.3';
+    const VERSION = '0.0.4';
     protected static $instance;
 
     public function __construct()
@@ -28,6 +29,12 @@ class App
     public function run()
     {
         session_start();
+
+        // Check if already installed
+        if (file_exists(__DIR__ . '/../install.lock')) {
+            // Installation complete - redirect to admin (to be built later)
+            die('NexSite CMS is already installed. Admin panel coming soon!');
+        }
 
         // taal bepalen
         if (isset($_GET['lang'])) {
@@ -57,6 +64,40 @@ class App
                 }
 
                 echo json_encode(['success' => true]);
+            } catch (\Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            exit;
+        }
+
+        // Install Action
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'install') {
+            header('Content-Type: application/json');
+
+            try {
+                // Validate required fields
+                $required = ['site_name', 'site_desc', 'domain', 'username', 'email', 'password', 'db_host', 'db_name', 'db_user', 'db_pass'];
+                foreach ($required as $field) {
+                    if (empty($_POST[$field])) {
+                        throw new \Exception("Missing required field: $field");
+                    }
+                }
+
+                // Create installer instance
+                $installer = new Installer(
+                    $_POST['db_host'],
+                    $_POST['db_user'],
+                    $_POST['db_pass'],
+                    $_POST['db_name']
+                );
+
+                // Run installation
+                if ($installer->run($_POST)) {
+                    echo json_encode(['success' => true, 'message' => $lang['install_success']]);
+                } else {
+                    $errors = implode(', ', $installer->getErrors());
+                    throw new \Exception($errors);
+                }
             } catch (\Exception $e) {
                 echo json_encode(['success' => false, 'message' => $e->getMessage()]);
             }

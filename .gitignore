@@ -1,5 +1,8 @@
 # Geen gevoelige gegevens
 .env
+install.lock
+config/*.php
+!config/.gitkeep
 
 # Composer dependencies
 /vendor/

@@ -28,4 +28,9 @@ return [
     'db_host_tip' => 'Default value: localhost',
     'error_db_connect' => 'Database unreachable',
     'success_db_connect' => 'Connection successful!',
+    'installing' => 'Installing...',
+    'install_success' => 'Installation successful!',
+    'install_error' => 'Installation failed',
+    'redirecting' => 'Redirecting to login...',
+    'install_complete' => 'NexSite CMS has been successfully installed!',
 ];

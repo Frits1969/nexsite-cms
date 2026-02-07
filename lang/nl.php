@@ -28,4 +28,9 @@ return [
     'db_host_tip' => 'Standaardwaarde: localhost',
     'error_db_connect' => 'Database niet bereikbaar',
     'success_db_connect' => 'Verbinding geslaagd!',
+    'installing' => 'Bezig met installeren...',
+    'install_success' => 'Installatie succesvol!',
+    'install_error' => 'Installatie mislukt',
+    'redirecting' => 'Doorverwijzen naar login...',
+    'install_complete' => 'NexSite CMS is succesvol geïnstalleerd!',
 ];

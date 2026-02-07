@@ -485,7 +485,8 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
     </div>
 
     <div class="setup-container">
-        <form action="/install" method="POST" id="install-form">
+        <form action="" method="POST" id="install-form">
+            <input type="hidden" name="action" value="install">
             <div class="multistep-wrapper">
 
                 <!-- Step 1: Site Info (Orange) -->
@@ -648,10 +649,71 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
     </div>
 
     <div class="version-footer">
-        v<?= isset($version) ? $version : '0.0.3' ?>
+        v<?= isset($version) ? $version : '0.0.4' ?>
     </div>
 
     <script>
+        // Form submit handler for installation
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('install-form');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const resultBox = document.getElementById('db-test-result');
+                const iconSpan = resultBox.querySelector('.icon');
+                const messageSpan = resultBox.querySelector('.message');
+                const installBtn = document.getElementById('install-btn');
+                const testBtn = document.getElementById('test-db-btn');
+
+                // Show installing state
+                resultBox.className = 'info-box visible info';
+                iconSpan.innerText = '⏳';
+                messageSpan.innerText = '<?= $lang['installing'] ?>';
+                installBtn.disabled = true;
+                testBtn.disabled = true;
+
+                // Submit installation
+                fetch('', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            resultBox.className = 'info-box visible success';
+                            iconSpan.innerText = '🎉';
+                            messageSpan.innerText = '<?= $lang['install_complete'] ?>';
+
+                            // Show redirect message after 2 seconds
+                            setTimeout(() => {
+                                messageSpan.innerText = '<?= $lang['redirecting'] ?>';
+                                iconSpan.innerText = '↻';
+                            }, 2000);
+
+                            // Redirect after 5 seconds
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 5000);
+                        } else {
+                            resultBox.className = 'info-box visible error';
+                            iconSpan.innerText = '❌';
+                            messageSpan.innerText = '<?= $lang['install_error'] ?>: ' + (data.message || 'Unknown error');
+                            installBtn.disabled = false;
+                            testBtn.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        resultBox.className = 'info-box visible error';
+                        iconSpan.innerText = '❌';
+                        messageSpan.innerText = 'Error: ' + error;
+                        installBtn.disabled = false;
+                        testBtn.disabled = false;
+                    });
+            });
+        });
+
         function handleFlagClick(event, lang) {
             event.preventDefault(); // Always prevent default to handle logic manually behavior
 
