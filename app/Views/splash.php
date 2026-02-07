@@ -653,8 +653,48 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
     </div>
 
     <script>
-        // Form submit handler for installation
+        function handleFlagClick(event, lang) {
+            event.preventDefault(); // Always prevent default to handle logic manually behavior
+
+            const currentParams = new URLSearchParams(window.location.search);
+            const currentLang = currentParams.get('lang');
+
+            // If user clicks the currently active flag (toggle menu)
+            if (currentLang === lang) {
+                document.querySelector('.lang-select').classList.toggle('expanded');
+                return;
+            }
+
+            // If switching language -> Save State (Only Data, Reset Step)
+            const state = {
+                site_name: document.getElementById('site_name').value,
+                site_desc: document.getElementById('site_desc').value,
+                username: document.querySelector('input[name="username"]').value,
+                email: document.querySelector('input[name="email"]').value,
+                password: document.querySelector('input[name="password"]').value,
+                password_repeat: document.querySelector('input[name="password_repeat"]').value,
+                password: document.querySelector('input[name="password"]').value,
+                password_repeat: document.querySelector('input[name="password_repeat"]').value,
+                step: document.body.classList.contains('step-3-mode') ? 3 : (document.body.classList.contains('step-2-mode') ? 2 : 1),
+
+                // DB Fields
+
+                // DB Fields
+                domain: document.querySelector('input[name="domain"]')?.value || '',
+                db_name: document.querySelector('input[name="db_name"]')?.value || '',
+                db_user: document.querySelector('input[name="db_user"]')?.value || '',
+                db_pass: document.querySelector('input[name="db_pass"]')?.value || '',
+                db_host: document.querySelector('input[name="db_host"]')?.value || ''
+            };
+            sessionStorage.setItem('nexsite_setup_state', JSON.stringify(state));
+
+            // Navigate
+            window.location.href = '?lang=' + lang;
+        }
+
+        // Restore State on Load
         document.addEventListener('DOMContentLoaded', () => {
+            // Form submit handler for installation
             const form = document.getElementById('install-form');
 
             form.addEventListener('submit', function (e) {
@@ -712,49 +752,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                         testBtn.disabled = false;
                     });
             });
-        });
 
-        function handleFlagClick(event, lang) {
-            event.preventDefault(); // Always prevent default to handle logic manually behavior
-
-            const currentParams = new URLSearchParams(window.location.search);
-            const currentLang = currentParams.get('lang');
-
-            // If user clicks the currently active flag (toggle menu)
-            if (currentLang === lang) {
-                document.querySelector('.lang-select').classList.toggle('expanded');
-                return;
-            }
-
-            // If switching language -> Save State (Only Data, Reset Step)
-            const state = {
-                site_name: document.getElementById('site_name').value,
-                site_desc: document.getElementById('site_desc').value,
-                username: document.querySelector('input[name="username"]').value,
-                email: document.querySelector('input[name="email"]').value,
-                password: document.querySelector('input[name="password"]').value,
-                password_repeat: document.querySelector('input[name="password_repeat"]').value,
-                password: document.querySelector('input[name="password"]').value,
-                password_repeat: document.querySelector('input[name="password_repeat"]').value,
-                step: document.body.classList.contains('step-3-mode') ? 3 : (document.body.classList.contains('step-2-mode') ? 2 : 1),
-
-                // DB Fields
-
-                // DB Fields
-                domain: document.querySelector('input[name="domain"]')?.value || '',
-                db_name: document.querySelector('input[name="db_name"]')?.value || '',
-                db_user: document.querySelector('input[name="db_user"]')?.value || '',
-                db_pass: document.querySelector('input[name="db_pass"]')?.value || '',
-                db_host: document.querySelector('input[name="db_host"]')?.value || ''
-            };
-            sessionStorage.setItem('nexsite_setup_state', JSON.stringify(state));
-
-            // Navigate
-            window.location.href = '?lang=' + lang;
-        }
-
-        // Restore State on Load
-        document.addEventListener('DOMContentLoaded', () => {
             // Check if we are on a fresh visit (no lang param) -> Clear storage
             const currentParams = new URLSearchParams(window.location.search);
             if (!currentParams.has('lang')) {
