@@ -62,6 +62,7 @@ class App
         }
 
         // view tonen
+        $version = self::VERSION;
         include __DIR__ . '/Views/splash.php';
     }
 

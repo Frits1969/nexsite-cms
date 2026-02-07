@@ -648,7 +648,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
     </div>
 
     <div class="version-footer">
-        v<?= \NexSite\App::VERSION ?>
+        v<?= $version ?>
     </div>
 
     <script>
