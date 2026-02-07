@@ -6,7 +6,7 @@ require_once __DIR__ . '/Language.php';
 
 class App
 {
-    const VERSION = '0.0.2';
+    const VERSION = '0.0.3';
     protected static $instance;
 
     public function __construct()
