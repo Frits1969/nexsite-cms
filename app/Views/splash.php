@@ -419,6 +419,54 @@
             opacity: 1;
             animation: slideInRight 0.5s ease forwards;
         }
+
+        /* Info Box Styling */
+        .info-box {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .info-box.visible {
+            display: flex;
+        }
+
+        .info-box .icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .info-box .message {
+            flex: 1;
+        }
+
+        /* Info variant (testing) */
+        .info-box.info {
+            background-color: #E0F2FF;
+            border-left: 4px solid #0183D6;
+            color: #004F82;
+        }
+
+        /* Success variant */
+        .info-box.success {
+            background-color: #e6f5f1;
+            border-left: 4px solid #0B9C70;
+            color: #065c42;
+        }
+
+        /* Error variant */
+        .info-box.error {
+            background-color: #ffe6e6;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
     </style>
 </head>
 <?php
@@ -562,7 +610,10 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                         <input type="text" name="db_host" class="form-input" value="localhost" required>
                     </div>
 
-                    <div id="db-test-result" style="margin-bottom: 10px; font-weight: bold;"></div>
+                    <div id="db-test-result" class="info-box">
+                        <span class="icon"></span>
+                        <span class="message"></span>
+                    </div>
 
                     <div class="nav-buttons dual">
                         <!-- Back Button -->
@@ -766,11 +817,15 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             const user = document.querySelector('input[name="db_user"]').value;
             const pass = document.querySelector('input[name="db_pass"]').value;
             const name = document.querySelector('input[name="db_name"]').value;
-            const resultDiv = document.getElementById('db-test-result');
+            const resultBox = document.getElementById('db-test-result');
+            const iconSpan = resultBox.querySelector('.icon');
+            const messageSpan = resultBox.querySelector('.message');
             const installBtn = document.getElementById('install-btn');
 
-            resultDiv.innerText = 'Testing...';
-            resultDiv.style.color = 'blue';
+            // Show testing state
+            resultBox.className = 'info-box visible info';
+            iconSpan.innerText = 'ℹ️';
+            messageSpan.innerText = 'Verbinding testen...';
             installBtn.style.display = 'none';
 
             const formData = new FormData();
@@ -787,17 +842,20 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        resultDiv.innerText = '<?= $lang['success_db_connect'] ?>';
-                        resultDiv.style.color = 'green';
+                        resultBox.className = 'info-box visible success';
+                        iconSpan.innerText = '✅';
+                        messageSpan.innerText = '<?= $lang['success_db_connect'] ?>';
                         installBtn.style.display = 'flex'; // Show install button
                     } else {
-                        resultDiv.innerText = '<?= $lang['error_db_connect'] ?>: ' + data.message;
-                        resultDiv.style.color = 'red';
+                        resultBox.className = 'info-box visible error';
+                        iconSpan.innerText = '❌';
+                        messageSpan.innerText = '<?= $lang['error_db_connect'] ?>: ' + data.message;
                     }
                 })
                 .catch(error => {
-                    resultDiv.innerText = 'Error: ' + error;
-                    resultDiv.style.color = 'red';
+                    resultBox.className = 'info-box visible error';
+                    iconSpan.innerText = '❌';
+                    messageSpan.innerText = 'Error: ' + error;
                 });
         }
     </script>
