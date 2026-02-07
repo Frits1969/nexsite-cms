@@ -4,6 +4,8 @@ namespace NexSite;
 
 require_once __DIR__ . '/Language.php';
 
+use NexSite\Language;
+
 class App
 {
     const VERSION = '0.0.3';
