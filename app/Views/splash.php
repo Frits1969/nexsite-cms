@@ -648,7 +648,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
     </div>
 
     <div class="version-footer">
-        v<?= $version ?>
+        v<?= isset($version) ? $version : '0.0.3' ?>
     </div>
 
     <script>
