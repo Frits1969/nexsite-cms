@@ -1,58 +1,87 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= htmlspecialchars($settings['site_name'] ?? 'NexSite CMS') ?>
-    </title>
+    <title><?= htmlspecialchars($settings['site_name'] ?? 'NexSite Website') ?></title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --primary-color: #0d6efd;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+        }
+
         body {
-            font-family: sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
-            background: #333;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
+            padding: 2rem;
+            display: flex;
+            align-items: flex-start;
         }
 
-        footer {
-            margin-top: 2rem;
-            border-top: 1px solid #ccc;
-            padding-top: 1rem;
+        .logo {
+            max-height: 60px;
+            width: auto;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            font-size: 0.8rem;
+            padding: 2rem;
+        }
+
+        .intro-text {
+            font-size: 1.5rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+
+        .site-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+            background: linear-gradient(45deg, #0d6efd, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
-
 <body>
+
     <header>
-        <h1>
-            <?= htmlspecialchars($settings['site_name'] ?? 'NexSite CMS') ?>
-        </h1>
-        <p>
-            <?= htmlspecialchars($settings['site_description'] ?? '') ?>
-        </p>
+        <?php if (file_exists(__DIR__ . '/../../../public/assets/logo/nexsite-logo.png')): ?>
+            <img src="/assets/logo/nexsite-logo.png" alt="NexSite Logo" class="logo">
+        <?php else: ?>
+            <!-- Fallback if logo is missing, though we confirmed it exists -->
+            <strong>NexSite</strong>
+        <?php endif; ?>
     </header>
 
     <main>
-        <p>Welkom op je nieuwe website! Dit is de standaard startpagina.</p>
-        <p>Je kunt inloggen op de backoffice via <a href="/admin">/admin</a>.</p>
+        <div class="intro-text">Hier komt de website:</div>
+        <h1 class="site-name"><?= htmlspecialchars($settings['site_name'] ?? 'Mijn Website') ?></h1>
     </main>
 
-    <footer>
-        &copy;
-        <?= date('Y') ?>
-        <?= htmlspecialchars($settings['site_name'] ?? 'NexSite CMS') ?>. Powered by NexSite CMS.
-    </footer>
 </body>
-
 </html>
