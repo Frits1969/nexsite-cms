@@ -5,7 +5,16 @@ namespace NexSite;
 require_once __DIR__ . '/Language.php';
 require_once __DIR__ . '/Installer.php';
 
+require_once __DIR__ . '/Config.php';
+require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/Controllers/BaseController.php';
+require_once __DIR__ . '/Controllers/FrontController.php';
+require_once __DIR__ . '/Controllers/AdminController.php';
+
 use NexSite\Language;
+use NexSite\Config;
+use NexSite\Controllers\FrontController;
+use NexSite\Controllers\AdminController;
 
 class App
 {
@@ -32,8 +41,25 @@ class App
 
         // Check if already installed
         if (file_exists(__DIR__ . '/../install.lock')) {
-            // Installation complete - redirect to admin (to be built later)
-            die('NexSite CMS is already installed. Admin panel coming soon!');
+            // Load Configuration
+            Config::load(__DIR__ . '/../.env');
+
+            $uri = $_SERVER['REQUEST_URI'] ?? '/';
+            $uri = strtok($uri, '?');
+
+            // Simple Routing
+            if (strpos($uri, '/admin') === 0) {
+                $controller = new AdminController();
+                if ($uri === '/admin/login') {
+                    $controller->login();
+                } else {
+                    $controller->index();
+                }
+            } else {
+                $controller = new FrontController();
+                $controller->index();
+            }
+            return;
         }
 
         // taal bepalen
