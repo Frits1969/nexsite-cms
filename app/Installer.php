@@ -74,12 +74,15 @@ class Installer
 
         $sql = file_get_contents($schemaFile);
 
+        // Remove comments
+        $sql = preg_replace('/--.*$/m', '', $sql);
+
         // Split by semicolon and execute each statement
         $statements = array_filter(array_map('trim', explode(';', $sql)));
 
         foreach ($statements as $statement) {
-            // Skip comments and empty statements
-            if (empty($statement) || strpos($statement, '--') === 0) {
+            // Skip empty statements
+            if (empty($statement)) {
                 continue;
             }
 
