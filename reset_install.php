@@ -4,7 +4,8 @@
 // Gebruik: Open dit bestand in je browser (http://localhost/reset_install.php) of voer het uit via de command line (php reset_install.php).
 
 // Helper functie om berichten weer te geven
-function logMsg($msg) {
+function logMsg($msg)
+{
     echo $msg . "<br>\n";
 }
 
@@ -32,7 +33,8 @@ if (file_exists($envFile)) {
     $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $env = [];
     foreach ($lines as $line) {
-        if (strpos(trim($line), '#') === 0) continue; // Sla commentaar over
+        if (strpos(trim($line), '#') === 0)
+            continue; // Sla commentaar over
         list($name, $value) = explode('=', $line, 2);
         $env[trim($name)] = trim($value);
     }
@@ -54,7 +56,7 @@ if (file_exists($envFile)) {
             // Haal alle tabellen op die beginnen met NSCMS_ of gewoon alles (voor de zekerheid alleen NSCMS_ prefixes als dat de standaard is, maar de user zei 'Leeg je database')
             // De user noemde specifiek 'NSCMS_settings, NSCMS_users, etc.', dus we zoeken naar tabellen met die prefix of we droppen alles.
             // Voor veiligheid doen we vaak alleen specifieke tabellen, maar 'reset' impliceert alles van deze app.
-            
+
             // Laten we alle tabellen in deze specifieke database droppen om 'Leeg je database' te honoreren.
             $stmt = $pdo->query("SHOW TABLES");
             $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -62,12 +64,12 @@ if (file_exists($envFile)) {
             if ($tables) {
                 // Zet foreign key checks uit om errors te voorkomen bij droppen
                 $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
-                
+
                 foreach ($tables as $table) {
                     $pdo->exec("DROP TABLE IF EXISTS `$table`");
                     logMsg("🗑️ Tabel '$table' verwijderd.");
                 }
-                
+
                 $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
                 logMsg("✅ Database volledig leeggemaakt.");
             } else {
@@ -97,5 +99,7 @@ if (file_exists($envFile)) {
     logMsg("ℹ️ .env bestand bestond al niet meer.");
 }
 
-logMsg("<hr><strong>Reset voltooid!</strong><br>Je kunt nu naar <a href='index.php'>index.php</a> gaan om de installatie opnieuw te starten.");
+logMsg("<hr><strong>Reset voltooid!</strong><br>Je wordt binnen 3 seconden doorgestuurd naar de installatie...");
+logMsg("<script>setTimeout(function(){ window.location.href = 'index.php'; }, 3000);</script>");
+logMsg("<noscript><meta http-equiv='refresh' content='3;url=index.php'></noscript>");
 ?>
