@@ -58,7 +58,7 @@
         }
 
         .sidebar-header img {
-            max-width: 40px;
+            max-width: 65px; /* Increased from 50px for better visibility */
             height: auto;
         }
 
@@ -373,7 +373,7 @@
             </a>
         </nav>
         <div class="sidebar-footer">
-            <p style="font-size: 0.8rem; color: var(--text-muted);">v0.0.5</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">v<?= \NexSite\App::VERSION ?></p>
         </div>
     </aside>
 
