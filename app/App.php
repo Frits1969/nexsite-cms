@@ -48,9 +48,9 @@ class App
             $uri = strtok($uri, '?');
 
             // Simple Routing
-            if (strpos($uri, '/admin') === 0) {
+            if (strpos($uri, '/backoffice') === 0) {
                 $controller = new AdminController();
-                if ($uri === '/admin/login') {
+                if ($uri === '/backoffice/login') {
                     $controller->login();
                 } else {
                     $controller->index();

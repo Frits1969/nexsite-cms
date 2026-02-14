@@ -73,7 +73,7 @@
         /* Selected State Styling */
         body.selected-mode {
             justify-content: flex-start;
-            padding-top: 40px;
+            padding-top: 20px; /* Aligned with language flag top (20px) */
         }
 
         body.selected-mode .splash-logo {
@@ -83,7 +83,7 @@
         body.selected-mode .pieces-logo {
             display: block !important;
             position: absolute;
-            top: -120px; /* Position above pieces */
+            top: 0; /* Align with the top of the blue piece */
             left: 50%;
             transform: translateX(-50%);
             margin-bottom: 0;
@@ -136,19 +136,21 @@
         .multistep-wrapper {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: flex-start; /* Switch to top alignment */
             gap: 0;
             width: 100%;
-            margin-top: 150px; /* Space for the logo above */
+            margin-top: 0;
             padding: 0 30px;
             box-sizing: border-box;
+            position: relative;
         }
 
         .puzzle-focus-group {
             display: flex;
-            align-items: flex-start;
-            position: relative; /* Anchor for logo */
+            align-items: flex-start; /* Top alignment for logo anchor */
+            position: relative;
             gap: 0;
+            height: auto; /* Remove fixed height */
         }
 
         body.step-3-mode .multistep-wrapper {
@@ -167,7 +169,7 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             transition: all 0.5s ease;
             min-height: 600px;
-            /* Ensure consistent height */
+            margin-top: 220px; /* Start orange and green 220px lower */
         }
 
         /* Orange Piece (Step 1) */
@@ -191,8 +193,8 @@
             display: none;
             opacity: 0;
             z-index: 0;
-            margin-top: -100px;
-            /* Move it up significantly higher */
+            min-height: 720px;
+            margin-top: 38px; /* Blue starts 38px lower than logo/flags */
         }
 
         /* Puzzle "Outies" (Knobs) */
@@ -794,7 +796,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 
                             // Redirect after 3 seconds
                             setTimeout(() => {
-                                window.location.reload();
+                                window.location.href = '/backoffice';
                             }, 3000);
                         } else {
                             resultBox.className = 'info-box visible error';
