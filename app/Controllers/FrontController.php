@@ -19,4 +19,10 @@ class FrontController extends BaseController
 
         $this->view('front/home', ['settings' => $settings]);
     }
+
+    public function demo()
+    {
+        // Static demo page with premium design
+        $this->view('front/demo');
+    }
 }

@@ -55,6 +55,9 @@ class App
                 } else {
                     $controller->index();
                 }
+            } elseif ($uri === '/demo') {
+                $controller = new FrontController();
+                $controller->demo();
             } else {
                 $controller = new FrontController();
                 $controller->index();

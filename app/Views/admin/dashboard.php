@@ -99,6 +99,46 @@
             font-size: 1.2rem;
         }
 
+        /* Language Switcher in Backoffice */
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .lang-select {
+            display: flex;
+            position: relative;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-select a {
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .lang-select a.active {
+            display: block;
+        }
+
+        .lang-select.expanded a {
+            display: block;
+        }
+
+        .flag-icon {
+            width: 32px;
+            height: 22px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .flag-icon:hover {
+            transform: scale(1.1);
+        }
+
         .sidebar-footer {
             padding: 20px;
             border-top: 1px solid var(--glass-border);
@@ -384,7 +424,19 @@
                 <input type="text" placeholder="Zoeken in NexSite...">
             </div>
 
-            <div class="user-widget" id="user-widget">
+            <div class="topbar-actions">
+                <!-- Language Switcher -->
+                <div class="lang-select" id="lang-switcher">
+                    <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'nl')">
+                        <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
+                    </a>
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'en')">
+                        <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
+                    </a>
+                </div>
+
+                <div class="user-widget" id="user-widget">
                 <div class="user-avatar">
                     <?php 
                         $name = $_SESSION['username'] ?? 'Admin';
@@ -449,6 +501,13 @@
                             </div>
                             <a href="/" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;">Bekijken</a>
                         </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
+                            <div>
+                                <span style="font-weight: 500;">Demo Pagina </span> <span style="font-size: 0.7rem; background: var(--blue); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">DEMO</span>
+                                <br><small style="color: var(--text-muted);">/demo</small>
+                            </div>
+                            <a href="/demo" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;">Bekijken</a>
+                        </div>
                         <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
                             Geen andere pagina's gevonden.
                         </div>
@@ -477,9 +536,19 @@
     </div>
 
     <script>
-        // Toggle User Menu
-        const userWidget = document.getElementById('user-widget');
-        const userMenu = document.getElementById('user-menu');
+        const langSwitcher = document.getElementById('lang-switcher');
+
+        function handleFlagClick(event, lang) {
+            const currentParams = new URLSearchParams(window.location.search);
+            const currentLang = currentParams.get('lang') || '<?= $_SESSION['lang'] ?? 'nl' ?>';
+
+            if (currentLang === lang) {
+                event.preventDefault();
+                langSwitcher.classList.toggle('expanded');
+                return;
+            }
+            // Allow default navigation to switch language
+        }
 
         userWidget.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -488,6 +557,7 @@
 
         document.addEventListener('click', () => {
             userMenu.classList.remove('active');
+            langSwitcher.classList.remove('expanded');
         });
     </script>
 </body>
