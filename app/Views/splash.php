@@ -69,7 +69,13 @@
         /* Selected State Styling */
         body.selected-mode {
             justify-content: flex-start;
-            padding-top: 20px;
+            padding-top: 40px;
+        }
+
+        body.selected-mode .logo-container {
+            margin-bottom: 0;
+            width: 100%;
+            text-align: center;
         }
 
         body.selected-mode .text-container {
@@ -117,14 +123,14 @@
             gap: 0;
             width: 100%;
             width: 100%;
-            margin-top: 50px;
-            padding-right: 30px;
+            margin-top: 30px; /* Reduced from 50px to bring logo closer */
+            padding: 0 30px; /* Symmetrical padding for perfect centering */
             /* Compensate for the 30px knob sticking out on the right */
             box-sizing: border-box;
         }
 
         body.step-3-mode .multistep-wrapper {
-            padding-right: 0;
+            padding: 0;
             /* Step 3 has a flat right edge, so no compensation needed */
         }
 
