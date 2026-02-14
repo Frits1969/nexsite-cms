@@ -385,7 +385,12 @@
             </div>
 
             <div class="user-widget" id="user-widget">
-                <div class="user-avatar">AD</div>
+                <div class="user-avatar">
+                    <?php 
+                        $name = $_SESSION['username'] ?? 'Admin';
+                        echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : '')); 
+                    ?>
+                </div>
                 <div class="user-info">
                     <span class="user-name"><?= $_SESSION['username'] ?? 'Admin' ?></span>
                     <span class="user-role">Super Admin</span>

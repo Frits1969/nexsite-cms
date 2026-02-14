@@ -31,7 +31,7 @@ class AdminController extends BaseController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Very basic hardcoded login for demonstration
             $_SESSION['user_id'] = 1;
-            $_SESSION['username'] = 'admin';
+            $_SESSION['username'] = $_POST['username'] ?? 'Admin';
             header('Location: /backoffice');
             exit;
         }

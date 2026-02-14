@@ -120,6 +120,10 @@ class App
 
                 // Run installation
                 if ($installer->run($_POST)) {
+                    // Log user in immediately
+                    $_SESSION['user_id'] = 1;
+                    $_SESSION['username'] = $_POST['username'] ?? 'Admin';
+                    
                     echo json_encode(['success' => true, 'message' => $lang['install_success']]);
                 } else {
                     $errors = implode(', ', $installer->getErrors());
