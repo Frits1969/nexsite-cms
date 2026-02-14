@@ -528,6 +528,15 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                     <!-- Overlap Connection: Orange Knob sits on top -->
 
                     <div id="step-2-content">
+                        <!-- Domain Input (Moved from Step 3, now at top of Step 2) -->
+                        <div class="form-group">
+                            <label><?= $lang['site_domain_label'] ?? 'Domeinnaam' ?></label>
+                            <div class="tip">
+                                <?= $lang['site_domain_tip'] ?? 'Voer het domein in (bijv. localhost of mijnwebsite.nl)' ?>
+                            </div>
+                            <input type="text" name="domain" class="form-input" placeholder="example.com" required>
+                        </div>
+
                         <div class="form-group">
                             <label><?= $lang['admin_account_label'] ?></label>
                             <div class="tip"><?= $lang['admin_account_tip'] ?></div>
@@ -548,13 +557,6 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                                 <input type="password" name="password_repeat"
                                     placeholder="<?= $lang['password_repeat_label'] ?>" class="form-input" required>
                             </div>
-                        </div>
-                        
-                        <!-- Domain Input (Moved from Step 3) -->
-                        <div class="form-group">
-                            <label><?= $lang['site_domain_label'] ?? 'Domeinnaam' ?></label>
-                            <div class="tip"><?= $lang['site_domain_tip'] ?? 'Voer het domein in (bijv. localhost of mijnwebsite.nl)' ?></div>
-                            <input type="text" name="domain" class="form-input" placeholder="example.com" required>
                         </div>
                         <div class="nav-buttons dual">
                             <button type="button" class="arrow-btn left" onclick="goToStep1()">
@@ -586,7 +588,9 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                     <!-- DB Prefix -->
                     <div class="form-group">
                         <label><?= $lang['db_prefix_label'] ?? 'Database Prefix' ?></label>
-                        <div class="tip"><?= $lang['db_prefix_tip'] ?? 'Kies een voorvoegsel voor de tabellen (standaard: nscms_)' ?></div>
+                        <div class="tip">
+                            <?= $lang['db_prefix_tip'] ?? 'Kies een voorvoegsel voor de tabellen (standaard: nscms_)' ?>
+                        </div>
                         <input type="text" name="db_prefix" class="form-input" value="nscms_" required>
                     </div>
 
