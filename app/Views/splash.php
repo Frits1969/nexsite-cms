@@ -701,8 +701,6 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                 email: document.querySelector('input[name="email"]').value,
                 password: document.querySelector('input[name="password"]').value,
                 password_repeat: document.querySelector('input[name="password_repeat"]').value,
-                password: document.querySelector('input[name="password"]').value,
-                password_repeat: document.querySelector('input[name="password_repeat"]').value,
                 step: document.body.classList.contains('step-3-mode') ? 3 : (document.body.classList.contains('step-2-mode') ? 2 : 1),
 
                 // DB Fields
@@ -761,10 +759,10 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                                 iconSpan.innerText = '↻';
                             }, 2000);
 
-                            // Redirect after 5 seconds
+                            // Redirect after 3 seconds
                             setTimeout(() => {
                                 window.location.reload();
-                            }, 5000);
+                            }, 3000);
                         } else {
                             resultBox.className = 'info-box visible error';
                             iconSpan.innerText = '❌';
