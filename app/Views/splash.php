@@ -27,6 +27,10 @@
             margin-bottom: 20px;
         }
 
+        .pieces-logo {
+            display: none !important;
+        }
+
         .text {
             font-size: 20px;
             color: #333;
@@ -72,10 +76,24 @@
             padding-top: 40px;
         }
 
-        body.selected-mode .logo-container {
+        body.selected-mode .splash-logo {
+            display: none;
+        }
+
+        body.selected-mode .pieces-logo {
+            display: block !important;
+            position: absolute;
+            top: -120px; /* Position above pieces */
+            left: 50%;
+            transform: translateX(-50%);
             margin-bottom: 0;
-            width: 100%;
+            z-index: 100;
+            width: 200px;
             text-align: center;
+        }
+        
+        body.selected-mode .pieces-logo img {
+            max-width: 100%;
         }
 
         body.selected-mode .text-container {
@@ -115,18 +133,22 @@
             opacity: 1;
         }
 
-        /* Multi-step Logic Styles */
         .multistep-wrapper {
             display: flex;
             justify-content: center;
             align-items: flex-start;
             gap: 0;
             width: 100%;
-            width: 100%;
-            margin-top: 30px; /* Reduced from 50px to bring logo closer */
-            padding: 0 30px; /* Symmetrical padding for perfect centering */
-            /* Compensate for the 30px knob sticking out on the right */
+            margin-top: 150px; /* Space for the logo above */
+            padding: 0 30px;
             box-sizing: border-box;
+        }
+
+        .puzzle-focus-group {
+            display: flex;
+            align-items: flex-start;
+            position: relative; /* Anchor for logo */
+            gap: 0;
         }
 
         body.step-3-mode .multistep-wrapper {
@@ -169,7 +191,7 @@
             display: none;
             opacity: 0;
             z-index: 0;
-            margin-top: -80px;
+            margin-top: -100px;
             /* Move it up significantly higher */
         }
 
@@ -495,7 +517,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 
 <body class="<?= $bodyClass ?>">
 
-    <div class="logo-container">
+    <div class="logo-container splash-logo">
         <img src="/assets/logo/nexsite-logo.png" alt="NexSite Logo" class="logo">
     </div>
 
@@ -507,9 +529,13 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
         <form action="" method="POST" id="install-form">
             <input type="hidden" name="action" value="install">
             <div class="multistep-wrapper">
+                <div class="puzzle-focus-group">
+                    <div class="logo-container pieces-logo">
+                        <img src="/assets/logo/nexsite-logo.png" alt="NexSite Logo" class="logo">
+                    </div>
 
-                <!-- Step 1: Site Info (Orange) -->
-                <div class="puzzle-piece orange" id="step-1-piece">
+                    <!-- Step 1: Site Info (Orange) -->
+                    <div class="puzzle-piece orange" id="step-1-piece">
                     <!-- Step 1 Content: Inputs -->
                     <div id="step-1-content">
                         <div class="form-group">
@@ -601,6 +627,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                             <div class="summary-label"><?= $lang['email_label'] ?></div>
                             <div class="summary-value" id="summary-email"></div>
                         </div>
+                    </div>
                     </div>
                 </div>
 
