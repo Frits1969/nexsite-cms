@@ -116,7 +116,16 @@
             align-items: flex-start;
             gap: 0;
             width: 100%;
+            width: 100%;
             margin-top: 50px;
+            padding-right: 30px;
+            /* Compensate for the 30px knob sticking out on the right */
+            box-sizing: border-box;
+        }
+
+        body.step-3-mode .multistep-wrapper {
+            padding-right: 0;
+            /* Step 3 has a flat right edge, so no compensation needed */
         }
 
         /* Puzzle Piece */
@@ -129,6 +138,8 @@
             flex-shrink: 0;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             transition: all 0.5s ease;
+            min-height: 600px;
+            /* Ensure consistent height */
         }
 
         /* Orange Piece (Step 1) */
@@ -152,7 +163,8 @@
             display: none;
             opacity: 0;
             z-index: 0;
-            margin-top: -20px; /* Move it up slightly */
+            margin-top: -80px;
+            /* Move it up significantly higher */
         }
 
         /* Puzzle "Outies" (Knobs) */
@@ -824,7 +836,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             const siteDesc = document.getElementById('site_desc').value;
 
             if (!siteName || !siteDesc) {
-                alert('Vul alle velden in aub.');
+                alert('<?= $lang['error_fill_all_fields'] ?>');
                 return;
             }
 
@@ -832,78 +844,54 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             document.getElementById('summary-site-name').innerText = siteName;
             document.getElementById('summary-site-desc').innerText = siteDesc;
 
+            document.body.classList.remove('step-3-mode');
             document.body.classList.add('step-2-mode');
-            
+
             // Hide Step 1 Content, Show Summary
             /* We do this via CSS mostly, but to be sure */
             document.getElementById('step-1-content').style.display = 'none';
             document.getElementById('step-1-summary').style.display = 'block';
-            
+
             // Show Step 2 Content, Hide Summary
             document.getElementById('step-2-content').style.display = 'block';
             document.getElementById('step-2-summary').style.display = 'none'; // Ensure content is shown
 
-            if(!instant) {
+            if (!instant) {
                 // Animation logic handled by CSS
             }
         }
-        
+
         function goToStep3(instant = false) {
-             const domain = document.querySelector('input[name="domain"]').value;
-             const username = document.querySelector('input[name="username"]').value;
-             const email = document.querySelector('input[name="email"]').value;
-             const password = document.querySelector('input[name="password"]').value;
-             const passwordRepeat = document.querySelector('input[name="password_repeat"]').value;
- 
-             if (!domain || !username || !email || !password || !passwordRepeat) {
-                 alert('Vul alle velden in aub.');
-                 return;
-             }
- 
-             if (password !== passwordRepeat) {
-                 alert('Wachtwoorden komen niet overeen.');
-                 return;
-             }
- 
-             // Update Summary for Step 2
-             document.getElementById('summary-domain').innerText = domain;
-             document.getElementById('summary-username').innerText = username;
-             document.getElementById('summary-email').innerText = email;
- 
-             document.body.classList.add('step-3-mode');
-             
-             // Hide Step 2 Content, Show Summary
-             document.getElementById('step-2-content').style.display = 'none';
-             document.getElementById('step-2-summary').style.display = 'block';
- 
-             if(!instant) {
-                 // Animation logic
-             }
-        }
+            const domain = document.querySelector('input[name="domain"]').value;
+            const username = document.querySelector('input[name="username"]').value;
+            const email = document.querySelector('input[name="email"]').value;
+            const password = document.querySelector('input[name="password"]').value;
+            const passwordRepeat = document.querySelector('input[name="password_repeat"]').value;
 
-        function goToStep1() {
-             document.body.classList.remove('step-2-mode');
-             document.body.classList.remove('step-3-mode');
- 
-             document.getElementById('step-1-content').style.display = 'block';
-             document.getElementById('step-1-summary').style.display = 'none';
-        }    document.body.classList.remove('step-3-mode');
-            document.body.classList.add('step-2-mode');
+            if (!domain || !username || !email || !password || !passwordRepeat) {
+                alert('<?= $lang['error_fill_all_fields'] ?>');
+                return;
+            }
 
-            // Step 1: Show Summary
-            document.getElementById('step-1-content').style.display = 'none';
-            document.getElementById('step-1-summary').style.display = 'block';
+            if (password !== passwordRepeat) {
+                alert('<?= $lang['error_passwords_mismatch'] ?>');
+                return;
+            }
 
-            // Step 2: Show Inputs (hide summary if coming back from 3)
-            document.getElementById('step-2-content').style.display = 'block';
-            document.getElementById('step-2-summary').style.display = 'none';
-            document.getElementById('step-2-piece').style.display = '';
+            // Update Summary for Step 2
+            document.getElementById('summary-domain').innerText = domain;
+            document.getElementById('summary-username').innerText = username;
+            document.getElementById('summary-email').innerText = email;
 
-            // Focus on username
-            setTimeout(() => {
-                const usernameInput = document.querySelector('input[name="username"]');
-                if (usernameInput) usernameInput.focus();
-            }, 500); // Wait for animation
+            document.body.classList.add('step-3-mode');
+
+            // Hide Step 2 Content, Show Summary
+            document.getElementById('step-2-content').style.display = 'none';
+            document.getElementById('step-2-summary').style.display = 'block';
+
+            if (!instant) {
+                // Animation logic
+            }
         }
 
         function goToStep1() {
@@ -912,34 +900,6 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 
             document.getElementById('step-1-content').style.display = 'block';
             document.getElementById('step-1-summary').style.display = 'none';
-        }
-
-        function goToStep3(skipValidation = false) {
-            const user = document.querySelector('input[name="username"]').value;
-            const email = document.querySelector('input[name="email"]').value;
-            const pass = document.querySelector('input[name="password"]').value;
-            const repeat = document.querySelector('input[name="password_repeat"]').value;
-
-            if (!skipValidation) {
-                if (!user || !email || !pass || !repeat) {
-                    alert('Vul alle velden in aub.');
-                    return;
-                }
-                if (pass !== repeat) {
-                    alert('Wachtwoorden komen niet overeen.');
-                    return;
-                }
-            }
-
-            // Populate Summary for Step 2
-            document.getElementById('summary-username').innerText = user;
-            document.getElementById('summary-email').innerText = email;
-
-            document.body.classList.add('step-3-mode');
-
-            // Step 2: Hide Inputs, Show Summary
-            document.getElementById('step-2-content').style.display = 'none';
-            document.getElementById('step-2-summary').style.display = 'block';
         }
 
         function testDatabaseConnection() {
@@ -955,7 +915,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             // Show testing state
             resultBox.className = 'info-box visible info';
             iconSpan.innerText = 'ℹ️';
-            messageSpan.innerText = 'Verbinding testen...';
+            messageSpan.innerText = '<?= $lang['test_db_connection'] ?>';
             installBtn.style.display = 'none';
 
             const formData = new FormData();

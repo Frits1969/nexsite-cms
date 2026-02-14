@@ -33,4 +33,7 @@ return [
     'install_error' => 'Installation failed',
     'redirecting' => 'Redirecting to login...',
     'install_complete' => 'NexSite CMS has been successfully installed!',
+    'error_fill_all_fields' => 'Please fill in all fields.',
+    'error_passwords_mismatch' => 'Passwords do not match.',
+    'test_db_connection' => 'Testing connection...',
 ];

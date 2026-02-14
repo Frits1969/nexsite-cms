@@ -33,4 +33,7 @@ return [
     'install_error' => 'Installatie mislukt',
     'redirecting' => 'Doorverwijzen naar login...',
     'install_complete' => 'NexSite CMS is succesvol geïnstalleerd!',
+    'error_fill_all_fields' => 'Vul alle velden in aub.',
+    'error_passwords_mismatch' => 'Wachtwoorden komen niet overeen.',
+    'test_db_connection' => 'Verbinding testen...',
 ];
