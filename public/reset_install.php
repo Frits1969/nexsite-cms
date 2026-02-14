@@ -1,7 +1,7 @@
 <?php
 // reset_install.php
 // Dit script reset de CMS installatie zodat je opnieuw kunt beginnen.
-// Gebruik: Open dit bestand in je browser (http://localhost/reset_install.php) of voer het uit via de command line (php reset_install.php).
+// Gebruik: Open dit bestand in je browser (http://jouwdomein/reset_install.php) of voer het uit via de command line.
 
 // Helper functie om berichten weer te geven
 function logMsg($msg)
@@ -13,7 +13,8 @@ logMsg("Start reset installatie...");
 
 // Stap 1: install.lock verwijderen
 // install.lock voorkomt dat de installer opnieuw loopt. We moeten dit verwijderen.
-$lockFile = __DIR__ . '/install.lock';
+// Let op: Dit script staat nu in public/, dus we moeten één map omhoog.
+$lockFile = __DIR__ . '/../install.lock';
 if (file_exists($lockFile)) {
     if (unlink($lockFile)) {
         logMsg("✅ install.lock succesvol verwijderd.");
@@ -26,7 +27,7 @@ if (file_exists($lockFile)) {
 
 // Stap 2: Database leegmaken
 // We moeten de database credentials uit .env halen om verbinding te maken.
-$envFile = __DIR__ . '/.env';
+$envFile = __DIR__ . '/../.env';
 
 if (file_exists($envFile)) {
     // Lees .env regel voor regel
@@ -53,11 +54,7 @@ if (file_exists($envFile)) {
 
             logMsg("Verbonden met database '$dbName'. Tabellen verwijderen...");
 
-            // Haal alle tabellen op die beginnen met NSCMS_ of gewoon alles (voor de zekerheid alleen NSCMS_ prefixes als dat de standaard is, maar de user zei 'Leeg je database')
-            // De user noemde specifiek 'NSCMS_settings, NSCMS_users, etc.', dus we zoeken naar tabellen met die prefix of we droppen alles.
-            // Voor veiligheid doen we vaak alleen specifieke tabellen, maar 'reset' impliceert alles van deze app.
-
-            // Laten we alle tabellen in deze specifieke database droppen om 'Leeg je database' te honoreren.
+            // Haal alle tabellen op
             $stmt = $pdo->query("SHOW TABLES");
             $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
