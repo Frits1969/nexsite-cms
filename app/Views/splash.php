@@ -23,7 +23,7 @@
         }
 
         img.logo {
-            max-width: 280px;
+            max-width: 200px;
             margin-bottom: 20px;
         }
 
@@ -152,6 +152,7 @@
             display: none;
             opacity: 0;
             z-index: 0;
+            margin-top: -20px; /* Move it up slightly */
         }
 
         /* Puzzle "Outies" (Knobs) */
@@ -571,6 +572,10 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                     <!-- Step 2 Summary (Hidden initially) -->
                     <div id="step-2-summary" style="display: none;">
                         <div class="form-group summary-item">
+                            <div class="summary-label"><?= $lang['site_domain_label'] ?? 'Domeinnaam' ?></div>
+                            <div class="summary-value" id="summary-domain"></div>
+                        </div>
+                        <div class="form-group summary-item">
                             <div class="summary-label"><?= $lang['username_label'] ?></div>
                             <div class="summary-value" id="summary-username"></div>
                         </div>
@@ -814,23 +819,75 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             }
         });
 
-        function goToStep2(skipValidation = false) {
-            // Get inputs
+        function goToStep2(instant = false) {
             const siteName = document.getElementById('site_name').value;
             const siteDesc = document.getElementById('site_desc').value;
 
-            // Validation
-            if (!skipValidation && (!siteName || !siteDesc)) {
+            if (!siteName || !siteDesc) {
                 alert('Vul alle velden in aub.');
                 return;
             }
 
-            // Populate summary for Step 1
+            // Update Summary for Step 1
             document.getElementById('summary-site-name').innerText = siteName;
             document.getElementById('summary-site-desc').innerText = siteDesc;
 
-            // Adjust UI
-            document.body.classList.remove('step-3-mode');
+            document.body.classList.add('step-2-mode');
+            
+            // Hide Step 1 Content, Show Summary
+            /* We do this via CSS mostly, but to be sure */
+            document.getElementById('step-1-content').style.display = 'none';
+            document.getElementById('step-1-summary').style.display = 'block';
+            
+            // Show Step 2 Content, Hide Summary
+            document.getElementById('step-2-content').style.display = 'block';
+            document.getElementById('step-2-summary').style.display = 'none'; // Ensure content is shown
+
+            if(!instant) {
+                // Animation logic handled by CSS
+            }
+        }
+        
+        function goToStep3(instant = false) {
+             const domain = document.querySelector('input[name="domain"]').value;
+             const username = document.querySelector('input[name="username"]').value;
+             const email = document.querySelector('input[name="email"]').value;
+             const password = document.querySelector('input[name="password"]').value;
+             const passwordRepeat = document.querySelector('input[name="password_repeat"]').value;
+ 
+             if (!domain || !username || !email || !password || !passwordRepeat) {
+                 alert('Vul alle velden in aub.');
+                 return;
+             }
+ 
+             if (password !== passwordRepeat) {
+                 alert('Wachtwoorden komen niet overeen.');
+                 return;
+             }
+ 
+             // Update Summary for Step 2
+             document.getElementById('summary-domain').innerText = domain;
+             document.getElementById('summary-username').innerText = username;
+             document.getElementById('summary-email').innerText = email;
+ 
+             document.body.classList.add('step-3-mode');
+             
+             // Hide Step 2 Content, Show Summary
+             document.getElementById('step-2-content').style.display = 'none';
+             document.getElementById('step-2-summary').style.display = 'block';
+ 
+             if(!instant) {
+                 // Animation logic
+             }
+        }
+
+        function goToStep1() {
+             document.body.classList.remove('step-2-mode');
+             document.body.classList.remove('step-3-mode');
+ 
+             document.getElementById('step-1-content').style.display = 'block';
+             document.getElementById('step-1-summary').style.display = 'none';
+        }    document.body.classList.remove('step-3-mode');
             document.body.classList.add('step-2-mode');
 
             // Step 1: Show Summary

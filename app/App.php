@@ -18,7 +18,7 @@ use NexSite\Controllers\AdminController;
 
 class App
 {
-    const VERSION = '0.0.4';
+    const VERSION = '0.0.5';
     protected static $instance;
 
     public function __construct()
