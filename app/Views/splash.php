@@ -549,6 +549,13 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                                     placeholder="<?= $lang['password_repeat_label'] ?>" class="form-input" required>
                             </div>
                         </div>
+                        
+                        <!-- Domain Input (Moved from Step 3) -->
+                        <div class="form-group">
+                            <label><?= $lang['site_domain_label'] ?? 'Domeinnaam' ?></label>
+                            <div class="tip"><?= $lang['site_domain_tip'] ?? 'Voer het domein in (bijv. localhost of mijnwebsite.nl)' ?></div>
+                            <input type="text" name="domain" class="form-input" placeholder="example.com" required>
+                        </div>
                         <div class="nav-buttons dual">
                             <button type="button" class="arrow-btn left" onclick="goToStep1()">
                                 &#8592; <span><?= $lang['btn_back'] ?></span>
@@ -576,11 +583,11 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                 <div class="puzzle-piece blue" id="step-3-piece">
                     <!-- Overlap Connection: Green Knob sits on top -->
 
-                    <!-- Domain -->
+                    <!-- DB Prefix -->
                     <div class="form-group">
-                        <label><?= $lang['site_domain_label'] ?></label>
-                        <div class="tip"><?= $lang['site_domain_tip'] ?></div>
-                        <input type="text" name="domain" class="form-input" placeholder="example.com" required>
+                        <label><?= $lang['db_prefix_label'] ?? 'Database Prefix' ?></label>
+                        <div class="tip"><?= $lang['db_prefix_tip'] ?? 'Kies een voorvoegsel voor de tabellen (standaard: nscms_)' ?></div>
+                        <input type="text" name="db_prefix" class="form-input" value="nscms_" required>
                     </div>
 
                     <!-- DB Name -->
@@ -681,6 +688,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 
                 // DB Fields
                 domain: document.querySelector('input[name="domain"]')?.value || '',
+                db_prefix: document.querySelector('input[name="db_prefix"]')?.value || '',
                 db_name: document.querySelector('input[name="db_name"]')?.value || '',
                 db_user: document.querySelector('input[name="db_user"]')?.value || '',
                 db_pass: document.querySelector('input[name="db_pass"]')?.value || '',
@@ -774,6 +782,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 
                 // Restore DB inputs
                 if (state.domain) document.querySelector('input[name="domain"]').value = state.domain;
+                if (state.db_prefix) document.querySelector('input[name="db_prefix"]').value = state.db_prefix;
                 if (state.db_name) document.querySelector('input[name="db_name"]').value = state.db_name;
                 if (state.db_user) document.querySelector('input[name="db_user"]').value = state.db_user;
                 if (state.db_pass) document.querySelector('input[name="db_pass"]').value = state.db_pass;

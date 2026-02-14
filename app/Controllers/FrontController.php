@@ -10,7 +10,8 @@ class FrontController extends BaseController
     {
         // Fetch site settings
         $settings = [];
-        $result = Database::query("SELECT setting_key, setting_value FROM NSCMS_settings");
+        $prefix = Database::getPrefix();
+        $result = Database::query("SELECT setting_key, setting_value FROM {$prefix}settings");
 
         while ($row = $result->fetch_assoc()) {
             $settings[$row['setting_key']] = $row['setting_value'];

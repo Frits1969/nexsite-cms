@@ -6,9 +6,11 @@ class Installer
 {
     private $db;
     private $errors = [];
+    private $prefix;
 
-    public function __construct($host, $user, $pass, $dbname)
+    public function __construct($host, $user, $pass, $dbname, $prefix = 'nscms_')
     {
+        $this->prefix = $prefix;
         try {
             $this->db = new \mysqli($host, $user, $pass, $dbname);
 
@@ -77,6 +79,9 @@ class Installer
         // Remove comments
         $sql = preg_replace('/--.*$/m', '', $sql);
 
+        // Replace Prefix
+        $sql = str_replace('NSCMS_', $this->prefix, $sql);
+
         // Split by semicolon and execute each statement
         $statements = array_filter(array_map('trim', explode(';', $sql)));
 
@@ -108,7 +113,8 @@ class Installer
             'version' => App::VERSION
         ];
 
-        $stmt = $this->db->prepare("INSERT INTO NSCMS_settings (setting_key, setting_value) VALUES (?, ?)");
+        $table = $this->prefix . 'settings';
+        $stmt = $this->db->prepare("INSERT INTO $table (setting_key, setting_value) VALUES (?, ?)");
 
         foreach ($settings as $key => $value) {
             $stmt->bind_param("ss", $key, $value);
@@ -128,9 +134,10 @@ class Installer
     private function createAdminUser($username, $email, $password)
     {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $table = $this->prefix . 'users';
 
         $stmt = $this->db->prepare(
-            "INSERT INTO NSCMS_users (username, email, password_hash, role, status) VALUES (?, ?, ?, 'admin', 'active')"
+            "INSERT INTO $table (username, email, password_hash, role, status) VALUES (?, ?, ?, 'admin', 'active')"
         );
 
         $stmt->bind_param("sss", $username, $email, $passwordHash);
@@ -163,7 +170,8 @@ class Installer
         $envContent .= "DB_PORT=3306\n";
         $envContent .= "DB_DATABASE={$data['db_name']}\n";
         $envContent .= "DB_USERNAME={$data['db_user']}\n";
-        $envContent .= "DB_PASSWORD={$data['db_pass']}\n\n";
+        $envContent .= "DB_PASSWORD={$data['db_pass']}\n";
+        $envContent .= "DB_PREFIX={$this->prefix}\n\n"; // Added prefix
         $envContent .= "DEFAULT_LANGUAGE=nl\n";
 
         if (file_put_contents($envPath, $envContent) === false) {

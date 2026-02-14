@@ -102,7 +102,7 @@ class App
 
             try {
                 // Validate required fields
-                $required = ['site_name', 'site_desc', 'domain', 'username', 'email', 'password', 'db_host', 'db_name', 'db_user', 'db_pass'];
+                $required = ['site_name', 'site_desc', 'domain', 'username', 'email', 'password', 'db_host', 'db_name', 'db_user', 'db_pass', 'db_prefix'];
                 foreach ($required as $field) {
                     if (empty($_POST[$field])) {
                         throw new \Exception("Missing required field: $field");
@@ -114,7 +114,8 @@ class App
                     $_POST['db_host'],
                     $_POST['db_user'],
                     $_POST['db_pass'],
-                    $_POST['db_name']
+                    $_POST['db_name'],
+                    $_POST['db_prefix'] ?? 'nscms_'
                 );
 
                 // Run installation

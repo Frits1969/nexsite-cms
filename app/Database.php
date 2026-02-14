@@ -38,4 +38,9 @@ class Database
     {
         return self::connect()->real_escape_string($string);
     }
+
+    public static function getPrefix()
+    {
+        return Config::get('DB_PREFIX', 'nscms_');
+    }
 }
