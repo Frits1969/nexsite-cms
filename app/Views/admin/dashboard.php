@@ -12,7 +12,9 @@
             --primary-bg: #0f172a;
             --secondary-bg: #1e293b;
             --accent-color: #0183D6;
-            --accent-gradient: linear-gradient(135deg, #0183D6 0%, #0B9C70 100%);
+            --accent-green: #0B9C70;
+            --accent-orange: #F0961B;
+            --accent-gradient: linear-gradient(135deg, #0183D6 0%, #0B9C70 50%, #F0961B 100%);
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --glass-bg: rgba(30, 41, 59, 0.7);
@@ -423,8 +425,47 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">⚡</div>
-                    <div class="stat-value">On-line</div>
+                    <div class="stat-value">Actief</div>
                     <div class="stat-label">Systeem Status</div>
+                </div>
+            </section>
+
+            <section class="dashboard-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-top: 40px;">
+                <!-- Content Overview -->
+                <div class="stat-card" style="min-height: 300px;">
+                    <h3 style="margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                        <span style="color: var(--accent-green);">📄</span> Laatste Pagina's
+                    </h3>
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
+                            <div>
+                                <span style="font-weight: 500;">Tijdelijke Home</span>
+                                <br><small style="color: var(--text-muted);">/ (Root)</small>
+                            </div>
+                            <a href="/" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;">Bekijken</a>
+                        </div>
+                        <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                            Geen andere pagina's gevonden.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Actions -->
+                <div class="stat-card">
+                    <h3 style="margin-bottom: 20px; font-weight: 600;">System Actions</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px;">Kritieke systeemacties. Wees voorzichtig met deze opties.</p>
+                    
+                    <a href="/reset_install.php" class="btn-reset" style="display: inline-block; width: 100%; padding: 15px; background: rgba(239, 68, 68, 0.1); color: #ef4444; text-decoration: none; border-radius: 12px; font-weight: 600; text-align: center; border: 1px solid rgba(239, 68, 68, 0.2); transition: all 0.3s;">
+                        ⚠️ Reset Installatie
+                    </a>
+                    
+                    <style>
+                        .btn-reset:hover {
+                            background: #ef4444 !important;
+                            color: white !important;
+                            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
+                        }
+                    </style>
                 </div>
             </section>
         </main>

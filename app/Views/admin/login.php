@@ -42,7 +42,7 @@
             position: absolute;
             width: 500px;
             height: 500px;
-            background: var(--accent-gradient);
+            background: linear-gradient(135deg, #0183D6 0%, #0B9C70 50%, #F0961B 100%);
             filter: blur(80px);
             border-radius: 50%;
             z-index: -1;
