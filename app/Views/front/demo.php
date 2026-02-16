@@ -220,7 +220,7 @@
     </section>
 
     <footer class="footer">
-        &copy; <?= date('Y') ?> NexSite CMS v0.1.0 - Alle rechten voorbehouden.
+        &copy; <?= date('Y') ?> NexSite CMS v0.1.1 - Alle rechten voorbehouden.
     </footer>
 </body>
 

@@ -550,14 +550,17 @@
             // Allow default navigation to switch language
         }
 
+        const userWidget = document.getElementById('user-widget');
+        const userMenu = document.getElementById('user-menu');
+
         userWidget.addEventListener('click', (e) => {
             e.stopPropagation();
             userMenu.classList.toggle('active');
         });
 
         document.addEventListener('click', () => {
-            userMenu.classList.remove('active');
-            langSwitcher.classList.remove('expanded');
+            if (userMenu) userMenu.classList.remove('active');
+            if (langSwitcher) langSwitcher.classList.remove('expanded');
         });
     </script>
 </body>

@@ -18,7 +18,7 @@ use NexSite\Controllers\AdminController;
 
 class App
 {
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.1';
     protected static $instance;
 
     public function __construct()
@@ -52,6 +52,8 @@ class App
                 $controller = new AdminController();
                 if ($uri === '/backoffice/login') {
                     $controller->login();
+                } elseif ($uri === '/backoffice/profile') {
+                    $controller->profile();
                 } else {
                     $controller->index();
                 }
