@@ -166,7 +166,70 @@ class AdminController extends BaseController
 
         $db = \NexSite\Database::connect();
         $prefix = \NexSite\Database::getPrefix();
-        
+        $error = null;
+        $success = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $siteName = $_POST['site_name'] ?? '';
+            $siteDesc = $_POST['site_desc'] ?? '';
+            $siteDomain = $_POST['site_domain'] ?? '';
+            $dbUser = $_POST['db_user'] ?? '';
+            $dbPass = $_POST['db_pass'] ?? '';
+
+            try {
+                // 1. Update Database settings
+                $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = ?");
+                
+                $dbSettings = [
+                    'site_name' => $siteName,
+                    'site_description' => $siteDesc,
+                    'site_domain' => $siteDomain
+                ];
+
+                foreach ($dbSettings as $key => $value) {
+                    $stmt->bind_param("ss", $value, $key);
+                    $stmt->execute();
+                }
+                $stmt->close();
+
+                // 2. Update .env file
+                $envPath = __DIR__ . '/../../.env';
+                if (file_exists($envPath)) {
+                    $envContent = file_get_contents($envPath);
+                    $replacements = [
+                        'APP_NAME' => $siteName,
+                        'APP_URL' => "http://" . $siteDomain,
+                        'DB_USERNAME' => $dbUser,
+                        'DB_PASSWORD' => $dbPass
+                    ];
+
+                    foreach ($replacements as $key => $value) {
+                        // Match key=value (with optional quotes)
+                        $pattern = "/^" . preg_quote($key) . "=(.*)$/m";
+                        $replacement = $key . "=\"" . str_replace('"', '\"', $value) . "\"";
+                        
+                        if (preg_match($pattern, $envContent)) {
+                            $envContent = preg_replace($pattern, $replacement, $envContent);
+                        } else {
+                            // If not found, append it (though it should be there)
+                            $envContent .= "\n" . $replacement;
+                        }
+                    }
+
+                    if (file_put_contents($envPath, $envContent) === false) {
+                        throw new \Exception("Kon .env bestand niet schrijven.");
+                    }
+                    
+                    // Reload config to reflect changes immediately in the current request if needed
+                    \NexSite\Config::load($envPath);
+                }
+
+                $success = "Instellingen succesvol bijgewerkt.";
+            } catch (\Exception $e) {
+                $error = "Er is een fout opgetreden: " . $e->getMessage();
+            }
+        }
+
         // Fetch DB settings from table
         $stmt = $db->prepare("SELECT setting_key, setting_value FROM {$prefix}settings");
         $stmt->execute();
@@ -191,7 +254,9 @@ class AdminController extends BaseController
 
         $this->view('admin/settings', [
             'settings' => $settings,
-            'env' => $env
+            'env' => $env,
+            'error' => $error,
+            'success' => $success
         ]);
     }
 

@@ -108,22 +108,40 @@
 
         .lang-select {
             display: flex;
-            position: relative;
-            align-items: center;
+            flex-direction: column;
             gap: 10px;
-        }
-
-        .lang-select a {
-            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            width: fit-content;
             transition: all 0.3s ease;
         }
 
-        .lang-select a.active {
-            display: block;
+        .lang-select a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
         }
 
-        .lang-select.expanded a {
-            display: block;
+        .lang-select a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-select a.active {
+            background: rgba(1, 131, 214, 0.2);
+            border: 1px solid var(--accent-color);
+        }
+
+        .flag-icon {
+            width: 24px;
+            height: 16px;
+            object-fit: cover;
+            border-radius: 2px;
         }
 
         .flag-icon {
@@ -396,20 +414,20 @@
             <h2>NexSite</h2>
         </div>
         <nav class="sidebar-nav">
-            <a href="/backoffice" class="nav-item active">
-                <span>Dashboard</span>
+            <a href="/backoffice" class="nav-item <?= $uri === '/backoffice' ? 'active' : '' ?>">
+                <span><?= $nav_dashboard ?></span>
             </a>
-            <a href="/backoffice/pages" class="nav-item">
-                <span>Pagina's</span>
+            <a href="/backoffice/pages" class="nav-item <?= $uri === '/backoffice/pages' ? 'active' : '' ?>">
+                <span><?= $nav_pages ?></span>
             </a>
-            <a href="/backoffice/media" class="nav-item">
-                <span>Media</span>
+            <a href="/backoffice/media" class="nav-item <?= $uri === '/backoffice/media' ? 'active' : '' ?>">
+                <span><?= $nav_media ?></span>
             </a>
-            <a href="/backoffice/settings" class="nav-item">
-                <span>Instellingen</span>
+            <a href="/backoffice/settings" class="nav-item <?= $uri === '/backoffice/settings' ? 'active' : '' ?>">
+                <span><?= $nav_settings ?></span>
             </a>
             <a href="/" target="_blank" class="nav-item">
-                <span>Bezoek Website</span>
+                <span><?= $nav_visit_site ?></span>
             </a>
         </nav>
         <div class="sidebar-footer">
@@ -418,41 +436,39 @@
     </aside>
 
     <div class="main-wrapper">
-        <!-- Topbar -->
         <header class="topbar">
-            <div class="search-box">
-                <input type="text" placeholder="Zoeken in NexSite...">
-            </div>
-
+            <?php $uri = $_SERVER['REQUEST_URI'] ?? '/backoffice'; ?>
+            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $nav_dashboard ?></div>
+            
             <div class="topbar-actions">
-                <!-- Language Switcher -->
-                <div class="lang-select" id="lang-switcher">
+                <div class="user-widget" id="user-widget">
+                    <div class="user-avatar">
+                        <?php 
+                            $name = $_SESSION['username'] ?? 'Admin';
+                            echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : '')); 
+                        ?>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name"><?= $_SESSION['username'] ?? 'Admin' ?></span>
+                        <span class="user-role">Super Admin</span>
+                    </div>
+                    <!-- User Menu Dropdown -->
+                    <div class="user-menu" id="user-menu">
+                        <a href="/backoffice/profile" class="menu-item"><?= $nav_profile ?></a>
+                        <a href="/backoffice/settings" class="menu-item"><?= $nav_settings ?></a>
+                        <hr style="margin: 10px 0; border: none; border-top: 1px solid var(--glass-border);">
+                        <a href="/backoffice/logout" class="menu-item logout"><?= $nav_logout ?></a>
+                    </div>
+                </div>
+
+                <div class="lang-select">
                     <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
-                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'nl')">
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>">
                         <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
                     </a>
-                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'en')">
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>">
                         <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
                     </a>
-                </div>
-
-                <div class="user-widget" id="user-widget">
-                <div class="user-avatar">
-                    <?php 
-                        $name = $_SESSION['username'] ?? 'Admin';
-                        echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : '')); 
-                    ?>
-                </div>
-                <div class="user-info">
-                    <span class="user-name"><?= $_SESSION['username'] ?? 'Admin' ?></span>
-                    <span class="user-role">Super Admin</span>
-                </div>
-                <!-- User Menu Dropdown -->
-                <div class="user-menu" id="user-menu">
-                    <a href="/backoffice/profile" class="menu-item">Profiel</a>
-                    <a href="/backoffice/settings" class="menu-item">Account Instellingen</a>
-                    <hr style="margin: 10px 0; border: none; border-top: 1px solid var(--glass-border);">
-                    <a href="/backoffice/logout" class="menu-item logout">Uitloggen</a>
                 </div>
             </div>
         </header>
@@ -460,30 +476,30 @@
         <!-- Main Content Area -->
         <main class="content">
             <section class="welcome-card">
-                <h1>Welkom terug, <?= $_SESSION['username'] ?? 'Admin' ?>!</h1>
-                <p>Je website is succesvol geïnstalleerd en klaar voor gebruik. Begin met het maken van prachtige pagina's of pas je instellingen aan in de sidebar.</p>
+                <h1><?= $welcome_back ?>, <?= $_SESSION['username'] ?? 'Admin' ?>!</h1>
+                <p><?= $welcome_desc ?></p>
             </section>
 
             <section class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">📄</div>
                     <div class="stat-value">0</div>
-                    <div class="stat-label">Pagina's</div>
+                    <div class="stat-label"><?= $pages_label ?></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">🖼️</div>
                     <div class="stat-value">0</div>
-                    <div class="stat-label">Media Bestanden</div>
+                    <div class="stat-label"><?= $media_files_label ?></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">👥</div>
                     <div class="stat-value">1</div>
-                    <div class="stat-label">Gebruikers</div>
+                    <div class="stat-label"><?= $users_label ?></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">⚡</div>
-                    <div class="stat-value">Actief</div>
-                    <div class="stat-label">Systeem Status</div>
+                    <div class="stat-value"><?= $system_status_active ?></div>
+                    <div class="stat-label"><?= $system_status_label ?></div>
                 </div>
             </section>
 
@@ -491,7 +507,7 @@
                 <!-- Content Overview -->
                 <div class="stat-card" style="min-height: 300px;">
                     <h3 style="margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                        <span style="color: var(--accent-green);">📄</span> Laatste Pagina's
+                        <span style="color: var(--accent-green);">📄</span> <?= $latest_pages_title ?>
                     </h3>
                     <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 15px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
@@ -499,28 +515,28 @@
                                 <span style="font-weight: 500;">Tijdelijke Home</span>
                                 <br><small style="color: var(--text-muted);">/ (Root)</small>
                             </div>
-                            <a href="/" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;">Bekijken</a>
+                            <a href="/" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
                             <div>
                                 <span style="font-weight: 500;">Demo Pagina </span> <span style="font-size: 0.7rem; background: var(--blue); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">DEMO</span>
                                 <br><small style="color: var(--text-muted);">/demo</small>
                             </div>
-                            <a href="/demo" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;">Bekijken</a>
+                            <a href="/demo" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
                         </div>
                         <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
-                            Geen andere pagina's gevonden.
+                            <?= $no_other_pages_found ?>
                         </div>
                     </div>
                 </div>
 
                 <!-- System Actions -->
                 <div class="stat-card">
-                    <h3 style="margin-bottom: 20px; font-weight: 600;">System Actions</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px;">Kritieke systeemacties. Wees voorzichtig met deze opties.</p>
+                    <h3 style="margin-bottom: 20px; font-weight: 600;"><?= $system_actions_title ?></h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px;"><?= $system_actions_desc ?></p>
                     
                     <a href="/reset_install.php" class="btn-reset" style="display: inline-block; width: 100%; padding: 15px; background: rgba(239, 68, 68, 0.1); color: #ef4444; text-decoration: none; border-radius: 12px; font-weight: 600; text-align: center; border: 1px solid rgba(239, 68, 68, 0.2); transition: all 0.3s;">
-                        ⚠️ Reset Installatie
+                        ⚠️ <?= $reset_install_btn ?>
                     </a>
                     
                     <style>
@@ -536,20 +552,6 @@
     </div>
 
     <script>
-        const langSwitcher = document.getElementById('lang-switcher');
-
-        function handleFlagClick(event, lang) {
-            const currentParams = new URLSearchParams(window.location.search);
-            const currentLang = currentParams.get('lang') || '<?= $_SESSION['lang'] ?? 'nl' ?>';
-
-            if (currentLang === lang) {
-                event.preventDefault();
-                langSwitcher.classList.toggle('expanded');
-                return;
-            }
-            // Allow default navigation to switch language
-        }
-
         const userWidget = document.getElementById('user-widget');
         const userMenu = document.getElementById('user-menu');
 
@@ -558,9 +560,10 @@
             userMenu.classList.toggle('active');
         });
 
-        document.addEventListener('click', () => {
-            if (userMenu) userMenu.classList.remove('active');
-            if (langSwitcher) langSwitcher.classList.remove('expanded');
+        document.addEventListener('click', (e) => {
+            if (userMenu && !userWidget.contains(e.target)) {
+                userMenu.classList.remove('active');
+            }
         });
     </script>
 </body>

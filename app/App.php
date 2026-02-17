@@ -18,7 +18,7 @@ use NexSite\Controllers\AdminController;
 
 class App
 {
-    const VERSION = '0.1.1';
+    const VERSION = '0.1.2';
     protected static $instance;
 
     public function __construct()
@@ -38,6 +38,17 @@ class App
     public function run()
     {
         session_start();
+
+        // taal bepalen
+        if (isset($_GET['lang'])) {
+            $_SESSION['lang'] = $_GET['lang'];
+        }
+
+        $selected = $_SESSION['lang'] ?? 'nl';
+
+        // taalbestand laden
+        $lang = Language::load($selected);
+        $GLOBALS['lang'] = $lang; // Make it globally available for now
 
         // Check if already installed
         if (file_exists(__DIR__ . '/../install.lock')) {
@@ -68,16 +79,6 @@ class App
             }
             return;
         }
-
-        // taal bepalen
-        if (isset($_GET['lang'])) {
-            $_SESSION['lang'] = $_GET['lang'];
-        }
-
-        $selected = $_SESSION['lang'] ?? 'nl';
-
-        // taalbestand laden
-        $lang = Language::load($selected);
 
         // DB Test Action
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'test_db') {

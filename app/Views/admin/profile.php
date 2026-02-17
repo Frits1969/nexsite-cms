@@ -95,6 +95,64 @@
             color: var(--accent-color);
         }
 
+        /* Language Switcher Styling */
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .lang-select {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            width: fit-content;
+            transition: all 0.3s ease;
+        }
+
+        .lang-select a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .lang-select a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-select a.active {
+            background: rgba(1, 131, 214, 0.2);
+            border: 1px solid var(--accent-color);
+        }
+
+        .flag-icon {
+            width: 24px;
+            height: 16px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .flag-icon {
+            width: 32px;
+            height: 22px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .flag-icon:hover {
+            transform: scale(1.1);
+        }
+
         .main-wrapper {
             flex: 1;
             margin-left: var(--sidebar-width);
@@ -261,29 +319,39 @@
             <h2>NexSite</h2>
         </div>
         <nav class="sidebar-nav">
-            <a href="/backoffice" class="nav-item">
-                <span>Dashboard</span>
+            <a href="/backoffice" class="nav-item <?= $uri === '/backoffice' ? 'active' : '' ?>">
+                <span><?= $nav_dashboard ?></span>
             </a>
-            <a href="/backoffice/pages" class="nav-item">
-                <span>Pagina's</span>
+            <a href="/backoffice/pages" class="nav-item <?= $uri === '/backoffice/pages' ? 'active' : '' ?>">
+                <span><?= $nav_pages ?></span>
             </a>
-            <a href="/backoffice/media" class="nav-item">
-                <span>Media</span>
+            <a href="/backoffice/media" class="nav-item <?= $uri === '/backoffice/media' ? 'active' : '' ?>">
+                <span><?= $nav_media ?></span>
             </a>
-            <a href="/backoffice/settings" class="nav-item">
-                <span>Instellingen</span>
+            <a href="/backoffice/settings" class="nav-item <?= $uri === '/backoffice/settings' ? 'active' : '' ?>">
+                <span><?= $nav_settings ?></span>
             </a>
             <a href="/" target="_blank" class="nav-item">
-                <span>Bezoek Website</span>
+                <span><?= $nav_visit_site ?></span>
             </a>
         </nav>
     </aside>
 
     <div class="main-wrapper">
         <header class="topbar">
-            <div style="font-weight: 600; color: var(--text-muted);">Backoffice / Profiel</div>
-            <div style="display: flex; gap: 20px;">
-                 <a href="/backoffice" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Terug naar Dashboard</a>
+            <?php $uri = $_SERVER['REQUEST_URI'] ?? '/backoffice'; ?>
+            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $nav_profile ?></div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <a href="/backoffice" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
+                <div class="lang-select">
+                    <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>">
+                        <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
+                    </a>
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>">
+                        <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
+                    </a>
+                </div>
             </div>
         </header>
 
@@ -352,5 +420,8 @@
             </div>
         </main>
     </div>
+
+    <script>
+    </script>
 </body>
 </html>
