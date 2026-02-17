@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="<?= $_SESSION['lang'] ?? 'nl' ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instellingen | NexSite CMS</title>
+    <title><?= $settings_title ?> | NexSite CMS</title>
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -93,6 +93,23 @@
         .nav-item:hover, .nav-item.active {
             background: rgba(1, 131, 214, 0.1);
             color: var(--accent-color);
+        }
+
+        .nav-item.active {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-orange);
+            border-radius: 3px 3px 0 0;
+            z-index: 5;
         }
 
         .main-wrapper {
@@ -244,6 +261,96 @@
             box-shadow: 0 8px 20px rgba(1, 131, 214, 0.4);
         }
 
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            border-color: var(--text-muted);
+        }
+
+        /* User Menu Dropdown */
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 200px;
+            background: var(--secondary-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 10px;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            z-index: 110;
+        }
+
+        .user-menu.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .menu-item.active {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .menu-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-orange);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .menu-item.logout {
+            color: #ef4444;
+        }
+
+        .menu-item.logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
         .alert {
             padding: 15px 20px;
             border-radius: 12px;
@@ -275,33 +382,39 @@
 
         .lang-select {
             display: flex;
-            flex-direction: column;
+            position: relative;
+            align-items: center;
             gap: 10px;
             background: rgba(255, 255, 255, 0.05);
-            padding: 8px;
-            border-radius: 12px;
+            padding: 5px;
+            border-radius: 10px;
             border: 1px solid var(--glass-border);
+            height: 38px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             width: fit-content;
-            transition: all 0.3s ease;
         }
 
         .lang-select a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-            border-radius: 8px;
-            transition: all 0.3s;
-            border: 1px solid transparent;
-        }
-
-        .lang-select a:hover {
-            background: rgba(255, 255, 255, 0.1);
+            display: none;
+            line-height: 0;
+            transition: all 0.3s ease;
         }
 
         .lang-select a.active {
-            background: rgba(1, 131, 214, 0.2);
-            border: 1px solid var(--accent-color);
+            display: block;
+        }
+
+        .lang-select.expanded {
+            height: 80px;
+            flex-direction: column;
+            gap: 8px;
+            padding: 8px 5px;
+            overflow: visible;
+        }
+
+        .lang-select.expanded a {
+            display: block;
         }
 
         .flag-icon {
@@ -331,6 +444,7 @@
 </head>
 
 <body>
+    <?php $uri = strtok($_SERVER['REQUEST_URI'] ?? '/backoffice', '?'); ?>
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -347,6 +461,12 @@
             <a href="/backoffice/media" class="nav-item <?= $uri === '/backoffice/media' ? 'active' : '' ?>">
                 <span><?= $nav_media ?></span>
             </a>
+            <a href="/backoffice/templates" class="nav-item <?= $uri === '/backoffice/templates' ? 'active' : '' ?>">
+                <span><?= $nav_templates ?></span>
+            </a>
+            <a href="/backoffice/themes" class="nav-item <?= $uri === '/backoffice/themes' ? 'active' : '' ?>">
+                <span><?= $nav_themes ?></span>
+            </a>
             <a href="/backoffice/settings" class="nav-item <?= $uri === '/backoffice/settings' ? 'active' : '' ?>">
                 <span><?= $nav_settings ?></span>
             </a>
@@ -358,17 +478,35 @@
 
     <div class="main-wrapper">
         <header class="topbar">
-            <?php $uri = $_SERVER['REQUEST_URI'] ?? '/backoffice'; ?>
             <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $nav_settings ?></div>
             
             <div class="topbar-actions">
                 <a href="/backoffice" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
-                <div class="lang-select">
+                
+                <div class="user-widget" id="user-widget" style="position: relative; display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                    <div class="user-avatar" style="width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white;">
+                        <?php 
+                            $name = $_SESSION['username'] ?? 'Admin';
+                            echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : '')); 
+                        ?>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name"><?= $_SESSION['username'] ?? 'Admin' ?></span>
+                        <span class="user-role"><?= $role_super_admin ?></span>
+                    </div>
+                    <div class="user-menu" id="user-menu">
+                        <a href="/backoffice/profile" class="menu-item"><?= $nav_profile ?></a>
+                        <hr style="margin: 5px 0; border: none; border-top: 1px solid var(--glass-border);">
+                        <a href="/backoffice/logout" class="menu-item logout"><?= $nav_logout ?></a>
+                    </div>
+                </div>
+
+                <div class="lang-select" id="lang-switcher">
                     <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
-                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>">
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'nl')">
                         <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
                     </a>
-                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>">
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'en')">
                         <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
                     </a>
                 </div>
@@ -458,14 +596,44 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 30px; display: flex; justify-content: flex-end;">
+                <div style="margin-top: 30px; display: flex; gap: 20px; align-items: center; justify-content: flex-end;">
                     <button type="submit" class="btn-save"><?= $btn_save_apply ?></button>
+                    <a href="/backoffice" class="btn-secondary"><?= $btn_cancel ?></a>
                 </div>
             </form>
         </main>
     </div>
 
     <script>
+        const userWidget = document.getElementById('user-widget');
+        const userMenu = document.getElementById('user-menu');
+        const langSwitcher = document.getElementById('lang-switcher');
+
+        function handleFlagClick(event, lang) {
+            const currentParams = new URLSearchParams(window.location.search);
+            const currentLang = '<?= $_SESSION['lang'] ?? 'nl' ?>';
+
+            if (currentLang === lang) {
+                event.preventDefault();
+                langSwitcher.classList.toggle('expanded');
+                return;
+            }
+            // Allow default navigation to switch language
+        }
+
+        userWidget.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (userMenu && !userWidget.contains(e.target)) {
+                userMenu.classList.remove('active');
+            }
+            if (langSwitcher && !langSwitcher.contains(e.target)) {
+                langSwitcher.classList.remove('expanded');
+            }
+        });
     </script>
 </body>
 
