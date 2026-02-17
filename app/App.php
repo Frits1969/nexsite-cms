@@ -54,6 +54,8 @@ class App
                     $controller->login();
                 } elseif ($uri === '/backoffice/profile') {
                     $controller->profile();
+                } elseif ($uri === '/backoffice/settings') {
+                    $controller->settings();
                 } else {
                     $controller->index();
                 }

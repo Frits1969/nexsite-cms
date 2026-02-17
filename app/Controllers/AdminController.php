@@ -156,6 +156,45 @@ class AdminController extends BaseController
     }
 
 
+    public function settings()
+    {
+        // Simple authentication check
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $db = \NexSite\Database::connect();
+        $prefix = \NexSite\Database::getPrefix();
+        
+        // Fetch DB settings from table
+        $stmt = $db->prepare("SELECT setting_key, setting_value FROM {$prefix}settings");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $settings = [];
+        while ($row = $result->fetch_assoc()) {
+            $settings[$row['setting_key']] = $row['setting_value'];
+        }
+        $stmt->close();
+
+        // Environment settings
+        $env = [
+            'app_name' => \NexSite\Config::get('APP_NAME'),
+            'app_url' => \NexSite\Config::get('APP_URL'),
+            'db_host' => \NexSite\Config::get('DB_HOST'),
+            'db_name' => \NexSite\Config::get('DB_DATABASE'),
+            'db_user' => \NexSite\Config::get('DB_USERNAME'),
+            'db_prefix' => \NexSite\Config::get('DB_PREFIX'),
+            'language' => \NexSite\Config::get('DEFAULT_LANGUAGE', 'nl'),
+            'version' => \NexSite\App::VERSION
+        ];
+
+        $this->view('admin/settings', [
+            'settings' => $settings,
+            'env' => $env
+        ]);
+    }
+
     public function logout()
     {
         session_destroy();
