@@ -458,4 +458,33 @@ class AdminController extends BaseController
         exit;
     }
 
+    public function togglePageStatus($id)
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $db = \NexSite\Database::connect();
+        $prefix = \NexSite\Database::getPrefix();
+
+        // Get current status
+        $stmt = $db->prepare("SELECT status FROM {$prefix}pages WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $page = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if ($page) {
+            $newStatus = ($page['status'] === 'published') ? 'draft' : 'published';
+            $stmt = $db->prepare("UPDATE {$prefix}pages SET status = ? WHERE id = ?");
+            $stmt->bind_param("si", $newStatus, $id);
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        header('Location: /backoffice/pages');
+        exit;
+    }
+
 }

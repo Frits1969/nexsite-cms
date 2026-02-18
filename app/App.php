@@ -73,6 +73,8 @@ class App
                     $controller->addPage();
                 } elseif (preg_match('#^/backoffice/pages/edit/(\d+)$#', $uri, $matches)) {
                     $controller->editPage($matches[1]);
+                } elseif (preg_match('#^/backoffice/pages/toggle/(\d+)$#', $uri, $matches)) {
+                    $controller->togglePageStatus($matches[1]);
                 } elseif (preg_match('#^/backoffice/pages/delete/(\d+)$#', $uri, $matches)) {
                     $controller->deletePage($matches[1]);
                 } else {

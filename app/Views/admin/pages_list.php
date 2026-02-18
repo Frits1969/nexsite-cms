@@ -545,6 +545,15 @@
                                         </span>
                                     </td>
                                     <td class="actions">
+                                        <?php if ($page['status'] === 'published'): ?>
+                                            <a href="/backoffice/pages/toggle/<?= $page['id'] ?>" class="btn-secondary" title="<?= $btn_unpublish ?? 'Depubliceren' ?>">
+                                                <span>🔓</span>
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="/backoffice/pages/toggle/<?= $page['id'] ?>" class="btn-secondary" title="<?= $btn_publish ?? 'Publiceren' ?>" style="color: var(--accent-orange); border-color: rgba(240, 150, 27, 0.2);">
+                                                <span>🔒</span>
+                                            </a>
+                                        <?php endif; ?>
                                         <a href="/backoffice/pages/edit/<?= $page['id'] ?>" class="btn-secondary">
                                             <?= $btn_edit ?>
                                         </a>
