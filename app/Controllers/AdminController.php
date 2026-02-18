@@ -24,7 +24,30 @@ class AdminController extends BaseController
             exit;
         }
 
-        $this->view('admin/dashboard');
+        $db = \NexSite\Database::connect();
+        $prefix = \NexSite\Database::getPrefix();
+        
+        // Fetch stats
+        $pageCount = 0;
+        $res = $db->query("SELECT COUNT(*) as count FROM {$prefix}pages");
+        if ($res) {
+            $row = $res->fetch_assoc();
+            $pageCount = $row['count'];
+        }
+
+        // Fetch latest pages for dashboard overview
+        $latestPages = [];
+        $res = $db->query("SELECT * FROM {$prefix}pages ORDER BY created_at DESC LIMIT 5");
+        if ($res) {
+            while ($row = $res->fetch_assoc()) {
+                $latestPages[] = $row;
+            }
+        }
+
+        $this->view('admin/dashboard', [
+            'pageCount' => $pageCount,
+            'latestPages' => $latestPages
+        ]);
     }
 
     public function profile()
@@ -264,6 +287,144 @@ class AdminController extends BaseController
     {
         session_destroy();
         header('Location: /');
+        exit;
+    }
+
+    public function pages()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $db = \NexSite\Database::connect();
+        $prefix = \NexSite\Database::getPrefix();
+
+        $result = $db->query("SELECT * FROM {$prefix}pages ORDER BY created_at DESC");
+        $pages = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $pages[] = $row;
+            }
+        }
+
+        $this->view('admin/pages_list', [
+            'pages' => $pages
+        ]);
+    }
+
+    public function addPage()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $error = null;
+        $success = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = $_POST['title'] ?? '';
+            $slug = $_POST['slug'] ?? '';
+            $content = $_POST['content'] ?? '';
+            $status = $_POST['status'] ?? 'draft';
+
+            if (empty($title) || empty($slug)) {
+                $error = "Titel en slug zijn verplicht.";
+            } else {
+                $db = \NexSite\Database::connect();
+                $prefix = \NexSite\Database::getPrefix();
+                
+                $stmt = $db->prepare("INSERT INTO {$prefix}pages (title, slug, content, status) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("ssss", $title, $slug, $content, $status);
+                
+                if ($stmt->execute()) {
+                    header('Location: /backoffice/pages?success=created');
+                    exit;
+                } else {
+                    $error = "Er is een fout opgetreden: " . $db->error;
+                }
+                $stmt->close();
+            }
+        }
+
+        $this->view('admin/pages_edit', [
+            'mode' => 'add',
+            'error' => $error
+        ]);
+    }
+
+    public function editPage($id)
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $db = \NexSite\Database::connect();
+        $prefix = \NexSite\Database::getPrefix();
+        $error = null;
+        $success = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = $_POST['title'] ?? '';
+            $slug = $_POST['slug'] ?? '';
+            $content = $_POST['content'] ?? '';
+            $status = $_POST['status'] ?? 'draft';
+
+            if (empty($title) || empty($slug)) {
+                $error = "Titel en slug zijn verplicht.";
+            } else {
+                $stmt = $db->prepare("UPDATE {$prefix}pages SET title = ?, slug = ?, content = ?, status = ? WHERE id = ?");
+                $stmt->bind_param("ssssi", $title, $slug, $content, $status, $id);
+                
+                if ($stmt->execute()) {
+                    $success = "Pagina succesvol bijgewerkt.";
+                } else {
+                    $error = "Er is een fout opgetreden: " . $db->error;
+                }
+                $stmt->close();
+            }
+        }
+
+        $stmt = $db->prepare("SELECT * FROM {$prefix}pages WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $page = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if (!$page) {
+            header('Location: /backoffice/pages?error=not_found');
+            exit;
+        }
+
+        $this->view('admin/pages_edit', [
+            'mode' => 'edit',
+            'page' => $page,
+            'error' => $error,
+            'success' => $success
+        ]);
+    }
+
+    public function deletePage($id)
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $db = \NexSite\Database::connect();
+        $prefix = \NexSite\Database::getPrefix();
+        
+        $stmt = $db->prepare("DELETE FROM {$prefix}pages WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        
+        if ($stmt->execute()) {
+            header('Location: /backoffice/pages?success=deleted');
+        } else {
+            header('Location: /backoffice/pages?error=delete_failed');
+        }
+        $stmt->close();
         exit;
     }
 

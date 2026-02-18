@@ -67,6 +67,14 @@ class App
                     $controller->profile();
                 } elseif ($uri === '/backoffice/settings') {
                     $controller->settings();
+                } elseif ($uri === '/backoffice/pages') {
+                    $controller->pages();
+                } elseif ($uri === '/backoffice/pages/add') {
+                    $controller->addPage();
+                } elseif (preg_match('#^/backoffice/pages/edit/(\d+)$#', $uri, $matches)) {
+                    $controller->editPage($matches[1]);
+                } elseif (preg_match('#^/backoffice/pages/delete/(\d+)$#', $uri, $matches)) {
+                    $controller->deletePage($matches[1]);
                 } else {
                     $controller->index();
                 }

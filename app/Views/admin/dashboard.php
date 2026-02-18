@@ -551,7 +551,7 @@
             <section class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">📄</div>
-                    <div class="stat-value">0</div>
+                    <div class="stat-value"><?= $pageCount ?? 0 ?></div>
                     <div class="stat-label"><?= $pages_label ?></div>
                 </div>
                 <div class="stat-card">
@@ -578,23 +578,38 @@
                         <span style="color: var(--accent-green);">📄</span> <?= $latest_pages_title ?>
                     </h3>
                     <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 15px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
-                            <div>
-                                <span style="font-weight: 500;">Tijdelijke Home</span>
-                                <br><small style="color: var(--text-muted);">/ (Root)</small>
+                        <?php if (empty($latestPages)): ?>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
+                                <div>
+                                    <span style="font-weight: 500;">Tijdelijke Home</span>
+                                    <br><small style="color: var(--text-muted);">/ (Root)</small>
+                                </div>
+                                <a href="/" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
                             </div>
-                            <a href="/" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
-                            <div>
-                                <span style="font-weight: 500;">Demo Pagina </span> <span style="font-size: 0.7rem; background: var(--blue); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">DEMO</span>
-                                <br><small style="color: var(--text-muted);">/demo</small>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
+                                <div>
+                                    <span style="font-weight: 500;">Demo Pagina </span> <span style="font-size: 0.7rem; background: var(--blue); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">DEMO</span>
+                                    <br><small style="color: var(--text-muted);">/demo</small>
+                                </div>
+                                <a href="/demo" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
                             </div>
-                            <a href="/demo" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
-                        </div>
-                        <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
-                            <?= $no_other_pages_found ?>
-                        </div>
+                            <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                                <?= $no_other_pages_found ?>
+                            </div>
+                        <?php else: ?>
+                            <?php foreach ($latestPages as $page): ?>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
+                                    <div>
+                                        <span style="font-weight: 500;"><?= htmlspecialchars($page['title']) ?></span>
+                                        <br><small style="color: var(--text-muted);">/<?= htmlspecialchars($page['slug']) ?></small>
+                                    </div>
+                                    <div style="display: flex; gap: 15px;">
+                                        <a href="/<?= htmlspecialchars($page['slug']) ?>" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
+                                        <a href="/backoffice/pages/edit/<?= $page['id'] ?>" style="color: var(--accent-color); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $btn_edit ?></a>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
 
