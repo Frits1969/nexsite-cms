@@ -29,18 +29,48 @@ class AdminController extends BaseController
         
         // Fetch stats
         $pageCount = 0;
-        $res = $db->query("SELECT COUNT(*) as count FROM {$prefix}pages");
-        if ($res) {
-            $row = $res->fetch_assoc();
-            $pageCount = $row['count'];
+        $latestPages = [];
+
+        // Check if pages table exists first to avoid crashes
+        $tableExists = false;
+        $checkTable = $db->query("SHOW TABLES LIKE '{$prefix}pages'");
+        if ($checkTable && $checkTable->num_rows > 0) {
+            $tableExists = true;
         }
 
-        // Fetch latest pages for dashboard overview
-        $latestPages = [];
-        $res = $db->query("SELECT * FROM {$prefix}pages ORDER BY created_at DESC LIMIT 5");
-        if ($res) {
-            while ($row = $res->fetch_assoc()) {
-                $latestPages[] = $row;
+        if (!$tableExists) {
+            // Auto-create table if missing
+            $sql = "CREATE TABLE IF NOT EXISTS `{$prefix}pages` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `title` VARCHAR(255) NOT NULL,
+                `slug` VARCHAR(255) NOT NULL UNIQUE,
+                `content` TEXT,
+                `status` ENUM('draft', 'published', 'archived') DEFAULT 'draft',
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            
+            if ($db->query($sql)) {
+                $tableExists = true;
+                // Add a welcome page if it's the first time
+                $db->query("INSERT INTO `{$prefix}pages` (title, slug, content, status) VALUES ('Welkom', 'welkom', 'Dit is uw eerste pagina.', 'published')");
+            }
+        }
+
+        if ($tableExists) {
+            // Fetch stats
+            $res = $db->query("SELECT COUNT(*) as count FROM {$prefix}pages");
+            if ($res) {
+                $row = $res->fetch_assoc();
+                $pageCount = $row['count'];
+            }
+
+            // Fetch latest pages for dashboard overview
+            $res = $db->query("SELECT * FROM {$prefix}pages ORDER BY created_at DESC LIMIT 5");
+            if ($res) {
+                while ($row = $res->fetch_assoc()) {
+                    $latestPages[] = $row;
+                }
             }
         }
 
