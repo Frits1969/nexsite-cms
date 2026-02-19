@@ -1,6 +1,6 @@
 <?php
 
-namespace NexSite\Controllers;
+namespace Fritsion\Controllers;
 
 class BaseController
 {

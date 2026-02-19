@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($settings['site_name'] ?? 'NexSite Website') ?></title>
+    <title><?= htmlspecialchars($settings['site_name'] ?? 'Fritsion Website') ?></title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,11 +73,11 @@
 <body>
 
     <header>
-        <?php if (file_exists(__DIR__ . '/../../../public/assets/logo/nexsite-logo.png')): ?>
-            <img src="/assets/logo/nexsite-logo.png" alt="NexSite Logo" class="logo">
+        <?php if (file_exists(__DIR__ . '/../../../public/assets/logo/fritsion-logo.png')): ?>
+            <img src="/assets/logo/fritsion-logo.png" alt="Fritsion Logo" class="logo">
         <?php else: ?>
             <!-- Fallback if logo is missing, though we confirmed it exists -->
-            <strong>NexSite</strong>
+            <strong>Fritsion</strong>
         <?php endif; ?>
     </header>
 

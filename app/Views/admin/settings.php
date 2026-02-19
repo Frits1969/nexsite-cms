@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $settings_title ?> | NexSite CMS</title>
+    <title><?= $settings_title ?> | Fritsion CMS</title>
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -449,7 +449,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <img src="/assets/logo/nexsite-logo.png" alt="Logo">
-            <h2>NexSite</h2>
+            <h2>Fritsion</h2>
         </div>
         <nav class="sidebar-nav">
             <a href="/backoffice" class="nav-item <?= $uri === '/backoffice' ? 'active' : '' ?>">
@@ -578,7 +578,7 @@
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_db_pass ?></span>
                             <span class="setting-value">
-                                <input type="password" name="db_pass" class="setting-input" value="<?= htmlspecialchars(\NexSite\Config::get('DB_PASSWORD') ?? '') ?>" required>
+                                <input type="password" name="db_pass" class="setting-input" value="<?= htmlspecialchars(\Fritsion\Config::get('DB_PASSWORD') ?? '') ?>" required>
                             </span>
                         </div>
                         <div class="setting-row">

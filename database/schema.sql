@@ -1,9 +1,9 @@
--- NexSite CMS Database Schema
--- Version: 0.0.4
--- Prefix: NSCMS_
+-- Fritsion CMS Database Schema
+-- Version: 0.1.2
+-- Prefix: FRCMS_
 
 -- Settings Table: Site Configuration
-CREATE TABLE IF NOT EXISTS NSCMS_settings (
+CREATE TABLE IF NOT EXISTS FRCMS_settings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     setting_key VARCHAR(100) NOT NULL UNIQUE,
     setting_value TEXT,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS NSCMS_settings (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Users Table: Admin and User Accounts
-CREATE TABLE IF NOT EXISTS NSCMS_users (
+CREATE TABLE IF NOT EXISTS FRCMS_users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -29,20 +29,20 @@ CREATE TABLE IF NOT EXISTS NSCMS_users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Sessions Table: Session Management (Optional - for future use)
-CREATE TABLE IF NOT EXISTS NSCMS_sessions (
+CREATE TABLE IF NOT EXISTS FRCMS_sessions (
     id VARCHAR(128) PRIMARY KEY,
     user_id INT,
     ip_address VARCHAR(45),
     user_agent VARCHAR(255),
     payload TEXT,
     last_activity INT,
-    FOREIGN KEY (user_id) REFERENCES NSCMS_users(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES FRCMS_users(id) ON DELETE CASCADE,
     INDEX idx_user_id (user_id),
     INDEX idx_last_activity (last_activity)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Pages Table: Content Management
-CREATE TABLE IF NOT EXISTS NSCMS_pages (
+CREATE TABLE IF NOT EXISTS FRCMS_pages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     slug VARCHAR(255) NOT NULL UNIQUE,

@@ -1,8 +1,8 @@
 <?php
 
-namespace NexSite\Controllers;
+namespace Fritsion\Controllers;
 
-use NexSite\Database;
+use Fritsion\Database;
 
 class FrontController extends BaseController
 {

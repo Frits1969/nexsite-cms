@@ -1,11 +1,11 @@
 {
-    "name": "nexsite/cms",
-    "description": "NexSite CMS - Modern, lightweight and modular content management system.",
+    "name": "fritsion/cms",
+    "description": "Fritsion CMS - Modern, lightweight and modular content management system.",
     "type": "project",
     "license": "MIT",
     "authors": [
         {
-            "name": "NexSite Contributor"
+            "name": "Fritsion Contributor"
         }
     ],
     "require": {
@@ -14,8 +14,8 @@
     },
     "autoload": {
         "psr-4": {
-            "NexSite\\": "app/",
-            "NexSite\\Modules\\": "modules/"
+            "Fritsion\\": "app/",
+            "Fritsion\\Modules\\": "modules/"
         }
     },
     "config": {

@@ -1,7 +1,7 @@
 # Versie 0.0.4: Installatie Voltooien
 
 ## Overzicht
-Implementeer de volledige installatieprocedure voor NexSite CMS.
+Implementeer de volledige installatieprocedure voor Fritsion CMS.
 
 ## Taken
 

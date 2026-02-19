@@ -1,6 +1,6 @@
 <?php
 
-namespace NexSite;
+namespace Fritsion;
 
 class Installer
 {
@@ -8,7 +8,7 @@ class Installer
     private $errors = [];
     private $prefix;
 
-    public function __construct($host, $user, $pass, $dbname, $prefix = 'nscms_')
+    public function __construct($host, $user, $pass, $dbname, $prefix = 'frcms_')
     {
         $this->prefix = $prefix;
         try {
@@ -80,7 +80,7 @@ class Installer
         $sql = preg_replace('/--.*$/m', '', $sql);
 
         // Replace Prefix
-        $sql = str_replace('NSCMS_', $this->prefix, $sql);
+        $sql = str_replace('FRCMS_', $this->prefix, $sql);
 
         // Split by semicolon and execute each statement
         $statements = array_filter(array_map('trim', explode(';', $sql)));
@@ -159,7 +159,7 @@ class Installer
     {
         $envPath = __DIR__ . '/../.env';
 
-        $envContent = "# NexSite CMS Configuration\n";
+        $envContent = "# Fritsion CMS Configuration\n";
         $envContent .= "# Generated: " . date('Y-m-d H:i:s') . "\n\n";
         $envContent .= "APP_NAME=\"{$data['site_name']}\"\n";
         $envContent .= "APP_ENV=production\n";
@@ -189,7 +189,7 @@ class Installer
     {
         $lockPath = __DIR__ . '/../install.lock';
 
-        $lockContent = "NexSite CMS Installation Lock\n";
+        $lockContent = "Fritsion CMS Installation Lock\n";
         $lockContent .= "Installed: " . date('Y-m-d H:i:s') . "\n";
         $lockContent .= "Version: " . App::VERSION . "\n";
         $lockContent .= "\nDO NOT DELETE THIS FILE\n";

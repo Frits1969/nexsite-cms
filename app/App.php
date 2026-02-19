@@ -1,6 +1,6 @@
 <?php
 
-namespace NexSite;
+namespace Fritsion;
 
 require_once __DIR__ . '/Language.php';
 require_once __DIR__ . '/Installer.php';
@@ -11,10 +11,10 @@ require_once __DIR__ . '/Controllers/BaseController.php';
 require_once __DIR__ . '/Controllers/FrontController.php';
 require_once __DIR__ . '/Controllers/AdminController.php';
 
-use NexSite\Language;
-use NexSite\Config;
-use NexSite\Controllers\FrontController;
-use NexSite\Controllers\AdminController;
+use Fritsion\Language;
+use Fritsion\Config;
+use Fritsion\Controllers\FrontController;
+use Fritsion\Controllers\AdminController;
 
 class App
 {
@@ -133,7 +133,7 @@ class App
                     $_POST['db_user'],
                     $_POST['db_pass'],
                     $_POST['db_name'],
-                    $_POST['db_prefix'] ?? 'nscms_'
+                    $_POST['db_prefix'] ?? 'frcms_'
                 );
 
                 // Run installation

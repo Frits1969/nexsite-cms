@@ -1,13 +1,13 @@
-# <img alt="Logo - NexSite CMS" src="public/assets/logo/nexsite-logo.png" width="300" />
+# <img alt="Logo - Fritsion CMS" src="public/assets/logo/fritsion-logo.png" width="300" />
 
-<h1>nexsite‑cms</h1>
-nexsite‑cms is een modern, modulair en overzichtelijk CMS dat is ontworpen om volledige controle te geven over content, structuur en workflows.
+<h1>fritsion‑cms</h1>
+fritsion‑cms is een modern, modulair en overzichtelijk CMS dat is ontworpen om volledige controle te geven over content, structuur en workflows.
 Het doel is een CMS dat lichtgewicht, begrijpelijk en uitbreidbaar is — zonder de complexiteit van grote frameworks of de beperkingen van SaaS‑platformen.
 
 <H2>🎯 Waarom dit project bestaat?</h2>
 
 Veel bestaande CMS‑systemen zijn óf te zwaar, óf te beperkt, óf te complex om echt te begrijpen.
-nexsite‑cms wil dat gat vullen door:
+fritsion‑cms wil dat gat vullen door:
 
 een duidelijke en logische structuur
 
@@ -21,8 +21,8 @@ volledige controle over data en workflows
 
 Het is een CMS dat je zelf kunt doorgronden, aanpassen en uitbreiden — precies zoals jij het wilt.
 
-<h2>📦 Wat kun je met nexsite‑cms?</h2>
-nexsite‑cms biedt een basis waarop je elk type website of applicatie kunt bouwen. Denk aan:
+<h2>📦 Wat kun je met fritsion‑cms?</h2>
+fritsion‑cms biedt een basis waarop je elk type website of applicatie kunt bouwen. Denk aan:
 
 blogs
 
@@ -71,7 +71,7 @@ Alle content is via een API beschikbaar voor websites, apps of externe systemen.
 Nieuwe modules kunnen eenvoudig worden toegevoegd zonder de kern te vervuilen.
 
 🧱 Architectuur (uitleg)
-nexsite‑cms is opgebouwd met een moderne PHP‑structuur die lijkt op frameworks zoals Laravel, maar zonder onnodige ballast.
+fritsion‑cms is opgebouwd met een moderne PHP‑structuur die lijkt op frameworks zoals Laravel, maar zonder onnodige ballast.
 Het doel is een heldere, voorspelbare mappenstructuur die je direct begrijpt.
 
 Belangrijkste onderdelen
@@ -105,8 +105,8 @@ MySQL of PostgreSQL
 
 Installeren
 bash
-git clone https://github.com/Frits1969/nexsite-cms
-cd nexsite-cms
+git clone https://github.com/Frits1969/fritsion-cms
+cd fritsion-cms
 composer install
 cp .env.example .env
 php artisan key:generate

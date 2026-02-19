@@ -1,8 +1,8 @@
 <?php
 
-namespace NexSite\Controllers;
+namespace Fritsion\Controllers;
 
-use NexSite\Controllers\BaseController;
+use Fritsion\Controllers\BaseController;
 
 class AdminController extends BaseController
 {
@@ -24,8 +24,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \NexSite\Database::connect();
-        $prefix = \NexSite\Database::getPrefix();
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
         
         // Fetch stats
         $pageCount = 0;
@@ -88,8 +88,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \NexSite\Database::connect();
-        $prefix = \NexSite\Database::getPrefix();
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
         $userId = $_SESSION['user_id'];
         $error = null;
         $success = null;
@@ -182,8 +182,8 @@ class AdminController extends BaseController
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            $db = \NexSite\Database::connect();
-            $prefix = \NexSite\Database::getPrefix();
+            $db = \Fritsion\Database::connect();
+            $prefix = \Fritsion\Database::getPrefix();
             
             $stmt = $db->prepare("SELECT id, username, password_hash FROM {$prefix}users WHERE username = ? AND status = 'active'");
             $stmt->bind_param("s", $username);
@@ -217,8 +217,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \NexSite\Database::connect();
-        $prefix = \NexSite\Database::getPrefix();
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
         $error = null;
         $success = null;
 
@@ -274,7 +274,7 @@ class AdminController extends BaseController
                     }
                     
                     // Reload config to reflect changes immediately in the current request if needed
-                    \NexSite\Config::load($envPath);
+                    \Fritsion\Config::load($envPath);
                 }
 
                 $success = "Instellingen succesvol bijgewerkt.";
@@ -295,14 +295,14 @@ class AdminController extends BaseController
 
         // Environment settings
         $env = [
-            'app_name' => \NexSite\Config::get('APP_NAME'),
-            'app_url' => \NexSite\Config::get('APP_URL'),
-            'db_host' => \NexSite\Config::get('DB_HOST'),
-            'db_name' => \NexSite\Config::get('DB_DATABASE'),
-            'db_user' => \NexSite\Config::get('DB_USERNAME'),
-            'db_prefix' => \NexSite\Config::get('DB_PREFIX'),
-            'language' => \NexSite\Config::get('DEFAULT_LANGUAGE', 'nl'),
-            'version' => \NexSite\App::VERSION
+            'app_name' => \Fritsion\Config::get('APP_NAME'),
+            'app_url' => \Fritsion\Config::get('APP_URL'),
+            'db_host' => \Fritsion\Config::get('DB_HOST'),
+            'db_name' => \Fritsion\Config::get('DB_DATABASE'),
+            'db_user' => \Fritsion\Config::get('DB_USERNAME'),
+            'db_prefix' => \Fritsion\Config::get('DB_PREFIX'),
+            'language' => \Fritsion\Config::get('DEFAULT_LANGUAGE', 'nl'),
+            'version' => \Fritsion\App::VERSION
         ];
 
         $this->view('admin/settings', [
@@ -327,8 +327,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \NexSite\Database::connect();
-        $prefix = \NexSite\Database::getPrefix();
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
 
         $result = $db->query("SELECT * FROM {$prefix}pages ORDER BY created_at DESC");
         $pages = [];
@@ -362,8 +362,8 @@ class AdminController extends BaseController
             if (empty($title) || empty($slug)) {
                 $error = "Titel en slug zijn verplicht.";
             } else {
-                $db = \NexSite\Database::connect();
-                $prefix = \NexSite\Database::getPrefix();
+                $db = \Fritsion\Database::connect();
+                $prefix = \Fritsion\Database::getPrefix();
                 
                 $stmt = $db->prepare("INSERT INTO {$prefix}pages (title, slug, content, status) VALUES (?, ?, ?, ?)");
                 $stmt->bind_param("ssss", $title, $slug, $content, $status);
@@ -391,8 +391,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \NexSite\Database::connect();
-        $prefix = \NexSite\Database::getPrefix();
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
         $error = null;
         $success = null;
 
@@ -443,8 +443,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \NexSite\Database::connect();
-        $prefix = \NexSite\Database::getPrefix();
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
         
         $stmt = $db->prepare("DELETE FROM {$prefix}pages WHERE id = ?");
         $stmt->bind_param("i", $id);
@@ -465,8 +465,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \NexSite\Database::connect();
-        $prefix = \NexSite\Database::getPrefix();
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
 
         // Get current status
         $stmt = $db->prepare("SELECT status FROM {$prefix}pages WHERE id = ?");

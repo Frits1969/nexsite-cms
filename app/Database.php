@@ -1,6 +1,6 @@
 <?php
 
-namespace NexSite;
+namespace Fritsion;
 
 class Database
 {
@@ -15,7 +15,7 @@ class Database
         $host = Config::get('DB_HOST', 'localhost');
         $user = Config::get('DB_USERNAME', 'root');
         $pass = Config::get('DB_PASSWORD', '');
-        $name = Config::get('DB_DATABASE', 'nexsite');
+        $name = Config::get('DB_DATABASE', 'fritsion');
         $port = Config::get('DB_PORT', 3306);
 
         self::$connection = new \mysqli($host, $user, $pass, $name, $port);
@@ -41,6 +41,6 @@ class Database
 
     public static function getPrefix()
     {
-        return Config::get('DB_PREFIX', 'nscms_');
+        return Config::get('DB_PREFIX', 'frcms_');
     }
 }

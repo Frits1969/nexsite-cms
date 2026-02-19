@@ -1,6 +1,6 @@
 <?php
 
-namespace NexSite;
+namespace Fritsion;
 
 class Config
 {

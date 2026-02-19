@@ -1,6 +1,6 @@
 <?php
 return [
-    'welcome' => 'Welkom bij NexSite CMS',
+    'welcome' => 'Welkom bij Fritsion CMS',
     'start_install' => 'Installatie starten',
     'next_step' => 'Volgende',
     'site_name_label' => 'Hoe wil je dat jouw website heet?',
@@ -32,7 +32,7 @@ return [
     'install_success' => 'Installatie succesvol!',
     'install_error' => 'Installatie mislukt',
     'redirecting' => 'Doorverwijzen naar login...',
-    'install_complete' => 'NexSite CMS is succesvol geïnstalleerd!',
+    'install_complete' => 'Fritsion CMS is succesvol geïnstalleerd!',
     'error_fill_all_fields' => 'Vul alle velden in aub.',
     'error_passwords_mismatch' => 'Wachtwoorden komen niet overeen.',
     'test_db_connection' => 'Verbinding testen...',

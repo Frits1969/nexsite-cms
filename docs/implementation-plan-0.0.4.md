@@ -1,6 +1,6 @@
 # Implementatieplan: Installatie Voltooien (v0.0.4)
 
-Volledige installatieprocedure implementeren voor NexSite CMS met database setup, configuratie generatie en installer lockout.
+Volledige installatieprocedure implementeren voor Fritsion CMS met database setup, configuratie generatie en installer lockout.
 
 ## Voorgestelde Wijzigingen
 

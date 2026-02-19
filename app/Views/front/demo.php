@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Pagina | NexSite CMS</title>
+    <title>Demo Pagina | Fritsion CMS</title>
     <!-- Google Fonts: Inter & Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -180,15 +180,15 @@
 <body>
     <header class="header">
         <a href="/" class="logo">
-            <img src="/assets/logo/nexsite-logo.png" alt="NexSite">
-            <span>NexSite</span>
+            <img src="/assets/logo/nexsite-logo.png" alt="Fritsion">
+            <span>Fritsion</span>
         </a>
         <a href="/backoffice" class="btn-back">Terug naar Backoffice</a>
     </header>
 
     <section class="hero">
         <h1>De Toekomst van CMS</h1>
-        <p>Ervaar de kracht van NexSite. Een modulair systeem ontworpen voor snelheid, flexibiliteit en een ongekende gebruikerservaring.</p>
+        <p>Ervaar de kracht van Fritsion. Een modulair systeem ontworpen voor snelheid, flexibiliteit en een ongekende gebruikerservaring.</p>
         <div class="puzzle-demo">
             <span style="background: var(--orange);"></span>
             <span style="background: var(--green);"></span>
@@ -220,7 +220,7 @@
     </section>
 
     <footer class="footer">
-        &copy; <?= date('Y') ?> NexSite CMS v0.1.1 - Alle rechten voorbehouden.
+        &copy; <?= date('Y') ?> Fritsion CMS v0.1.1 - Alle rechten voorbehouden.
     </footer>
 </body>
 

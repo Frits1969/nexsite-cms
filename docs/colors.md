@@ -1,4 +1,4 @@
-# Kleurendocumentatie NexSite CMS
+# Kleurendocumentatie Fritsion CMS
 
 Dit document beschrijft het kleurenpalet dat gebruikt wordt in de setup flow (puzzelstuk-thema).
 

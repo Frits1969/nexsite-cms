@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>NexSite CMS</title>
+    <title>Fritsion CMS</title>
     <style>
         body {
             display: flex;
@@ -520,7 +520,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 <body class="<?= $bodyClass ?>">
 
     <div class="logo-container splash-logo">
-        <img src="/assets/logo/nexsite-logo.png" alt="NexSite Logo" class="logo">
+        <img src="/assets/logo/fritsion-logo.png" alt="NexSite Logo" class="logo">
     </div>
 
     <div class="text-container">
@@ -533,7 +533,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             <div class="multistep-wrapper">
                 <div class="puzzle-focus-group">
                     <div class="logo-container pieces-logo">
-                        <img src="/assets/logo/nexsite-logo.png" alt="NexSite Logo" class="logo">
+                        <img src="/assets/logo/fritsion-logo.png" alt="NexSite Logo" class="logo">
                     </div>
 
                     <!-- Step 1: Site Info (Orange) -->

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inloggen | NexSite CMS</title>
+    <title>Inloggen | Fritsion CMS</title>
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -177,10 +177,10 @@
 
     <div class="login-card">
         <div class="logo-container">
-            <img src="/assets/logo/nexsite-logo.png" alt="NexSite Logo">
+            <img src="/assets/logo/fritsion-logo.png" alt="Fritsion Logo">
         </div>
         <h2>Welkom Terug</h2>
-        <p>Log in om je NexSite CMS te beheren</p>
+        <p>Log in om je Fritsion CMS te beheren</p>
 
         <form method="POST" action="/backoffice/login">
             <div class="form-group">
