@@ -429,7 +429,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <img src="/assets/logo/nexsite-logo.png" alt="Logo">
+            <img src="/assets/logo/fritsion-logo.png" alt="Logo">
             <h2>Fritsion</h2>
         </div>
         <nav class="sidebar-nav">

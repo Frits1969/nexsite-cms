@@ -520,7 +520,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 <body class="<?= $bodyClass ?>">
 
     <div class="logo-container splash-logo">
-        <img src="/assets/logo/fritsion-logo.png" alt="NexSite Logo" class="logo">
+        <img src="/assets/logo/fritsion-logo.png" alt="Fritsion Logo" class="logo">
     </div>
 
     <div class="text-container">
@@ -533,7 +533,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             <div class="multistep-wrapper">
                 <div class="puzzle-focus-group">
                     <div class="logo-container pieces-logo">
-                        <img src="/assets/logo/fritsion-logo.png" alt="NexSite Logo" class="logo">
+                        <img src="/assets/logo/fritsion-logo.png" alt="Fritsion Logo" class="logo">
                     </div>
 
                     <!-- Step 1: Site Info (Orange) -->
@@ -748,7 +748,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                 db_pass: document.querySelector('input[name="db_pass"]')?.value || '',
                 db_host: document.querySelector('input[name="db_host"]')?.value || ''
             };
-            sessionStorage.setItem('nexsite_setup_state', JSON.stringify(state));
+            sessionStorage.setItem('fritsion_setup_state', JSON.stringify(state));
 
             // Navigate
             window.location.href = '?lang=' + lang;
@@ -818,11 +818,11 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             // Check if we are on a fresh visit (no lang param) -> Clear storage
             const currentParams = new URLSearchParams(window.location.search);
             if (!currentParams.has('lang')) {
-                sessionStorage.removeItem('nexsite_setup_state');
+                sessionStorage.removeItem('fritsion_setup_state');
                 return; // Nothing to restore
             }
 
-            const savedState = sessionStorage.getItem('nexsite_setup_state');
+            const savedState = sessionStorage.getItem('fritsion_setup_state');
             if (savedState) {
                 const state = JSON.parse(savedState);
 

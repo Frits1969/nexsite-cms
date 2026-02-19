@@ -6,7 +6,7 @@ Volledige installatieprocedure implementeren voor Fritsion CMS met database setu
 
 ### Database Schema
 
-#### [NEW] [schema.sql](file://qnap/Share/Mijn%20documenten/GitHub/nexsite-cms/database/schema.sql)
+#### [NEW] [schema.sql](file://qnap/Share/Mijn%20documenten/GitHub/fritsion-cms/database/schema.sql)
 
 SQL schema met drie tabellen:
 - **settings**: Site configuratie (naam, beschrijving, domein)
@@ -17,7 +17,7 @@ SQL schema met drie tabellen:
 
 ### Installer Logic
 
-#### [NEW] [Installer.php](file://qnap/Share/Mijn%20documenten/GitHub/nexsite-cms/app/Installer.php)
+#### [NEW] [Installer.php](file://qnap/Share/Mijn%20documenten/GitHub/fritsion-cms/app/Installer.php)
 
 Nieuwe class met methodes:
 - `createTables()`: Voer SQL schema uit
@@ -31,7 +31,7 @@ Nieuwe class met methodes:
 
 ### Application Updates
 
-#### [MODIFY] [App.php](file://qnap/Share/Mijn%20documenten/GitHub/nexsite-cms/app/App.php)
+#### [MODIFY] [App.php](file://qnap/Share/Mijn%20documenten/GitHub/fritsion-cms/app/App.php)
 
 **Wijzigingen:**
 - Update `VERSION` naar `0.0.4`
@@ -47,7 +47,7 @@ Nieuwe class met methodes:
 
 ### Language Files
 
-#### [MODIFY] [nl.php](file://qnap/Share/Mijn%20documenten/GitHub/nexsite-cms/lang/nl.php)
+#### [MODIFY] [nl.php](file://qnap/Share/Mijn%20documenten/GitHub/fritsion-cms/lang/nl.php)
 
 Voeg toe:
 - `installing`: "Bezig met installeren..."
@@ -55,7 +55,7 @@ Voeg toe:
 - `install_error`: "Installatie mislukt"
 - `redirecting`: "Doorverwijzen naar login..."
 
-#### [MODIFY] [en.php](file://qnap/Share/Mijn%20documenten/GitHub/nexsite-cms/lang/en.php)
+#### [MODIFY] [en.php](file://qnap/Share/Mijn%20documenten/GitHub/fritsion-cms/lang/en.php)
 
 Engelse vertalingen van bovenstaande keys.
 
@@ -63,7 +63,7 @@ Engelse vertalingen van bovenstaande keys.
 
 ### View Updates
 
-#### [MODIFY] [splash.php](file://qnap/Share/Mijn%20documenten/GitHub/nexsite-cms/app/Views/splash.php)
+#### [MODIFY] [splash.php](file://qnap/Share/Mijn%20documenten/GitHub/fritsion-cms/app/Views/splash.php)
 
 **JavaScript wijzigingen:**
 - Update form submit handler
@@ -75,7 +75,7 @@ Engelse vertalingen van bovenstaande keys.
 
 ### Configuration
 
-#### [MODIFY] [.gitignore](file://qnap/Share/Mijn%20documenten/GitHub/nexsite-cms/.gitignore)
+#### [MODIFY] [.gitignore](file://qnap/Share/Mijn%20documenten/GitHub/fritsion-cms/.gitignore)
 
 Voeg toe:
 - `install.lock`

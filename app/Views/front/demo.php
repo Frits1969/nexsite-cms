@@ -180,7 +180,7 @@
 <body>
     <header class="header">
         <a href="/" class="logo">
-            <img src="/assets/logo/nexsite-logo.png" alt="Fritsion">
+            <img src="/assets/logo/fritsion-logo.png" alt="Fritsion">
             <span>Fritsion</span>
         </a>
         <a href="/backoffice" class="btn-back">Terug naar Backoffice</a>
