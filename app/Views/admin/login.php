@@ -9,14 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-bg: #0f172a;
-            --secondary-bg: #1e293b;
-            --accent-color: #0183D6;
-            --accent-gradient: linear-gradient(135deg, #0183D6 0%, #0B9C70 100%);
+            --primary-bg: #0D0A1E;
+            --secondary-bg: #1A1336;
+            --accent-color: #E8186A;
+            --accent-orange: #F0961B;
+            --accent-gradient: linear-gradient(135deg, #E8186A 0%, #C41257 40%, #F0961B 100%);
             --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --glass-bg: rgba(30, 41, 59, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-muted: #a89bc2;
+            --glass-bg: rgba(26, 19, 54, 0.75);
+            --glass-border: rgba(232, 24, 106, 0.15);
         }
 
         * {
@@ -42,11 +43,11 @@
             position: absolute;
             width: 500px;
             height: 500px;
-            background: linear-gradient(135deg, #0183D6 0%, #0B9C70 50%, #F0961B 100%);
+            background: linear-gradient(135deg, #FFB347 0%, #E8186A 50%, #3B2A8C 100%);
             filter: blur(80px);
             border-radius: 50%;
             z-index: -1;
-            opacity: 0.15;
+            opacity: 0.2;
             animation: move 20s infinite alternate;
         }
 
@@ -123,7 +124,7 @@
         .form-input:focus {
             border-color: var(--accent-color);
             background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 4px rgba(1, 131, 214, 0.1);
+            box-shadow: 0 0 0 4px rgba(232, 24, 106, 0.12);
         }
 
         .login-btn {
@@ -143,7 +144,7 @@
 
         .login-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(1, 131, 214, 0.4);
+            box-shadow: 0 20px 25px -5px rgba(232, 24, 106, 0.4);
         }
 
         .login-btn:active {
@@ -177,7 +178,7 @@
 
     <div class="login-card">
         <div class="logo-container">
-            <img src="/assets/logo/fritsion-logo.png" alt="Fritsion Logo">
+            <img src="/assets/logo/logo_fritsion_cms.png" alt="Fritsion Logo">
         </div>
         <h2>Welkom Terug</h2>
         <p>Log in om je Fritsion CMS te beheren</p>

@@ -1,4 +1,4 @@
-# <img alt="Logo - Fritsion CMS" src="public/assets/logo/fritsion-logo.png" width="300" />
+# <img alt="Logo - Fritsion CMS" src="public/assets/logo/logo_fritsion_cms.png" width="300" />
 
 <h1>fritsion‑cms</h1>
 fritsion‑cms is een modern, modulair en overzichtelijk CMS dat is ontworpen om volledige controle te geven over content, structuur en workflows.

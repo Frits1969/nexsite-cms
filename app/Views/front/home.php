@@ -14,7 +14,9 @@
 
     <style>
         :root {
-            --primary-color: #0d6efd;
+            --primary-color: #3B2A8C;
+            --accent-pink: #E8186A;
+            --accent-orange: #F0961B;
             --text-color: #333;
             --bg-color: #f8f9fa;
         }
@@ -63,8 +65,9 @@
             font-weight: 700;
             color: var(--primary-color);
             margin: 0;
-            background: linear-gradient(45deg, #0d6efd, #0099ff);
+            background: linear-gradient(135deg, #E8186A 0%, #C41257 40%, #F0961B 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
     </style>
@@ -73,8 +76,8 @@
 <body>
 
     <header>
-        <?php if (file_exists(__DIR__ . '/../../../public/assets/logo/fritsion-logo.png')): ?>
-            <img src="/assets/logo/fritsion-logo.png" alt="Fritsion Logo" class="logo">
+        <?php if (file_exists(__DIR__ . '/../../../public/assets/logo/logo_fritsion_cms.png')): ?>
+            <img src="/assets/logo/logo_fritsion_cms.png" alt="Fritsion Logo" class="logo">
         <?php else: ?>
             <!-- Fallback if logo is missing, though we confirmed it exists -->
             <strong>Fritsion</strong>

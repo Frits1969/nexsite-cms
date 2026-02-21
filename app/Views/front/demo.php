@@ -9,12 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --blue: #0183D6;
-            --green: #0B9C70;
+            --purple: #3B2A8C;
+            --pink: #E8186A;
             --orange: #F0961B;
-            --dark: #0f172a;
+            --dark: #0D0A1E;
             --light: #f8fafc;
-            --gradient: linear-gradient(135deg, #0183D6 0%, #0B9C70 50%, #F0961B 100%);
+            --gradient: linear-gradient(135deg, #E8186A 0%, #C41257 40%, #F0961B 100%);
         }
 
         * {
@@ -76,8 +76,8 @@
         .hero {
             padding: 100px 5% 150px;
             text-align: center;
-            background: radial-gradient(circle at top right, rgba(1, 131, 214, 0.05), transparent),
-                        radial-gradient(circle at bottom left, rgba(240, 150, 27, 0.05), transparent);
+            background: radial-gradient(circle at top right, rgba(232, 24, 106, 0.07), transparent),
+                        radial-gradient(circle at bottom left, rgba(240, 150, 27, 0.07), transparent);
         }
 
         .hero h1 {
@@ -118,7 +118,7 @@
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
-            border-color: var(--blue);
+            border-color: var(--pink);
         }
 
         .feature-icon {
@@ -167,7 +167,7 @@
             padding: 50px 5%;
             text-align: center;
             border-top: 1px solid #f1f5f9;
-            color: #94a3b8;
+            color: #6b4fa0;
             font-size: 0.9rem;
         }
 
@@ -180,7 +180,7 @@
 <body>
     <header class="header">
         <a href="/" class="logo">
-            <img src="/assets/logo/fritsion-logo.png" alt="Fritsion">
+            <img src="/assets/logo/logo_fritsion_cms.png" alt="Fritsion">
             <span>Fritsion</span>
         </a>
         <a href="/backoffice" class="btn-back">Terug naar Backoffice</a>
@@ -191,8 +191,8 @@
         <p>Ervaar de kracht van Fritsion. Een modulair systeem ontworpen voor snelheid, flexibiliteit en een ongekende gebruikerservaring.</p>
         <div class="puzzle-demo">
             <span style="background: var(--orange);"></span>
-            <span style="background: var(--green);"></span>
-            <span style="background: var(--blue);"></span>
+            <span style="background: var(--pink);"></span>
+            <span style="background: var(--purple);"></span>
         </div>
     </section>
 

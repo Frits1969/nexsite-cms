@@ -57,9 +57,23 @@ class App
 
             $uri = $_SERVER['REQUEST_URI'] ?? '/';
             $uri = strtok($uri, '?');
+            
+            // Normalize URI: Remove the subdirectory if present
+            $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+            // Remove 'public' from script dir if it's there (since we are rewriting to it)
+            $scriptDir = str_replace('/public', '', $scriptDir);
+            
+            if ($scriptDir !== '/' && $scriptDir !== '.') {
+                if (strpos($uri, $scriptDir) === 0) {
+                    $uri = substr($uri, strlen($scriptDir));
+                }
+            }
+            if (empty($uri)) $uri = '/';
 
             // Simple Routing
+
             if (strpos($uri, '/backoffice') === 0) {
+
                 $controller = new AdminController();
                 if ($uri === '/backoffice/login') {
                     $controller->login();

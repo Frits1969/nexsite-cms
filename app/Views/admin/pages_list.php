@@ -9,17 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-bg: #0f172a;
-            --secondary-bg: #1e293b;
-            --accent-color: #0183D6;
-            --accent-green: #0B9C70;
+            --primary-bg: #0D0A1E;
+            --secondary-bg: #1A1336;
+            --accent-color: #8B5CF6;
+            --accent-purple: #3B2A8C;
+            --accent-pink: #E8186A;
             --accent-orange: #F0961B;
             --accent-red: #ef4444;
-            --accent-gradient: linear-gradient(135deg, #0183D6 0%, #0B9C70 50%, #F0961B 100%);
+            --accent-gradient: linear-gradient(135deg, #E8186A 0%, #C41257 40%, #F0961B 100%);
             --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --glass-bg: rgba(30, 41, 59, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-muted: #a89bc2;
+            --glass-bg: rgba(26, 19, 54, 0.75);
+            --glass-border: rgba(139, 92, 246, 0.15);
             --sidebar-width: 260px;
         }
 
@@ -92,8 +93,8 @@
         }
 
         .nav-item:hover, .nav-item.active {
-            background: rgba(1, 131, 214, 0.1);
-            color: var(--accent-color);
+            background: rgba(232, 24, 106, 0.1);
+            color: var(--accent-pink);
         }
 
         .nav-item.active {
@@ -173,12 +174,12 @@
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(1, 131, 214, 0.3);
+            box-shadow: 0 4px 15px rgba(232, 24, 106, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(1, 131, 214, 0.4);
+            box-shadow: 0 8px 20px rgba(232, 24, 106, 0.45);
         }
 
         .btn-secondary {
@@ -265,8 +266,8 @@
         }
 
         .status-published {
-            background: rgba(11, 156, 112, 0.1);
-            color: var(--accent-green);
+            background: rgba(232, 24, 106, 0.1);
+            color: var(--accent-pink);
         }
 
         .status-draft {
@@ -426,7 +427,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <img src="/assets/logo/fritsion-logo.png" alt="Logo">
+            <img src="/assets/logo/logo_fritsion_cms.png" alt="Logo">
             <h2>Fritsion</h2>
         </div>
         <nav class="sidebar-nav">

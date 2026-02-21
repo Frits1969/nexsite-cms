@@ -33,7 +33,7 @@
 
         .text {
             font-size: 20px;
-            color: #333;
+            color: #2d1f5e;
             margin-bottom: 20px;
         }
 
@@ -178,18 +178,18 @@
             z-index: 2;
         }
 
-        /* Green Piece (Step 2) */
+        /* Pink Piece (Step 2) */
         .puzzle-piece.green {
-            background-color: #0B9C70;
+            background-color: #E8186A;
             display: none;
             opacity: 0;
             z-index: 1;
         }
 
-        /* Blue Piece (Step 3) */
+        /* Purple Piece (Step 3) */
         .puzzle-piece.blue {
-            background-color: #0183D6;
-            /* User requested #0183D6 */
+            background-color: #3B2A8C;
+            /* Fritsion logo paars */
             display: none;
             opacity: 0;
             z-index: 0;
@@ -225,12 +225,12 @@
             position: absolute;
             width: 60px;
             height: 60px;
-            background-color: #0B9C70;
+            background-color: #E8186A;
             border-radius: 50%;
             right: -30px;
             top: 50%;
             transform: translateY(-50%);
-            box-shadow: 1px 0 0 #0B9C70;
+            box-shadow: 1px 0 0 #E8186A;
             z-index: 2;
         }
 
@@ -349,11 +349,11 @@
 
         .tip {
             font-size: 14px;
-            color: #333;
+            color: #2d1f5e;
             margin-bottom: 12px;
             line-height: 1.4;
             padding: 10px;
-            border-left: 4px solid #333;
+            border-left: 4px solid #6b4fa0;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -365,15 +365,13 @@
         }
 
         .puzzle-piece.green .tip {
-            background-color: #e6f5f1;
-            border-left-color: #065c42;
+            background-color: #fce4ef;
+            border-left-color: #8c0040;
         }
 
         .puzzle-piece.blue .tip {
-            background-color: #E0F2FF;
-            /* Light var of 0183D6 */
-            border-left-color: #004F82;
-            /* Darker var */
+            background-color: #e8e0f5;
+            border-left-color: #1c0e5a;
         }
 
         .form-input {
@@ -387,7 +385,7 @@
         }
 
         .form-input:focus {
-            border-color: #007bff;
+            border-color: #E8186A;
             outline: none;
         }
 
@@ -418,7 +416,7 @@
         }
 
         .arrow-btn {
-            background-color: #333;
+            background-color: #3B2A8C;
             color: white;
             min-width: 120px;
             /* Pill shape */
@@ -438,7 +436,7 @@
         }
 
         .arrow-btn:hover {
-            background-color: #000;
+            background-color: #E8186A;
             transform: scale(1.05);
         }
 
@@ -492,16 +490,16 @@
 
         /* Info variant (testing) */
         .info-box.info {
-            background-color: #E0F2FF;
-            border-left: 4px solid #0183D6;
-            color: #004F82;
+            background-color: #e8e0f5;
+            border-left: 4px solid #3B2A8C;
+            color: #1c0e5a;
         }
 
         /* Success variant */
         .info-box.success {
-            background-color: #e6f5f1;
-            border-left: 4px solid #0B9C70;
-            color: #065c42;
+            background-color: #fce4ef;
+            border-left: 4px solid #E8186A;
+            color: #6b0030;
         }
 
         /* Error variant */
@@ -520,7 +518,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 <body class="<?= $bodyClass ?>">
 
     <div class="logo-container splash-logo">
-        <img src="/assets/logo/fritsion-logo.png" alt="Fritsion Logo" class="logo">
+        <img src="/assets/logo/logo_fritsion_cms.png" alt="Fritsion Logo" class="logo">
     </div>
 
     <div class="text-container">
@@ -533,7 +531,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
             <div class="multistep-wrapper">
                 <div class="puzzle-focus-group">
                     <div class="logo-container pieces-logo">
-                        <img src="/assets/logo/fritsion-logo.png" alt="Fritsion Logo" class="logo">
+                        <img src="/assets/logo/logo_fritsion_cms.png" alt="Fritsion Logo" class="logo">
                     </div>
 
                     <!-- Step 1: Site Info (Orange) -->
@@ -686,7 +684,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                         </button>
 
                         <!-- Test Button -->
-                        <button type="button" id="test-db-btn" class="arrow-btn" style="background-color: #f0ad4e;"
+                        <button type="button" id="test-db-btn" class="arrow-btn" style="background-color: #F0961B;"
                             onclick="testDatabaseConnection()">
                             <span><?= $lang['btn_test_db'] ?></span>
                         </button>
@@ -794,10 +792,11 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                                 iconSpan.innerText = '↻';
                             }, 2000);
 
-                            // Redirect after 3 seconds
+                                // Redirect after 3 seconds
                             setTimeout(() => {
-                                window.location.href = '/backoffice';
+                                window.location.href = 'backoffice';
                             }, 3000);
+
                         } else {
                             resultBox.className = 'info-box visible error';
                             iconSpan.innerText = '❌';
