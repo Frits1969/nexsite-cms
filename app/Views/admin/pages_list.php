@@ -9,18 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-bg: #0D0A1E;
-            --secondary-bg: #1A1336;
+            --primary-bg: #F1F4F9;
+            --secondary-bg: #FFFFFF;
             --accent-color: #8B5CF6;
             --accent-purple: #3B2A8C;
             --accent-pink: #E8186A;
             --accent-orange: #F0961B;
             --accent-red: #ef4444;
             --accent-gradient: linear-gradient(135deg, #E8186A 0%, #C41257 40%, #F0961B 100%);
-            --text-main: #f1f5f9;
-            --text-muted: #a89bc2;
-            --glass-bg: rgba(26, 19, 54, 0.75);
-            --glass-border: rgba(139, 92, 246, 0.15);
+            --text-main: #1A1336;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.05);
             --sidebar-width: 260px;
         }
 
@@ -92,7 +92,7 @@
 
         .nav-item.active {
             position: relative;
-            background: rgba(255, 255, 255, 0.03) !important;
+            background: rgba(232, 24, 106, 0.1) !important;
         }
 
         .nav-item.active::after {
@@ -105,6 +105,18 @@
             background: var(--accent-orange);
             border-radius: 3px 3px 0 0;
             z-index: 5;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .sidebar-footer p {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 500;
         }
 
         .main-wrapper {
@@ -209,12 +221,12 @@
         }
 
         /* Table Styling */
-        .pages-card {
+        .table-card {
             background: var(--secondary-bg);
             border-radius: 20px;
             border: 1px solid var(--glass-border);
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
         }
 
         table {
@@ -452,6 +464,9 @@
                 <span><?= $nav_visit_site ?></span>
             </a>
         </nav>
+        <div class="sidebar-footer">
+            <p style="font-size: 0.8rem; color: #64748b;">v<?= \Fritsion\App::VERSION ?></p>
+        </div>
     </aside>
 
     <div class="main-wrapper">

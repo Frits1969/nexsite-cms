@@ -11,15 +11,15 @@
     <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
     <style>
         :root {
-            --primary-bg: #1A1336;
-            --secondary-bg: #2d1f5e;
+            --primary-bg: #F1F4F9;
+            --secondary-bg: #FFFFFF;
             --accent-color: #E8186A;
             --accent-orange: #F0961B;
             --accent-gradient: linear-gradient(135deg, #E8186A 0%, #C41257 40%, #F0961B 100%);
-            --text-main: #f1f5f9;
-            --text-muted: #a89bc2;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #1A1336;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -49,7 +49,7 @@
             filter: blur(80px);
             border-radius: 50%;
             z-index: -1;
-            opacity: 0.2;
+            opacity: 0.15;
             animation: move 20s infinite alternate;
         }
 
@@ -83,7 +83,7 @@
             border-radius: 24px;
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.05);
             text-align: center;
         }
 
@@ -95,7 +95,7 @@
             width: 160px;
             height: auto;
             margin-bottom: 10px;
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+            filter: none;
         }
 
         .login-card h2 {
@@ -127,20 +127,20 @@
 
         .form-input {
             width: 100%;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 14px 20px;
+            background: #F8FAFC;
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             color: var(--text-main);
-            font-size: 1rem;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             outline: none;
-            transition: all 0.3s;
         }
 
         .form-input:focus {
             border-color: var(--accent-color);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 4px rgba(232, 24, 106, 0.12);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(232, 24, 106, 0.1);
         }
 
         .login-btn {
@@ -155,7 +155,7 @@
             cursor: pointer;
             transition: all 0.3s;
             margin-top: 10px;
-            box-shadow: 0 10px 15px -3px rgba(1, 131, 214, 0.3);
+            box-shadow: 0 4px 15px rgba(232, 24, 106, 0.2);
         }
 
         .login-btn:hover {

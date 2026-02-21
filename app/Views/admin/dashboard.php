@@ -11,18 +11,18 @@
     <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
     <style>
         :root {
-            --primary-bg: #0D0A1E;
-            --secondary-bg: #1A1336;
+            --primary-bg: #F1F4F9;
+            --secondary-bg: #FFFFFF;
             --accent-color: #8B5CF6;
             --accent-purple: #3B2A8C;
             --accent-pink: #E8186A;
             --accent-orange: #F0961B;
             --accent-gradient: linear-gradient(135deg, #E8186A 0%, #C41257 40%, #F0961B 100%);
             --accent-gradient-full: linear-gradient(135deg, #FFB347 0%, #E8186A 50%, #3B2A8C 100%);
-            --text-main: #f1f5f9;
-            --text-muted: #a89bc2;
-            --glass-bg: rgba(26, 19, 54, 0.75);
-            --glass-border: rgba(139, 92, 246, 0.15);
+            --text-main: #1A1336;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.05);
             --sidebar-width: 260px;
         }
 
@@ -95,7 +95,7 @@
 
         .nav-item.active {
             position: relative;
-            background: rgba(255, 255, 255, 0.03) !important;
+            background: rgba(232, 24, 106, 0.1) !important;
         }
 
         .nav-item.active::after {
@@ -119,7 +119,7 @@
             align-items: center;
             justify-content: center;
             padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.05);
+            background: #f8fafc;
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             color: var(--text-muted);
@@ -131,9 +131,9 @@
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: #f1f5f9;
             color: var(--text-main);
-            border-color: var(--text-muted);
+            border-color: #cbd5e1;
         }
 
         /* Language Switcher in Backoffice */
@@ -148,7 +148,7 @@
             position: relative;
             align-items: center;
             gap: 10px;
-            background: rgba(255, 255, 255, 0.05);
+            background: #f8fafc;
             padding: 5px;
             border-radius: 10px;
             border: 1px solid var(--glass-border);
@@ -156,6 +156,14 @@
             overflow: hidden;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             width: fit-content;
+        }
+
+        .content-card {
+            background: var(--secondary-bg);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
         }
 
         .lang-select a {
@@ -202,7 +210,14 @@
 
         .sidebar-footer {
             padding: 20px;
-            border-top: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .sidebar-footer p {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 500;
         }
 
         /* Main Content Styling */
@@ -227,6 +242,19 @@
             position: sticky;
             top: 0;
             z-index: 90;
+        }
+
+        .table tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .table tr:last-child {
+            border-bottom: none;
+        }
+
+        .table td {
+            padding: 15px 0;
+            color: var(--text-main);
         }
 
         .search-box {
@@ -417,15 +445,20 @@
         }
 
         .stat-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
+            background: var(--secondary-bg);
+            border-radius: 20px;
             padding: 25px;
-            border-radius: 15px;
-            transition: transform 0.3s;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
         .stat-icon {
