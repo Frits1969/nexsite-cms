@@ -95,9 +95,9 @@ class App
                 } elseif ($uri === '/backoffice/site-status/toggle') {
                     $controller->toggleSiteStatus();
                 } elseif ($uri === '/backoffice/templates/homepage') {
-                    $controller->homepageTemplates();
+                    $controller->layoutConfigurator();
                 } elseif ($uri === '/backoffice/templates/homepage/save') {
-                    $controller->saveHomepageTemplate();
+                    $controller->saveLayoutConfig();
                 } else {
                     $controller->index();
                 }

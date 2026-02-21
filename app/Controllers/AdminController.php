@@ -535,7 +535,7 @@ class AdminController extends BaseController
         exit;
     }
 
-    public function homepageTemplates()
+    public function layoutConfigurator()
     {
         if (!isset($_SESSION['user_id'])) {
             header('Location: /backoffice/login');
@@ -545,87 +545,78 @@ class AdminController extends BaseController
         $db = \Fritsion\Database::connect();
         $prefix = \Fritsion\Database::getPrefix();
 
-        // Fetch current template
-        $currentTemplate = 'hero_usps';
-        $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'homepage_template'");
+        // Fetch current layout JSON
+        $layoutJson = '';
+        $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'homepage_layout_json'");
         if ($res && $res->num_rows > 0) {
             $row = $res->fetch_assoc();
-            $currentTemplate = $row['setting_value'];
+            $layoutJson = $row['setting_value'];
         }
 
-        $templates = [
-            [
-                'id' => 'hero_usps',
-                'name' => 'Hero + USP’s',
-                'description' => 'Een krachtige hero sectie gevolgd door uw belangrijkste Unique Selling Points.',
-                'icon' => '🚀',
-                'preview_type' => 'usps'
-            ],
-            [
-                'id' => 'hero_cta_image',
-                'name' => 'Hero + CTA + Afbeelding',
-                'description' => 'Hero met een duidelijke Call to Action en een prominente afbeelding.',
-                'icon' => '🎯',
-                'preview_type' => 'cta_image'
-            ],
-            [
-                'id' => 'hero_services',
-                'name' => 'Hero + Services',
-                'description' => 'Presenteer uw diensten direct onder de hero sectie.',
-                'icon' => '🛠️',
-                'preview_type' => 'services'
-            ],
-            [
-                'id' => 'hero_blog',
-                'name' => 'Hero + Blogoverzicht',
-                'description' => 'Toon uw laatste nieuws of artikelen direct op de voorpagina.',
-                'icon' => '✍️',
-                'preview_type' => 'blog'
-            ],
-            [
-                'id' => 'hero_video_testimonials',
-                'name' => 'Hero + Video + Testimonials',
-                'description' => 'Bouw vertrouwen op met video content en klantbeoordelingen.',
-                'icon' => '🎬',
-                'preview_type' => 'video'
-            ],
-            [
-                'id' => 'hero_split',
-                'name' => 'Hero Split Layout',
-                'description' => 'Moderne split layout met tekst aan de linkerkant en beeld rechts.',
-                'icon' => '🌗',
-                'preview_type' => 'split'
-            ]
-        ];
+        // Default layout if empty
+        if (empty($layoutJson)) {
+            $defaultLayout = [
+                'header' => [
+                    'sections' => [
+                        ['type' => 'logo'],
+                        ['type' => 'menu'],
+                        ['type' => 'cta']
+                    ]
+                ],
+                'main' => [
+                    'rows' => [
+                        [
+                            'columns' => [
+                                ['type' => 'text'],
+                                ['type' => 'image']
+                            ]
+                        ]
+                    ]
+                ],
+                'footer' => [
+                    'sections' => [
+                        ['type' => 'text'],
+                        ['type' => 'socials']
+                    ]
+                ]
+            ];
+            $layoutJson = json_encode($defaultLayout);
+        }
 
-        $this->view('admin/templates_homepage', [
-            'currentTemplate' => $currentTemplate,
-            'templates' => $templates
+        $this->view('admin/layout_configurator', [
+            'layoutJson' => $layoutJson
         ]);
     }
 
-    public function saveHomepageTemplate()
+    public function saveLayoutConfig()
     {
         if (!isset($_SESSION['user_id']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /backoffice/login');
             exit;
         }
 
-        $template = $_POST['template'] ?? 'hero_usps';
+        $layoutJson = $_POST['layout_json'] ?? '';
+
+        // Basic validation
+        if (!json_decode($layoutJson)) {
+            header('Location: /backoffice/templates/homepage?error=invalid_json');
+            exit;
+        }
+
         $db = \Fritsion\Database::connect();
         $prefix = \Fritsion\Database::getPrefix();
 
         // Check if exists
-        $res = $db->query("SELECT id FROM {$prefix}settings WHERE setting_key = 'homepage_template'");
+        $res = $db->query("SELECT id FROM {$prefix}settings WHERE setting_key = 'homepage_layout_json'");
 
         if ($res && $res->num_rows > 0) {
-            $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = 'homepage_template'");
-            $stmt->bind_param("s", $template);
+            $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = 'homepage_layout_json'");
+            $stmt->bind_param("s", $layoutJson);
             $stmt->execute();
             $stmt->close();
         } else {
-            $stmt = $db->prepare("INSERT INTO {$prefix}settings (setting_key, setting_value) VALUES ('homepage_template', ?)");
-            $stmt->bind_param("s", $template);
+            $stmt = $db->prepare("INSERT INTO {$prefix}settings (setting_key, setting_value) VALUES ('homepage_layout_json', ?)");
+            $stmt->bind_param("s", $layoutJson);
             $stmt->execute();
             $stmt->close();
         }

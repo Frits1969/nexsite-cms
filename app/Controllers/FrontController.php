@@ -42,11 +42,13 @@ class FrontController extends BaseController
             return;
         }
 
-        // Default home view (we'll expand this later to dynamic content)
-        $homepageTemplate = $settings['homepage_template'] ?? 'hero_usps';
+        // Fetch dynamic layout JSON
+        $layoutJson = $settings['homepage_layout_json'] ?? '';
+        $homepageLayout = !empty($layoutJson) ? json_decode($layoutJson, true) : null;
+
         $this->view('front/home', [
             'settings' => $settings,
-            'homepageTemplate' => $homepageTemplate
+            'homepageLayout' => $homepageLayout
         ]);
     }
 
