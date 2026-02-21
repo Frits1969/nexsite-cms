@@ -94,6 +94,10 @@ class App
                     $controller->deletePage($matches[1]);
                 } elseif ($uri === '/backoffice/site-status/toggle') {
                     $controller->toggleSiteStatus();
+                } elseif ($uri === '/backoffice/templates/homepage') {
+                    $controller->homepageTemplates();
+                } elseif ($uri === '/backoffice/templates/homepage/save') {
+                    $controller->saveHomepageTemplate();
                 } else {
                     $controller->index();
                 }

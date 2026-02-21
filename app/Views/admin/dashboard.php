@@ -617,38 +617,7 @@
 <body>
     <?php $uri = strtok($_SERVER['REQUEST_URI'] ?? '/backoffice', '?'); ?>
     <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <img src="/assets/logo/logo_fritsion_cms.png" alt="Logo">
-        </div>
-
-        <nav class="sidebar-nav">
-            <a href="/backoffice" class="nav-item <?= $uri === '/backoffice' ? 'active' : '' ?>">
-                <span><?= $nav_dashboard ?></span>
-            </a>
-            <a href="/backoffice/pages" class="nav-item <?= $uri === '/backoffice/pages' ? 'active' : '' ?>">
-                <span><?= $nav_pages ?></span>
-            </a>
-            <a href="/backoffice/media" class="nav-item <?= $uri === '/backoffice/media' ? 'active' : '' ?>">
-                <span><?= $nav_media ?></span>
-            </a>
-            <a href="/backoffice/templates" class="nav-item <?= $uri === '/backoffice/templates' ? 'active' : '' ?>">
-                <span><?= $nav_templates ?></span>
-            </a>
-            <a href="/backoffice/themes" class="nav-item <?= $uri === '/backoffice/themes' ? 'active' : '' ?>">
-                <span><?= $nav_themes ?></span>
-            </a>
-            <a href="/backoffice/settings" class="nav-item <?= $uri === '/backoffice/settings' ? 'active' : '' ?>">
-                <span><?= $nav_settings ?></span>
-            </a>
-            <a href="/" target="_blank" class="nav-item">
-                <span><?= $nav_visit_site ?></span>
-            </a>
-        </nav>
-        <div class="sidebar-footer">
-            <p style="font-size: 0.8rem; color: var(--text-muted);">v<?= \Fritsion\App::VERSION ?></p>
-        </div>
-    </aside>
+    <?php include __DIR__ . '/partials/sidebar.php'; ?>
 
     <div class="main-wrapper">
         <header class="topbar">
@@ -716,15 +685,20 @@
                 </div>
                 <div class="stat-card" style="flex-direction: column; align-items: flex-start; gap: 12px;">
                     <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
-                        <div class="stat-icon" style="margin: 0; color: <?= (($siteStatus ?? 'inactive') === 'active' ? '#22c55e' : '#ef4444') ?>; background: <?= (($siteStatus ?? 'inactive') === 'active' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)') ?>;">🌐</div>
+                        <div class="stat-icon"
+                            style="margin: 0; color: <?= (($siteStatus ?? 'inactive') === 'active' ? '#22c55e' : '#ef4444') ?>; background: <?= (($siteStatus ?? 'inactive') === 'active' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)') ?>;">
+                            🌐</div>
                         <div style="flex: 1;">
-                            <div class="stat-value" style="font-size: 1.25rem; color: <?= (($siteStatus ?? 'inactive') === 'active' ? '#22c55e' : '#ef4444') ?>;">
+                            <div class="stat-value"
+                                style="font-size: 1.25rem; color: <?= (($siteStatus ?? 'inactive') === 'active' ? '#22c55e' : '#ef4444') ?>;">
                                 <?= (($siteStatus ?? 'inactive') === 'active' ? 'ACTIEF' : 'INACTIEF') ?>
                             </div>
-                            <div class="stat-label" style="font-size: 0.75rem;"><?= $website_status_label ?? 'Website Status' ?></div>
+                            <div class="stat-label" style="font-size: 0.75rem;">
+                                <?= $website_status_label ?? 'Website Status' ?></div>
                         </div>
                     </div>
-                    <a href="/backoffice/site-status/toggle" class="btn-secondary" style="width: 100%; padding: 8px; font-size: 0.75rem; text-align: center; border-radius: 8px; font-weight: 700;">
+                    <a href="/backoffice/site-status/toggle" class="btn-secondary"
+                        style="width: 100%; padding: 8px; font-size: 0.75rem; text-align: center; border-radius: 8px; font-weight: 700;">
                         <?= (($siteStatus ?? 'inactive') === 'active' ? 'Deactiveren' : 'Activeren') ?>
                     </a>
                 </div>

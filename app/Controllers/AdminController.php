@@ -535,4 +535,97 @@ class AdminController extends BaseController
         exit;
     }
 
+    public function homepageTemplates()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
+
+        // Fetch current template
+        $currentTemplate = 'hero_usps';
+        $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'homepage_template'");
+        if ($res && $res->num_rows > 0) {
+            $row = $res->fetch_assoc();
+            $currentTemplate = $row['setting_value'];
+        }
+
+        $templates = [
+            [
+                'id' => 'hero_usps',
+                'name' => 'Hero + USP’s',
+                'description' => 'Een krachtige hero sectie gevolgd door uw belangrijkste Unique Selling Points.',
+                'icon' => '🚀'
+            ],
+            [
+                'id' => 'hero_cta_image',
+                'name' => 'Hero + CTA + Afbeelding',
+                'description' => 'Hero met een duidelijke Call to Action en een prominente afbeelding.',
+                'icon' => '🎯'
+            ],
+            [
+                'id' => 'hero_services',
+                'name' => 'Hero + Services',
+                'description' => 'Presenteer uw diensten direct onder de hero sectie.',
+                'icon' => '🛠️'
+            ],
+            [
+                'id' => 'hero_blog',
+                'name' => 'Hero + Blogoverzicht',
+                'description' => 'Toon uw laatste nieuws of artikelen direct op de voorpagina.',
+                'icon' => '✍️'
+            ],
+            [
+                'id' => 'hero_video_testimonials',
+                'name' => 'Hero + Video + Testimonials',
+                'description' => 'Bouw vertrouwen op met video content en klantbeoordelingen.',
+                'icon' => '🎬'
+            ],
+            [
+                'id' => 'hero_split',
+                'name' => 'Hero Split Layout',
+                'description' => 'Moderne split layout met tekst aan de linkerkant en beeld rechts.',
+                'icon' => '🌗'
+            ]
+        ];
+
+        $this->view('admin/templates_homepage', [
+            'currentTemplate' => $currentTemplate,
+            'templates' => $templates
+        ]);
+    }
+
+    public function saveHomepageTemplate()
+    {
+        if (!isset($_SESSION['user_id']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $template = $_POST['template'] ?? 'hero_usps';
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
+
+        // Check if exists
+        $res = $db->query("SELECT id FROM {$prefix}settings WHERE setting_key = 'homepage_template'");
+
+        if ($res && $res->num_rows > 0) {
+            $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = 'homepage_template'");
+            $stmt->bind_param("s", $template);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            $stmt = $db->prepare("INSERT INTO {$prefix}settings (setting_key, setting_value) VALUES ('homepage_template', ?)");
+            $stmt->bind_param("s", $template);
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        header('Location: /backoffice/templates/homepage?saved=1');
+        exit;
+    }
+
 }

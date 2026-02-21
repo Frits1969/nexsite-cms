@@ -85,8 +85,15 @@
     </header>
 
     <main>
-        <div class="intro-text">Hier komt de website:</div>
-        <h1 class="site-name"><?= htmlspecialchars($settings['site_name'] ?? 'Mijn Website') ?></h1>
+        <?php
+        $layoutPath = __DIR__ . '/layouts/homepage/' . $homepageTemplate . '.php';
+        if (file_exists($layoutPath)) {
+            include $layoutPath;
+        } else {
+            // Fallback
+            echo "<h1>" . htmlspecialchars($settings['site_name'] ?? 'Mijn Website') . "</h1>";
+        }
+        ?>
     </main>
 
 

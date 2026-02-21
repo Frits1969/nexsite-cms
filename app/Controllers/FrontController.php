@@ -43,7 +43,11 @@ class FrontController extends BaseController
         }
 
         // Default home view (we'll expand this later to dynamic content)
-        $this->view('front/home', ['settings' => $settings]);
+        $homepageTemplate = $settings['homepage_template'] ?? 'hero_usps';
+        $this->view('front/home', [
+            'settings' => $settings,
+            'homepageTemplate' => $homepageTemplate
+        ]);
     }
 
     public function demo()
