@@ -42,8 +42,8 @@
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
-            background: var(--secondary-bg);
-            border-right: 1px solid var(--glass-border);
+            background: #FFFFFF;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
             position: fixed;
             left: 0;
             top: 0;
@@ -55,23 +55,15 @@
         .sidebar-header {
             padding: 30px 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            gap: 10px;
         }
 
         .sidebar-header img {
-            max-width: 65px;
+            max-width: 130px;
             height: auto;
-        }
-
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .sidebar-nav {
@@ -84,7 +76,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 15px;
-            color: var(--text-muted);
+            color: #475569;
             text-decoration: none;
             border-radius: 10px;
             margin-bottom: 8px;
@@ -92,8 +84,9 @@
             font-weight: 500;
         }
 
-        .nav-item:hover, .nav-item.active {
-            background: rgba(232, 24, 106, 0.1);
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(232, 24, 106, 0.05);
             color: var(--accent-pink);
         }
 
@@ -321,8 +314,15 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .menu-item {
@@ -428,7 +428,6 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <img src="/assets/logo/logo_fritsion_cms.png" alt="Logo">
-            <h2>Fritsion</h2>
         </div>
         <nav class="sidebar-nav">
             <a href="/backoffice" class="nav-item <?= $uri === '/backoffice' ? 'active' : '' ?>">
@@ -457,16 +456,19 @@
 
     <div class="main-wrapper">
         <header class="topbar">
-            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $pages_title ?></div>
-            
+            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $pages_title ?>
+            </div>
+
             <div class="topbar-actions">
-                <a href="/backoffice" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
-                
+                <a href="/backoffice"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
+
                 <div class="user-widget" id="user-widget">
-                    <div class="user-avatar" style="width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white;">
-                        <?php 
-                            $name = $_SESSION['username'] ?? 'Admin';
-                            echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : '')); 
+                    <div class="user-avatar"
+                        style="width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white;">
+                        <?php
+                        $name = $_SESSION['username'] ?? 'Admin';
+                        echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : ''));
                         ?>
                     </div>
                     <div class="user-info">
@@ -482,10 +484,12 @@
 
                 <div class="lang-select" id="lang-switcher">
                     <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
-                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'nl')">
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'nl')">
                         <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
                     </a>
-                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'en')">
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'en')">
                         <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
                     </a>
                 </div>
@@ -493,9 +497,9 @@
         </header>
 
         <main class="content">
-            <?php 
-                $success_param = $_GET['success'] ?? null;
-                $error_param = $_GET['error'] ?? null;
+            <?php
+            $success_param = $_GET['success'] ?? null;
+            $error_param = $_GET['error'] ?? null;
             ?>
 
             <?php if ($success_param === 'created'): ?>
@@ -547,18 +551,22 @@
                                     </td>
                                     <td class="actions">
                                         <?php if ($page['status'] === 'published'): ?>
-                                            <a href="/backoffice/pages/toggle/<?= $page['id'] ?>" class="btn-secondary" title="<?= $btn_unpublish ?? 'Depubliceren' ?>">
+                                            <a href="/backoffice/pages/toggle/<?= $page['id'] ?>" class="btn-secondary"
+                                                title="<?= $btn_unpublish ?? 'Depubliceren' ?>">
                                                 <span>🔓</span>
                                             </a>
                                         <?php else: ?>
-                                            <a href="/backoffice/pages/toggle/<?= $page['id'] ?>" class="btn-secondary" title="<?= $btn_publish ?? 'Publiceren' ?>" style="color: var(--accent-orange); border-color: rgba(240, 150, 27, 0.2);">
+                                            <a href="/backoffice/pages/toggle/<?= $page['id'] ?>" class="btn-secondary"
+                                                title="<?= $btn_publish ?? 'Publiceren' ?>"
+                                                style="color: var(--accent-orange); border-color: rgba(240, 150, 27, 0.2);">
                                                 <span>🔒</span>
                                             </a>
                                         <?php endif; ?>
                                         <a href="/backoffice/pages/edit/<?= $page['id'] ?>" class="btn-secondary">
                                             <?= $btn_edit ?>
                                         </a>
-                                        <a href="/backoffice/pages/delete/<?= $page['id'] ?>" class="btn-secondary btn-danger" onclick="return confirm('<?= $confirm_delete_page ?>')">
+                                        <a href="/backoffice/pages/delete/<?= $page['id'] ?>" class="btn-secondary btn-danger"
+                                            onclick="return confirm('<?= $confirm_delete_page ?>')">
                                             <?= $btn_delete ?>
                                         </a>
                                     </td>

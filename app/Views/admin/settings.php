@@ -41,8 +41,8 @@
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
-            background: var(--secondary-bg);
-            border-right: 1px solid var(--glass-border);
+            background: #FFFFFF;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
             position: fixed;
             left: 0;
             top: 0;
@@ -54,23 +54,15 @@
         .sidebar-header {
             padding: 30px 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            gap: 10px;
         }
 
         .sidebar-header img {
-            max-width: 65px;
+            max-width: 130px;
             height: auto;
-        }
-
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .sidebar-nav {
@@ -83,7 +75,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 15px;
-            color: var(--text-muted);
+            color: #475569;
             text-decoration: none;
             border-radius: 10px;
             margin-bottom: 8px;
@@ -91,8 +83,9 @@
             font-weight: 500;
         }
 
-        .nav-item:hover, .nav-item.active {
-            background: rgba(232, 24, 106, 0.1);
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(232, 24, 106, 0.05);
             color: var(--accent-pink);
         }
 
@@ -305,8 +298,15 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .menu-item {
@@ -450,7 +450,6 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <img src="/assets/logo/logo_fritsion_cms.png" alt="Logo">
-            <h2>Fritsion</h2>
         </div>
         <nav class="sidebar-nav">
             <a href="/backoffice" class="nav-item <?= $uri === '/backoffice' ? 'active' : '' ?>">
@@ -479,16 +478,20 @@
 
     <div class="main-wrapper">
         <header class="topbar">
-            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $nav_settings ?></div>
-            
+            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $nav_settings ?>
+            </div>
+
             <div class="topbar-actions">
-                <a href="/backoffice" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
-                
-                <div class="user-widget" id="user-widget" style="position: relative; display: flex; align-items: center; gap: 12px; cursor: pointer;">
-                    <div class="user-avatar" style="width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white;">
-                        <?php 
-                            $name = $_SESSION['username'] ?? 'Admin';
-                            echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : '')); 
+                <a href="/backoffice"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
+
+                <div class="user-widget" id="user-widget"
+                    style="position: relative; display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                    <div class="user-avatar"
+                        style="width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white;">
+                        <?php
+                        $name = $_SESSION['username'] ?? 'Admin';
+                        echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : ''));
                         ?>
                     </div>
                     <div class="user-info">
@@ -504,10 +507,12 @@
 
                 <div class="lang-select" id="lang-switcher">
                     <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
-                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'nl')">
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'nl')">
                         <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
                     </a>
-                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'en')">
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'en')">
                         <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
                     </a>
                 </div>
@@ -542,19 +547,22 @@
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_site_name ?></span>
                             <span class="setting-value">
-                                <input type="text" name="site_name" class="setting-input" value="<?= htmlspecialchars($settings['site_name'] ?? '') ?>" required>
+                                <input type="text" name="site_name" class="setting-input"
+                                    value="<?= htmlspecialchars($settings['site_name'] ?? '') ?>" required>
                             </span>
                         </div>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_site_desc ?></span>
                             <span class="setting-value">
-                                <input type="text" name="site_desc" class="setting-input" value="<?= htmlspecialchars($settings['site_description'] ?? '') ?>" required>
+                                <input type="text" name="site_desc" class="setting-input"
+                                    value="<?= htmlspecialchars($settings['site_description'] ?? '') ?>" required>
                             </span>
                         </div>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_domain ?></span>
                             <span class="setting-value">
-                                <input type="text" name="site_domain" class="setting-input" value="<?= htmlspecialchars($settings['site_domain'] ?? '') ?>" required>
+                                <input type="text" name="site_domain" class="setting-input"
+                                    value="<?= htmlspecialchars($settings['site_domain'] ?? '') ?>" required>
                             </span>
                         </div>
                     </div>
@@ -564,40 +572,49 @@
                         <h3><span>⚙️</span> <?= $system_db_title ?></h3>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_db_host ?></span>
-                            <span class="setting-value" style="opacity: 0.7;"><?= htmlspecialchars($env['db_host'] ?? 'localhost') ?></span>
+                            <span class="setting-value"
+                                style="opacity: 0.7;"><?= htmlspecialchars($env['db_host'] ?? 'localhost') ?></span>
                         </div>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_db_name ?></span>
-                            <span class="setting-value" style="opacity: 0.7;"><?= htmlspecialchars($env['db_name'] ?? 'Niet ingesteld') ?></span>
+                            <span class="setting-value"
+                                style="opacity: 0.7;"><?= htmlspecialchars($env['db_name'] ?? 'Niet ingesteld') ?></span>
                         </div>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_db_user ?></span>
                             <span class="setting-value">
-                                <input type="text" name="db_user" class="setting-input" value="<?= htmlspecialchars($env['db_user'] ?? '') ?>" required>
+                                <input type="text" name="db_user" class="setting-input"
+                                    value="<?= htmlspecialchars($env['db_user'] ?? '') ?>" required>
                             </span>
                         </div>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_db_pass ?></span>
                             <span class="setting-value">
-                                <input type="password" name="db_pass" class="setting-input" value="<?= htmlspecialchars(\Fritsion\Config::get('DB_PASSWORD') ?? '') ?>" required>
+                                <input type="password" name="db_pass" class="setting-input"
+                                    value="<?= htmlspecialchars(\Fritsion\Config::get('DB_PASSWORD') ?? '') ?>"
+                                    required>
                             </span>
                         </div>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_db_prefix ?></span>
-                            <span class="setting-value"><code><?= htmlspecialchars($env['db_prefix'] ?? 'nscms_') ?></code></span>
+                            <span
+                                class="setting-value"><code><?= htmlspecialchars($env['db_prefix'] ?? 'nscms_') ?></code></span>
                         </div>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_install_date ?></span>
-                            <span class="setting-value" style="opacity: 0.7;"><?= htmlspecialchars($settings['installed_at'] ?? 'Onbekend') ?></span>
+                            <span class="setting-value"
+                                style="opacity: 0.7;"><?= htmlspecialchars($settings['installed_at'] ?? 'Onbekend') ?></span>
                         </div>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_cms_version ?></span>
-                            <span class="setting-value"><span class="badge badge-success">v<?= htmlspecialchars($env['version'] ?? '0.1.0') ?></span></span>
+                            <span class="setting-value"><span
+                                    class="badge badge-success">v<?= htmlspecialchars($env['version'] ?? '0.1.0') ?></span></span>
                         </div>
                     </div>
                 </div>
 
-                <div style="margin-top: 30px; display: flex; gap: 20px; align-items: center; justify-content: flex-end;">
+                <div
+                    style="margin-top: 30px; display: flex; gap: 20px; align-items: center; justify-content: flex-end;">
                     <button type="submit" class="btn-save"><?= $btn_save_apply ?></button>
                     <a href="/backoffice" class="btn-secondary"><?= $btn_cancel ?></a>
                 </div>

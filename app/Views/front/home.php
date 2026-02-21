@@ -87,11 +87,6 @@
     <main>
         <div class="intro-text">Hier komt de website:</div>
         <h1 class="site-name"><?= htmlspecialchars($settings['site_name'] ?? 'Mijn Website') ?></h1>
-
-        <br><br>
-        <a href="/reset_install.php"
-            style="background-color: #ff6b6b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Reset
-            Installatie</a>
     </main>
 
 

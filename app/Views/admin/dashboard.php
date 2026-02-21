@@ -7,6 +7,8 @@
     <title><?= $nav_dashboard ?> | Fritsion CMS</title>
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/logo/logo_fritsion_cms_favicon.png">
+    <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
     <style>
         :root {
             --primary-bg: #0D0A1E;
@@ -42,8 +44,8 @@
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
-            background: var(--secondary-bg);
-            border-right: 1px solid var(--glass-border);
+            background: #FFFFFF;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
             position: fixed;
             left: 0;
             top: 0;
@@ -55,23 +57,16 @@
         .sidebar-header {
             padding: 30px 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            gap: 10px;
         }
 
         .sidebar-header img {
-            max-width: 65px; /* Increased from 50px for better visibility */
+            max-width: 130px;
+            /* Increased from 65px for better visibility */
             height: auto;
-        }
-
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .sidebar-nav {
@@ -84,7 +79,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 15px;
-            color: var(--text-muted);
+            color: #475569;
             text-decoration: none;
             border-radius: 10px;
             margin-bottom: 8px;
@@ -92,8 +87,9 @@
             font-weight: 500;
         }
 
-        .nav-item:hover, .nav-item.active {
-            background: rgba(232, 24, 106, 0.1);
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(232, 24, 106, 0.05);
             color: var(--accent-pink);
         }
 
@@ -317,8 +313,15 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .menu-item {
@@ -455,15 +458,22 @@
             .sidebar {
                 width: 80px;
             }
-            .sidebar-header h2, .sidebar-header h2 + p, .nav-item span, .user-info {
+
+            .sidebar-header h2,
+            .sidebar-header h2+p,
+            .nav-item span,
+            .user-info {
                 display: none;
             }
+
             .main-wrapper {
                 margin-left: 80px;
             }
+
             .sidebar-header {
                 justify-content: center;
             }
+
             .nav-item {
                 justify-content: center;
             }
@@ -477,7 +487,6 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <img src="/assets/logo/logo_fritsion_cms.png" alt="Logo">
-            <h2>Fritsion</h2>
         </div>
 
         <nav class="sidebar-nav">
@@ -510,14 +519,15 @@
 
     <div class="main-wrapper">
         <header class="topbar">
-            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $nav_dashboard ?></div>
-            
+            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $nav_dashboard ?>
+            </div>
+
             <div class="topbar-actions">
                 <div class="user-widget" id="user-widget">
                     <div class="user-avatar">
-                        <?php 
-                            $name = $_SESSION['username'] ?? 'Admin';
-                            echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : '')); 
+                        <?php
+                        $name = $_SESSION['username'] ?? 'Admin';
+                        echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : ''));
                         ?>
                     </div>
                     <div class="user-info">
@@ -534,10 +544,12 @@
 
                 <div class="lang-select" id="lang-switcher">
                     <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
-                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'nl')">
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'nl')">
                         <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
                     </a>
-                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'en')">
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'en')">
                         <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
                     </a>
                 </div>
@@ -574,7 +586,8 @@
                 </div>
             </section>
 
-            <section class="dashboard-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-top: 40px;">
+            <section class="dashboard-grid"
+                style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-top: 40px;">
                 <!-- Content Overview -->
                 <div class="stat-card" style="min-height: 300px;">
                     <h3 style="margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
@@ -582,33 +595,42 @@
                     </h3>
                     <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 15px;">
                         <?php if (empty($latestPages)): ?>
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
                                 <div>
                                     <span style="font-weight: 500;">Tijdelijke Home</span>
                                     <br><small style="color: var(--text-muted);">/ (Root)</small>
                                 </div>
-                                <a href="/" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
+                                <a href="/" target="_blank"
+                                    style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
                                 <div>
-                                    <span style="font-weight: 500;">Demo Pagina </span> <span style="font-size: 0.7rem; background: var(--blue); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">DEMO</span>
+                                    <span style="font-weight: 500;">Demo Pagina </span> <span
+                                        style="font-size: 0.7rem; background: var(--blue); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">DEMO</span>
                                     <br><small style="color: var(--text-muted);">/demo</small>
                                 </div>
-                                <a href="/demo" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
+                                <a href="/demo" target="_blank"
+                                    style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
                             </div>
                             <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
                                 <?= $no_other_pages_found ?>
                             </div>
                         <?php else: ?>
                             <?php foreach ($latestPages as $page): ?>
-                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
                                     <div>
                                         <span style="font-weight: 500;"><?= htmlspecialchars($page['title']) ?></span>
-                                        <br><small style="color: var(--text-muted);">/<?= htmlspecialchars($page['slug']) ?></small>
+                                        <br><small
+                                            style="color: var(--text-muted);">/<?= htmlspecialchars($page['slug']) ?></small>
                                     </div>
                                     <div style="display: flex; gap: 15px;">
-                                        <a href="/<?= htmlspecialchars($page['slug']) ?>" target="_blank" style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
-                                        <a href="/backoffice/pages/edit/<?= $page['id'] ?>" style="color: var(--accent-color); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $btn_edit ?></a>
+                                        <a href="/<?= htmlspecialchars($page['slug']) ?>" target="_blank"
+                                            style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
+                                        <a href="/backoffice/pages/edit/<?= $page['id'] ?>"
+                                            style="color: var(--accent-color); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $btn_edit ?></a>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -619,12 +641,15 @@
                 <!-- System Actions -->
                 <div class="stat-card">
                     <h3 style="margin-bottom: 20px; font-weight: 600;"><?= $system_actions_title ?></h3>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px;"><?= $system_actions_desc ?></p>
-                    
-                    <a href="/reset_install.php" class="btn-reset" style="display: inline-block; width: 100%; padding: 15px; background: rgba(239, 68, 68, 0.1); color: #ef4444; text-decoration: none; border-radius: 12px; font-weight: 600; text-align: center; border: 1px solid rgba(239, 68, 68, 0.2); transition: all 0.3s;">
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px;">
+                        <?= $system_actions_desc ?>
+                    </p>
+
+                    <a href="/reset_install.php" class="btn-reset"
+                        style="display: inline-block; width: 100%; padding: 15px; background: rgba(239, 68, 68, 0.1); color: #ef4444; text-decoration: none; border-radius: 12px; font-weight: 600; text-align: center; border: 1px solid rgba(239, 68, 68, 0.2); transition: all 0.3s;">
                         ⚠️ <?= $reset_install_btn ?>
                     </a>
-                    
+
                     <style>
                         .btn-reset:hover {
                             background: #ef4444 !important;

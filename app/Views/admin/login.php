@@ -7,17 +7,19 @@
     <title>Inloggen | Fritsion CMS</title>
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/logo/logo_fritsion_cms_favicon.png">
+    <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
     <style>
         :root {
-            --primary-bg: #0D0A1E;
-            --secondary-bg: #1A1336;
+            --primary-bg: #1A1336;
+            --secondary-bg: #2d1f5e;
             --accent-color: #E8186A;
             --accent-orange: #F0961B;
             --accent-gradient: linear-gradient(135deg, #E8186A 0%, #C41257 40%, #F0961B 100%);
             --text-main: #f1f5f9;
             --text-muted: #a89bc2;
-            --glass-bg: rgba(26, 19, 54, 0.75);
-            --glass-border: rgba(232, 24, 106, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -51,12 +53,25 @@
             animation: move 20s infinite alternate;
         }
 
-        .blob-1 { top: -10%; left: -10%; }
-        .blob-2 { bottom: -10%; right: -10%; animation-delay: -5s; }
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -5s;
+        }
 
         @keyframes move {
-            from { transform: translate(0, 0); }
-            to { transform: translate(100px, 100px); }
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(100px, 100px);
+            }
         }
 
         .login-card {
@@ -77,9 +92,10 @@
         }
 
         .logo-container img {
-            width: 80px;
+            width: 160px;
             height: auto;
             margin-bottom: 10px;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
         }
 
         .login-card h2 {

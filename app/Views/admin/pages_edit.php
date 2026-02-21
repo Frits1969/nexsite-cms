@@ -41,8 +41,8 @@
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
-            background: var(--secondary-bg);
-            border-right: 1px solid var(--glass-border);
+            background: #FFFFFF;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
             position: fixed;
             left: 0;
             top: 0;
@@ -54,23 +54,15 @@
         .sidebar-header {
             padding: 30px 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            gap: 10px;
         }
 
         .sidebar-header img {
-            max-width: 65px;
+            max-width: 130px;
             height: auto;
-        }
-
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .sidebar-nav {
@@ -83,7 +75,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 15px;
-            color: var(--text-muted);
+            color: #475569;
             text-decoration: none;
             border-radius: 10px;
             margin-bottom: 8px;
@@ -91,8 +83,9 @@
             font-weight: 500;
         }
 
-        .nav-item:hover, .nav-item.active {
-            background: rgba(232, 24, 106, 0.1);
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(232, 24, 106, 0.05);
             color: var(--accent-pink);
         }
 
@@ -358,8 +351,15 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .menu-item {
@@ -387,7 +387,6 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <img src="/assets/logo/logo_fritsion_cms.png" alt="Logo">
-            <h2>Fritsion</h2>
         </div>
         <nav class="sidebar-nav">
             <a href="/backoffice" class="nav-item <?= $uri === '/backoffice' ? 'active' : '' ?>">
@@ -417,21 +416,27 @@
 
     <div class="main-wrapper">
         <header class="topbar">
-            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $pages_title ?> / <?= ($mode === 'edit' ? $btn_edit : $btn_add_page) ?></div>
-            
+            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $pages_title ?> /
+                <?= ($mode === 'edit' ? $btn_edit : $btn_add_page) ?>
+            </div>
+
             <div class="topbar-actions">
-                <a href="/backoffice/pages" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
-                
+                <a href="/backoffice/pages"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
+
                 <div class="user-widget" id="user-widget">
-                    <div class="user-avatar" style="width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white;">
-                        <?php 
-                            $name = $_SESSION['username'] ?? 'Admin';
-                            echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : '')); 
+                    <div class="user-avatar"
+                        style="width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white;">
+                        <?php
+                        $name = $_SESSION['username'] ?? 'Admin';
+                        echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : ''));
                         ?>
                     </div>
                     <div class="user-info" style="display: flex; flex-direction: column; margin-left: 10px;">
-                        <span class="user-name" style="font-size: 0.9rem; font-weight: 600;"><?= $_SESSION['username'] ?? 'Admin' ?></span>
-                        <span class="user-role" style="font-size: 0.75rem; color: var(--text-muted);"><?= $role_super_admin ?></span>
+                        <span class="user-name"
+                            style="font-size: 0.9rem; font-weight: 600;"><?= $_SESSION['username'] ?? 'Admin' ?></span>
+                        <span class="user-role"
+                            style="font-size: 0.75rem; color: var(--text-muted);"><?= $role_super_admin ?></span>
                     </div>
                     <div class="user-menu" id="user-menu">
                         <a href="/backoffice/profile" class="menu-item"><?= $nav_profile ?></a>
@@ -442,10 +447,12 @@
 
                 <div class="lang-select" id="lang-switcher">
                     <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
-                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'nl')">
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'nl')">
                         <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
                     </a>
-                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'en')">
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'en')">
                         <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
                     </a>
                 </div>
@@ -472,29 +479,39 @@
                 <form method="POST">
                     <div class="form-group">
                         <label for="title"><?= $label_title ?></label>
-                        <input type="text" id="title" name="title" class="form-control" value="<?= htmlspecialchars($page['title'] ?? '') ?>" required>
+                        <input type="text" id="title" name="title" class="form-control"
+                            value="<?= htmlspecialchars($page['title'] ?? '') ?>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="slug"><?= $label_slug ?></label>
-                        <input type="text" id="slug" name="slug" class="form-control" value="<?= htmlspecialchars($page['slug'] ?? '') ?>" required>
+                        <input type="text" id="slug" name="slug" class="form-control"
+                            value="<?= htmlspecialchars($page['slug'] ?? '') ?>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="content"><?= $label_content ?></label>
-                        <textarea id="content" name="content" class="form-control"><?= htmlspecialchars($page['content'] ?? '') ?></textarea>
+                        <textarea id="content" name="content"
+                            class="form-control"><?= htmlspecialchars($page['content'] ?? '') ?></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="status"><?= $label_status ?></label>
                         <select id="status" name="status" class="form-control">
-                            <option value="draft" <?= ($page['status'] ?? '') === 'draft' ? 'selected' : '' ?>><?= $status_draft ?></option>
-                            <option value="published" <?= ($page['status'] ?? '') === 'published' ? 'selected' : '' ?>><?= $status_published ?></option>
-                            <option value="archived" <?= ($page['status'] ?? '') === 'archived' ? 'selected' : '' ?>><?= $status_archived ?></option>
+                            <option value="draft" <?= ($page['status'] ?? '') === 'draft' ? 'selected' : '' ?>>
+                                <?= $status_draft ?>
+                            </option>
+                            <option value="published" <?= ($page['status'] ?? '') === 'published' ? 'selected' : '' ?>>
+                                <?= $status_published ?>
+                            </option>
+                            <option value="archived" <?= ($page['status'] ?? '') === 'archived' ? 'selected' : '' ?>>
+                                <?= $status_archived ?>
+                            </option>
                         </select>
                     </div>
 
-                    <div style="display: flex; gap: 20px; align-items: center; justify-content: flex-end; margin-top: 30px;">
+                    <div
+                        style="display: flex; gap: 20px; align-items: center; justify-content: flex-end; margin-top: 30px;">
                         <button type="submit" class="btn-save"><?= $btn_save ?></button>
                         <a href="/backoffice/pages" class="btn-secondary"><?= $btn_cancel ?></a>
                     </div>

@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Fritsion CMS</title>
+    <link rel="icon" type="image/png" href="/assets/logo/logo_fritsion_cms_favicon.png">
+    <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
     <style>
         body {
             display: flex;
@@ -73,7 +75,8 @@
         /* Selected State Styling */
         body.selected-mode {
             justify-content: flex-start;
-            padding-top: 20px; /* Aligned with language flag top (20px) */
+            padding-top: 20px;
+            /* Aligned with language flag top (20px) */
         }
 
         body.selected-mode .splash-logo {
@@ -83,7 +86,8 @@
         body.selected-mode .pieces-logo {
             display: block !important;
             position: absolute;
-            top: 0; /* Align with the top of the blue piece */
+            top: 0;
+            /* Align with the top of the blue piece */
             left: 50%;
             transform: translateX(-50%);
             margin-bottom: 0;
@@ -91,7 +95,7 @@
             width: 200px;
             text-align: center;
         }
-        
+
         body.selected-mode .pieces-logo img {
             max-width: 100%;
         }
@@ -136,7 +140,8 @@
         .multistep-wrapper {
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Switch to top alignment */
+            align-items: flex-start;
+            /* Switch to top alignment */
             gap: 0;
             width: 100%;
             margin-top: 0;
@@ -147,10 +152,12 @@
 
         .puzzle-focus-group {
             display: flex;
-            align-items: flex-start; /* Top alignment for logo anchor */
+            align-items: flex-start;
+            /* Top alignment for logo anchor */
             position: relative;
             gap: 0;
-            height: auto; /* Remove fixed height */
+            height: auto;
+            /* Remove fixed height */
         }
 
         body.step-3-mode .multistep-wrapper {
@@ -169,7 +176,8 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             transition: all 0.5s ease;
             min-height: 600px;
-            margin-top: 220px; /* Start orange and green 220px lower */
+            margin-top: 220px;
+            /* Start orange and green 220px lower */
         }
 
         /* Orange Piece (Step 1) */
@@ -194,7 +202,8 @@
             opacity: 0;
             z-index: 0;
             min-height: 720px;
-            margin-top: 38px; /* Blue starts 38px lower than logo/flags */
+            margin-top: 38px;
+            /* Blue starts 38px lower than logo/flags */
         }
 
         /* Puzzle "Outies" (Knobs) */
@@ -536,98 +545,98 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
 
                     <!-- Step 1: Site Info (Orange) -->
                     <div class="puzzle-piece orange" id="step-1-piece">
-                    <!-- Step 1 Content: Inputs -->
-                    <div id="step-1-content">
-                        <div class="form-group">
-                            <label><?= $lang['site_name_label'] ?></label>
-                            <div class="tip"><?= $lang['site_name_tip'] ?></div>
-                            <input type="text" name="site_name" id="site_name" class="form-input" required>
+                        <!-- Step 1 Content: Inputs -->
+                        <div id="step-1-content">
+                            <div class="form-group">
+                                <label><?= $lang['site_name_label'] ?></label>
+                                <div class="tip"><?= $lang['site_name_tip'] ?></div>
+                                <input type="text" name="site_name" id="site_name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label><?= $lang['site_desc_label'] ?></label>
+                                <div class="tip"><?= $lang['site_desc_tip'] ?></div>
+                                <textarea name="site_desc" id="site_desc" class="form-input" required></textarea>
+                            </div>
+                            <div class="nav-buttons single">
+                                <button type="button" class="arrow-btn right"
+                                    onclick="goToStep2()"><span><?= $lang['btn_next'] ?></span> &#8594;
+                                </button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label><?= $lang['site_desc_label'] ?></label>
-                            <div class="tip"><?= $lang['site_desc_tip'] ?></div>
-                            <textarea name="site_desc" id="site_desc" class="form-input" required></textarea>
-                        </div>
-                        <div class="nav-buttons single">
-                            <button type="button" class="arrow-btn right"
-                                onclick="goToStep2()"><span><?= $lang['btn_next'] ?></span> &#8594;
-                            </button>
+
+                        <!-- Step 1 Summary (Hidden initially) -->
+                        <div id="step-1-summary" style="display: none;">
+                            <div class="form-group summary-item">
+                                <div class="summary-label"><?= $lang['site_name_label'] ?></div>
+                                <div class="summary-value" id="summary-site-name"></div>
+                            </div>
+                            <div class="form-group summary-item">
+                                <div class="summary-label"><?= $lang['site_desc_label'] ?></div>
+                                <div class="summary-value" id="summary-site-desc"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Step 1 Summary (Hidden initially) -->
-                    <div id="step-1-summary" style="display: none;">
-                        <div class="form-group summary-item">
-                            <div class="summary-label"><?= $lang['site_name_label'] ?></div>
-                            <div class="summary-value" id="summary-site-name"></div>
-                        </div>
-                        <div class="form-group summary-item">
-                            <div class="summary-label"><?= $lang['site_desc_label'] ?></div>
-                            <div class="summary-value" id="summary-site-desc"></div>
-                        </div>
-                    </div>
-                </div>
+                    <!-- Step 2: Admin Info (Green) -->
+                    <div class="puzzle-piece green" id="step-2-piece">
+                        <!-- Overlap Connection: Orange Knob sits on top -->
 
-                <!-- Step 2: Admin Info (Green) -->
-                <div class="puzzle-piece green" id="step-2-piece">
-                    <!-- Overlap Connection: Orange Knob sits on top -->
+                        <div id="step-2-content">
+                            <!-- Domain Input (Moved from Step 3, now at top of Step 2) -->
+                            <div class="form-group">
+                                <label><?= $lang['site_domain_label'] ?? 'Domeinnaam' ?></label>
+                                <div class="tip">
+                                    <?= $lang['site_domain_tip'] ?? 'Voer het domein in (bijv. localhost of mijnwebsite.nl)' ?>
+                                </div>
+                                <input type="text" name="domain" class="form-input" placeholder="example.com" required>
+                            </div>
 
-                    <div id="step-2-content">
-                        <!-- Domain Input (Moved from Step 3, now at top of Step 2) -->
-                        <div class="form-group">
-                            <label><?= $lang['site_domain_label'] ?? 'Domeinnaam' ?></label>
-                            <div class="tip">
-                                <?= $lang['site_domain_tip'] ?? 'Voer het domein in (bijv. localhost of mijnwebsite.nl)' ?>
-                            </div>
-                            <input type="text" name="domain" class="form-input" placeholder="example.com" required>
-                        </div>
+                            <div class="form-group">
+                                <label><?= $lang['admin_account_label'] ?></label>
+                                <div class="tip"><?= $lang['admin_account_tip'] ?></div>
 
-                        <div class="form-group">
-                            <label><?= $lang['admin_account_label'] ?></label>
-                            <div class="tip"><?= $lang['admin_account_tip'] ?></div>
-
-                            <div class="input-group">
-                                <input type="text" name="username" placeholder="<?= $lang['username_label'] ?>"
-                                    class="form-input" required>
+                                <div class="input-group">
+                                    <input type="text" name="username" placeholder="<?= $lang['username_label'] ?>"
+                                        class="form-input" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="email" name="email" placeholder="<?= $lang['email_label'] ?>"
+                                        class="form-input" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="password" name="password" placeholder="<?= $lang['password_label'] ?>"
+                                        class="form-input" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="password" name="password_repeat"
+                                        placeholder="<?= $lang['password_repeat_label'] ?>" class="form-input" required>
+                                </div>
                             </div>
-                            <div class="input-group">
-                                <input type="email" name="email" placeholder="<?= $lang['email_label'] ?>"
-                                    class="form-input" required>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" name="password" placeholder="<?= $lang['password_label'] ?>"
-                                    class="form-input" required>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" name="password_repeat"
-                                    placeholder="<?= $lang['password_repeat_label'] ?>" class="form-input" required>
+                            <div class="nav-buttons dual">
+                                <button type="button" class="arrow-btn left" onclick="goToStep1()">
+                                    &#8592; <span><?= $lang['btn_back'] ?></span>
+                                </button>
+                                <button type="button" class="arrow-btn right" onclick="goToStep3()">
+                                    <span><?= $lang['btn_next'] ?></span> &#8594;
+                                </button>
                             </div>
                         </div>
-                        <div class="nav-buttons dual">
-                            <button type="button" class="arrow-btn left" onclick="goToStep1()">
-                                &#8592; <span><?= $lang['btn_back'] ?></span>
-                            </button>
-                            <button type="button" class="arrow-btn right" onclick="goToStep3()">
-                                <span><?= $lang['btn_next'] ?></span> &#8594;
-                            </button>
-                        </div>
-                    </div>
 
-                    <!-- Step 2 Summary (Hidden initially) -->
-                    <div id="step-2-summary" style="display: none;">
-                        <div class="form-group summary-item">
-                            <div class="summary-label"><?= $lang['site_domain_label'] ?? 'Domeinnaam' ?></div>
-                            <div class="summary-value" id="summary-domain"></div>
+                        <!-- Step 2 Summary (Hidden initially) -->
+                        <div id="step-2-summary" style="display: none;">
+                            <div class="form-group summary-item">
+                                <div class="summary-label"><?= $lang['site_domain_label'] ?? 'Domeinnaam' ?></div>
+                                <div class="summary-value" id="summary-domain"></div>
+                            </div>
+                            <div class="form-group summary-item">
+                                <div class="summary-label"><?= $lang['username_label'] ?></div>
+                                <div class="summary-value" id="summary-username"></div>
+                            </div>
+                            <div class="form-group summary-item">
+                                <div class="summary-label"><?= $lang['email_label'] ?></div>
+                                <div class="summary-value" id="summary-email"></div>
+                            </div>
                         </div>
-                        <div class="form-group summary-item">
-                            <div class="summary-label"><?= $lang['username_label'] ?></div>
-                            <div class="summary-value" id="summary-username"></div>
-                        </div>
-                        <div class="form-group summary-item">
-                            <div class="summary-label"><?= $lang['email_label'] ?></div>
-                            <div class="summary-value" id="summary-email"></div>
-                        </div>
-                    </div>
                     </div>
                 </div>
 
@@ -792,7 +801,7 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                                 iconSpan.innerText = '↻';
                             }, 2000);
 
-                                // Redirect after 3 seconds
+                            // Redirect after 3 seconds
                             setTimeout(() => {
                                 window.location.href = 'backoffice';
                             }, 3000);

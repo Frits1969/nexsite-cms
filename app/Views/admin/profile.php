@@ -41,8 +41,8 @@
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
-            background: var(--secondary-bg);
-            border-right: 1px solid var(--glass-border);
+            background: #FFFFFF;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
             position: fixed;
             left: 0;
             top: 0;
@@ -54,23 +54,15 @@
         .sidebar-header {
             padding: 30px 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            gap: 10px;
         }
 
         .sidebar-header img {
-            max-width: 65px;
+            max-width: 130px;
             height: auto;
-        }
-
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .sidebar-nav {
@@ -83,7 +75,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 15px;
-            color: var(--text-muted);
+            color: #475569;
             text-decoration: none;
             border-radius: 10px;
             margin-bottom: 8px;
@@ -91,8 +83,9 @@
             font-weight: 500;
         }
 
-        .nav-item:hover, .nav-item.active {
-            background: rgba(232, 24, 106, 0.1);
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(232, 24, 106, 0.05);
             color: var(--accent-pink);
         }
 
@@ -361,8 +354,15 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .menu-item {
@@ -431,7 +431,6 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <img src="/assets/logo/logo_fritsion_cms.png" alt="Logo">
-            <h2>Fritsion</h2>
         </div>
         <nav class="sidebar-nav">
             <a href="/backoffice" class="nav-item <?= $uri === '/backoffice' ? 'active' : '' ?>">
@@ -460,12 +459,16 @@
 
     <div class="main-wrapper">
         <header class="topbar">
-            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $nav_profile ?></div>
+            <div style="font-weight: 600; color: var(--text-muted);"><?= $backoffice_title ?> / <?= $nav_profile ?>
+            </div>
             <div style="display: flex; align-items: center; gap: 20px;">
-                <a href="/backoffice" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
-                
-                <div class="user-widget" id="user-widget" style="position: relative; display: flex; align-items: center; gap: 12px; cursor: pointer;">
-                    <div class="user-avatar" style="width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white;">
+                <a href="/backoffice"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
+
+                <div class="user-widget" id="user-widget"
+                    style="position: relative; display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                    <div class="user-avatar"
+                        style="width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: white;">
                         <?= strtoupper(substr($user['username'], 0, 1)) ?>
                     </div>
                     <div class="user-info">
@@ -482,10 +485,12 @@
 
                 <div class="lang-select" id="lang-switcher">
                     <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
-                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'nl')">
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'nl')">
                         <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
                     </a>
-                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>" onclick="handleFlagClick(event, 'en')">
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'en')">
                         <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
                     </a>
                 </div>
@@ -519,17 +524,21 @@
                 <form method="POST">
                     <div class="form-group">
                         <label for="username"><?= $username_label ?></label>
-                        <input type="text" id="username" name="username" value="<?= htmlspecialchars($user['username']) ?>" required>
+                        <input type="text" id="username" name="username"
+                            value="<?= htmlspecialchars($user['username']) ?>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="email"><?= $email_label ?></label>
-                        <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
+                        <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email']) ?>"
+                            required>
                     </div>
 
                     <div class="section-divider">
                         <h3 class="section-title"><span>🔒</span> <?= $password_change_title ?></h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;"><?= $password_change_tip ?></p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+                            <?= $password_change_tip ?>
+                        </p>
                     </div>
 
                     <div class="form-group">
@@ -539,21 +548,26 @@
 
                     <div class="form-group">
                         <label for="confirm_password"><?= $label_confirm_password ?></label>
-                        <input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password">
+                        <input type="password" id="confirm_password" name="confirm_password"
+                            autocomplete="new-password">
                     </div>
 
                     <div class="section-divider">
                         <h3 class="section-title"><span>🛡️</span> <?= $confirm_changes_title ?></h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;"><?= $confirm_changes_tip ?></p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+                            <?= $confirm_changes_tip ?>
+                        </p>
                     </div>
 
                     <div class="form-group">
                         <label for="current_password"><?= $label_current_password ?></label>
-                        <input type="password" id="current_password" name="current_password" required autocomplete="current-password">
+                        <input type="password" id="current_password" name="current_password" required
+                            autocomplete="current-password">
                     </div>
 
                     <div style="margin-top: 30px; display: flex; gap: 15px; align-items: center;">
-                        <button type="submit" class="btn-save" style="width: auto; padding: 12px 30px; margin-top: 0;"><?= $btn_save_profile ?></button>
+                        <button type="submit" class="btn-save"
+                            style="width: auto; padding: 12px 30px; margin-top: 0;"><?= $btn_save_profile ?></button>
                         <a href="/backoffice" class="btn-secondary"><?= $btn_cancel ?></a>
                     </div>
                 </form>
@@ -593,4 +607,5 @@
         });
     </script>
 </body>
+
 </html>

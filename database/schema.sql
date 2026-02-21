@@ -1,5 +1,5 @@
 -- Fritsion CMS Database Schema
--- Version: 0.1.2
+-- Version: 0.1.3
 -- Prefix: FRCMS_
 
 -- Settings Table: Site Configuration
