@@ -36,6 +36,9 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             --glass-bg: rgba(255, 255, 255, 0.8);
             --glass-border: rgba(0, 0, 0, 0.05);
             --sidebar-width: 280px;
+            --wf-bg: #e2e8f0;
+            --wf-hero: #cbd5e1;
+            --wf-block: #94a3b8;
         }
 
         * {
@@ -161,7 +164,7 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
 
         .template-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 30px;
             margin-top: 30px;
         }
@@ -169,12 +172,14 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
         .template-card {
             background: var(--secondary-bg);
             border-radius: 20px;
-            padding: 30px;
+            padding: 25px;
             border: 2px solid transparent;
             transition: all 0.3s;
             cursor: pointer;
             position: relative;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
         }
 
         .template-card:hover {
@@ -187,33 +192,93 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             background: rgba(232, 24, 106, 0.02);
         }
 
-        .template-icon {
-            font-size: 2.5rem;
+        /* Wireframe Styles */
+        .preview-container {
+            width: 100%;
+            height: 140px;
+            background: var(--wf-bg);
+            border-radius: 12px;
             margin-bottom: 20px;
-            display: block;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            gap: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .wf-rect {
+            border-radius: 3px;
+            background: var(--wf-block);
+            opacity: 0.6;
+        }
+
+        .wf-header {
+            height: 8px;
+            width: 40%;
+            background: var(--wf-block);
+            margin-bottom: 4px;
+        }
+
+        .wf-hero {
+            flex: 1;
+            background: var(--wf-hero);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .wf-hero::after {
+            content: 'HERO';
+            font-size: 8px;
+            font-weight: 800;
+            color: #fff;
+            opacity: 0.5;
+        }
+
+        .wf-grid {
+            display: grid;
+            gap: 4px;
+            padding-top: 4px;
+        }
+
+        .wf-footer {
+            height: 6px;
+            width: 100%;
+            background: var(--wf-block);
+            opacity: 0.3;
+            margin-top: auto;
+        }
+
+        .template-info {
+            flex: 1;
         }
 
         .template-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
             color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .template-card p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             line-height: 1.5;
         }
 
         .selected-badge {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             background: var(--accent-pink);
             color: white;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 100px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             display: none;
         }
@@ -263,6 +328,57 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
 <body>
     <?php include __DIR__ . '/partials/sidebar.php'; ?>
 
+    <?php
+    function renderPreview($type)
+    {
+        $html = '<div class="preview-container">';
+        $html .= '<div class="wf-header"></div>';
+
+        switch ($type) {
+            case 'usps':
+                $html .= '<div class="wf-hero"></div>';
+                $html .= '<div class="wf-grid" style="grid-template-columns: repeat(3, 1fr);">';
+                $html .= '<div class="wf-rect" style="height: 20px;"></div><div class="wf-rect" style="height: 20px;"></div><div class="wf-rect" style="height: 20px;"></div>';
+                $html .= '</div>';
+                break;
+            case 'cta_image':
+                $html .= '<div class="wf-hero" style="display: flex; gap: 4px; padding: 4px;">';
+                $html .= '<div style="flex: 1; background: rgba(255,255,255,0.2); height: 100%;"></div>';
+                $html .= '<div style="flex: 1; background: var(--wf-block); height: 100%; border-radius: 4px;"></div>';
+                $html .= '</div>';
+                break;
+            case 'services':
+                $html .= '<div class="wf-hero" style="height: 30px; flex: none;"></div>';
+                $html .= '<div class="wf-grid" style="grid-template-columns: repeat(3, 1fr); flex: 1;">';
+                $html .= '<div class="wf-rect"></div><div class="wf-rect"></div><div class="wf-rect"></div>';
+                $html .= '</div>';
+                break;
+            case 'blog':
+                $html .= '<div class="wf-hero" style="height: 30px; flex: none;"></div>';
+                $html .= '<div class="wf-grid" style="grid-template-columns: 1fr 1fr; flex: 1;">';
+                $html .= '<div class="wf-rect"></div><div class="wf-rect"></div>';
+                $html .= '</div>';
+                break;
+            case 'video':
+                $html .= '<div class="wf-hero"><div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 8px;">▶</div></div>';
+                $html .= '<div class="wf-grid" style="grid-template-columns: 1fr 1fr;">';
+                $html .= '<div class="wf-rect" style="height: 15px; opacity: 0.3;"></div><div class="wf-rect" style="height: 15px; opacity: 0.3;"></div>';
+                $html .= '</div>';
+                break;
+            case 'split':
+                $html .= '<div style="display: flex; flex: 1; gap: 0; margin: -8px; margin-top: 0;">';
+                $html .= '<div style="flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 4px;"><div class="wf-rect" style="height: 6px; width: 80%;"></div><div class="wf-rect" style="height: 6px; width: 60%;"></div></div>';
+                $html .= '<div style="flex: 1; background: var(--wf-hero);"></div>';
+                $html .= '</div>';
+                break;
+        }
+
+        $html .= '<div class="wf-footer"></div>';
+        $html .= '</div>';
+        return $html;
+    }
+    ?>
+
     <div class="main-wrapper">
         <header class="topbar">
             <div style="font-weight: 600; color: var(--text-muted);">
@@ -276,7 +392,8 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             <?php endif; ?>
 
             <h1>Kies uw Homepage Structuur</h1>
-            <p style="color: var(--text-muted); margin-top: 10px;">Selecteer de gewenste layout voor uw startpagina.
+            <p style="color: var(--text-muted); margin-top: 10px; margin-bottom: 40px;">Selecteer de gewenste layout
+                voor uw startpagina.
                 Elke structuur is geoptimaliseerd voor een specifiek doel.</p>
 
             <form action="/backoffice/templates/homepage/save" method="POST" id="templateForm">
@@ -285,16 +402,20 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
                     <?php foreach ($templates as $tpl): ?>
                         <div class="template-card <?= $currentTemplate === $tpl['id'] ? 'selected' : '' ?>"
                             onclick="selectTemplate('<?= $tpl['id'] ?>', this)">
-                            <span class="selected-badge">Geselecteerd</span>
-                            <span class="template-icon">
-                                <?= $tpl['icon'] ?>
-                            </span>
-                            <h3>
-                                <?= $tpl['name'] ?>
-                            </h3>
-                            <p>
-                                <?= $tpl['description'] ?>
-                            </p>
+                            <span class="selected-badge">Actief</span>
+
+                            <?= renderPreview($tpl['preview_type'] ?? 'usps') ?>
+
+                            <div class="template-info">
+                                <h3><span>
+                                        <?= $tpl['icon'] ?>
+                                    </span>
+                                    <?= $tpl['name'] ?>
+                                </h3>
+                                <p>
+                                    <?= $tpl['description'] ?>
+                                </p>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>

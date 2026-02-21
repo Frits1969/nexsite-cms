@@ -558,37 +558,43 @@ class AdminController extends BaseController
                 'id' => 'hero_usps',
                 'name' => 'Hero + USP’s',
                 'description' => 'Een krachtige hero sectie gevolgd door uw belangrijkste Unique Selling Points.',
-                'icon' => '🚀'
+                'icon' => '🚀',
+                'preview_type' => 'usps'
             ],
             [
                 'id' => 'hero_cta_image',
                 'name' => 'Hero + CTA + Afbeelding',
                 'description' => 'Hero met een duidelijke Call to Action en een prominente afbeelding.',
-                'icon' => '🎯'
+                'icon' => '🎯',
+                'preview_type' => 'cta_image'
             ],
             [
                 'id' => 'hero_services',
                 'name' => 'Hero + Services',
                 'description' => 'Presenteer uw diensten direct onder de hero sectie.',
-                'icon' => '🛠️'
+                'icon' => '🛠️',
+                'preview_type' => 'services'
             ],
             [
                 'id' => 'hero_blog',
                 'name' => 'Hero + Blogoverzicht',
                 'description' => 'Toon uw laatste nieuws of artikelen direct op de voorpagina.',
-                'icon' => '✍️'
+                'icon' => '✍️',
+                'preview_type' => 'blog'
             ],
             [
                 'id' => 'hero_video_testimonials',
                 'name' => 'Hero + Video + Testimonials',
                 'description' => 'Bouw vertrouwen op met video content en klantbeoordelingen.',
-                'icon' => '🎬'
+                'icon' => '🎬',
+                'preview_type' => 'video'
             ],
             [
                 'id' => 'hero_split',
                 'name' => 'Hero Split Layout',
                 'description' => 'Moderne split layout met tekst aan de linkerkant en beeld rechts.',
-                'icon' => '🌗'
+                'icon' => '🌗',
+                'preview_type' => 'split'
             ]
         ];
 
