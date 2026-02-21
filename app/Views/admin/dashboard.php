@@ -274,9 +274,101 @@
         }
 
         .search-box input:focus {
+            background: #FFFFFF;
             border-color: var(--accent-pink);
-            background: rgba(232, 24, 106, 0.05);
+            box-shadow: 0 0 0 4px rgba(232, 24, 106, 0.05);
         }
+
+        /* Status Toggle Styling */
+        .status-section {
+            margin-bottom: 30px;
+        }
+
+        .status-card {
+            background: var(--secondary-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            transition: transform 0.3s;
+        }
+
+        .status-info h2 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-active {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-inactive {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-toggle-btn {
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-to-inactive {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-to-inactive:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-to-active {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .btn-to-active:hover {
+            background: #22c55e;
+            color: white;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-active { background: #22c55e; box-shadow: 0 0 15px #22c55e; }
+        .dot-inactive { background: #ef4444; box-shadow: 0 0 15px #ef4444; }
 
         .user-widget {
             position: relative;
@@ -594,6 +686,34 @@
             <section class="welcome-card">
                 <h1><?= $welcome_back ?>, <?= $_SESSION['username'] ?? 'Admin' ?>!</h1>
                 <p><?= $welcome_desc ?></p>
+            </section>
+
+            <section class="status-section">
+                <div class="status-card">
+                    <div class="status-info">
+                        <h2>Website Status</h2>
+                        <div class="status-value">
+                            <?php if (($siteStatus ?? 'inactive') === 'active'): ?>
+                                <span class="status-dot dot-active"></span>
+                                <span class="status-active">ACTIEF</span>
+                            <?php else: ?>
+                                <span class="status-dot dot-inactive"></span>
+                                <span class="status-inactive">INACTIEF</span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div>
+                        <?php if (($siteStatus ?? 'inactive') === 'active'): ?>
+                            <a href="/backoffice/site-status/toggle" class="status-toggle-btn btn-to-inactive">
+                                Website Deactiveren
+                            </a>
+                        <?php else: ?>
+                            <a href="/backoffice/site-status/toggle" class="status-toggle-btn btn-to-active">
+                                Website Activeren
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </section>
 
             <section class="stats-grid">

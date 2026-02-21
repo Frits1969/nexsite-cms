@@ -9,10 +9,10 @@ class AdminController extends BaseController
     public function index()
     {
         $uri = $_SERVER['REQUEST_URI'] ?? '/backoffice';
-        
+
         // Handle sub-routes manually if needed inside index, 
         // but App.php now routes most specific /backoffice/ paths
-        
+
         if (strpos($uri, '/backoffice/logout') === 0) {
             $this->logout();
             return;
@@ -26,7 +26,7 @@ class AdminController extends BaseController
 
         $db = \Fritsion\Database::connect();
         $prefix = \Fritsion\Database::getPrefix();
-        
+
         // Fetch stats
         $pageCount = 0;
         $latestPages = [];
@@ -49,7 +49,7 @@ class AdminController extends BaseController
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-            
+
             if ($db->query($sql)) {
                 $tableExists = true;
                 // Add a welcome page if it's the first time
@@ -74,9 +74,18 @@ class AdminController extends BaseController
             }
         }
 
+        // Fetch site status
+        $siteStatus = 'inactive';
+        $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'site_status'");
+        if ($res && $res->num_rows > 0) {
+            $row = $res->fetch_assoc();
+            $siteStatus = $row['setting_value'];
+        }
+
         $this->view('admin/dashboard', [
             'pageCount' => $pageCount,
-            'latestPages' => $latestPages
+            'latestPages' => $latestPages,
+            'siteStatus' => $siteStatus
         ]);
     }
 
@@ -146,7 +155,7 @@ class AdminController extends BaseController
 
                     $stmt = $db->prepare($sql);
                     $stmt->bind_param($types, ...$params);
-                    
+
                     if ($stmt->execute()) {
                         $success = "Profiel succesvol bijgewerkt.";
                         if (!empty($username)) {
@@ -184,7 +193,7 @@ class AdminController extends BaseController
 
             $db = \Fritsion\Database::connect();
             $prefix = \Fritsion\Database::getPrefix();
-            
+
             $stmt = $db->prepare("SELECT id, username, password_hash FROM {$prefix}users WHERE username = ? AND status = 'active'");
             $stmt->bind_param("s", $username);
             $stmt->execute();
@@ -232,7 +241,7 @@ class AdminController extends BaseController
             try {
                 // 1. Update Database settings
                 $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = ?");
-                
+
                 $dbSettings = [
                     'site_name' => $siteName,
                     'site_description' => $siteDesc,
@@ -260,7 +269,7 @@ class AdminController extends BaseController
                         // Match key=value (with optional quotes)
                         $pattern = "/^" . preg_quote($key) . "=(.*)$/m";
                         $replacement = $key . "=\"" . str_replace('"', '\"', $value) . "\"";
-                        
+
                         if (preg_match($pattern, $envContent)) {
                             $envContent = preg_replace($pattern, $replacement, $envContent);
                         } else {
@@ -272,7 +281,7 @@ class AdminController extends BaseController
                     if (file_put_contents($envPath, $envContent) === false) {
                         throw new \Exception("Kon .env bestand niet schrijven.");
                     }
-                    
+
                     // Reload config to reflect changes immediately in the current request if needed
                     \Fritsion\Config::load($envPath);
                 }
@@ -364,10 +373,10 @@ class AdminController extends BaseController
             } else {
                 $db = \Fritsion\Database::connect();
                 $prefix = \Fritsion\Database::getPrefix();
-                
+
                 $stmt = $db->prepare("INSERT INTO {$prefix}pages (title, slug, content, status) VALUES (?, ?, ?, ?)");
                 $stmt->bind_param("ssss", $title, $slug, $content, $status);
-                
+
                 if ($stmt->execute()) {
                     header('Location: /backoffice/pages?success=created');
                     exit;
@@ -407,7 +416,7 @@ class AdminController extends BaseController
             } else {
                 $stmt = $db->prepare("UPDATE {$prefix}pages SET title = ?, slug = ?, content = ?, status = ? WHERE id = ?");
                 $stmt->bind_param("ssssi", $title, $slug, $content, $status, $id);
-                
+
                 if ($stmt->execute()) {
                     $success = "Pagina succesvol bijgewerkt.";
                 } else {
@@ -445,10 +454,10 @@ class AdminController extends BaseController
 
         $db = \Fritsion\Database::connect();
         $prefix = \Fritsion\Database::getPrefix();
-        
+
         $stmt = $db->prepare("DELETE FROM {$prefix}pages WHERE id = ?");
         $stmt->bind_param("i", $id);
-        
+
         if ($stmt->execute()) {
             header('Location: /backoffice/pages?success=deleted');
         } else {
@@ -484,6 +493,45 @@ class AdminController extends BaseController
         }
 
         header('Location: /backoffice/pages');
+        exit;
+    }
+
+    public function toggleSiteStatus()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
+
+        // Check current status
+        $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'site_status'");
+        $currentStatus = 'inactive';
+        $exists = false;
+
+        if ($res && $res->num_rows > 0) {
+            $row = $res->fetch_assoc();
+            $currentStatus = $row['setting_value'];
+            $exists = true;
+        }
+
+        $newStatus = ($currentStatus === 'active') ? 'inactive' : 'active';
+
+        if ($exists) {
+            $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = 'site_status'");
+            $stmt->bind_param("s", $newStatus);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            $stmt = $db->prepare("INSERT INTO {$prefix}settings (setting_key, setting_value) VALUES ('site_status', ?)");
+            $stmt->bind_param("s", $newStatus);
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        header('Location: /backoffice');
         exit;
     }
 

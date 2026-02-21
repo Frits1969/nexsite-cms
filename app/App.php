@@ -57,18 +57,19 @@ class App
 
             $uri = $_SERVER['REQUEST_URI'] ?? '/';
             $uri = strtok($uri, '?');
-            
+
             // Normalize URI: Remove the subdirectory if present
             $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
             // Remove 'public' from script dir if it's there (since we are rewriting to it)
             $scriptDir = str_replace('/public', '', $scriptDir);
-            
+
             if ($scriptDir !== '/' && $scriptDir !== '.') {
                 if (strpos($uri, $scriptDir) === 0) {
                     $uri = substr($uri, strlen($scriptDir));
                 }
             }
-            if (empty($uri)) $uri = '/';
+            if (empty($uri))
+                $uri = '/';
 
             // Simple Routing
 
@@ -91,6 +92,8 @@ class App
                     $controller->togglePageStatus($matches[1]);
                 } elseif (preg_match('#^/backoffice/pages/delete/(\d+)$#', $uri, $matches)) {
                     $controller->deletePage($matches[1]);
+                } elseif ($uri === '/backoffice/site-status/toggle') {
+                    $controller->toggleSiteStatus();
                 } else {
                     $controller->index();
                 }
@@ -155,7 +158,7 @@ class App
                     // Log user in immediately
                     $_SESSION['user_id'] = 1;
                     $_SESSION['username'] = $_POST['username'] ?? 'Admin';
-                    
+
                     echo json_encode(['success' => true, 'message' => $lang['install_success']]);
                 } else {
                     $errors = implode(', ', $installer->getErrors());
