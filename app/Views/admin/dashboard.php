@@ -367,8 +367,15 @@
             display: inline-block;
         }
 
-        .dot-active { background: #22c55e; box-shadow: 0 0 15px #22c55e; }
-        .dot-inactive { background: #ef4444; box-shadow: 0 0 15px #ef4444; }
+        .dot-active {
+            background: #22c55e;
+            box-shadow: 0 0 15px #22c55e;
+        }
+
+        .dot-inactive {
+            background: #ef4444;
+            box-shadow: 0 0 15px #ef4444;
+        }
 
         .user-widget {
             position: relative;
@@ -556,20 +563,21 @@
         .stat-icon {
             width: 50px;
             height: 50px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(232, 24, 106, 0.08);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            color: var(--accent-color);
+            color: var(--accent-pinlk);
             font-size: 1.5rem;
+            flex-shrink: 0;
         }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 2px;
+            color: var(--text-main);
         }
 
         .stat-label {
@@ -688,33 +696,7 @@
                 <p><?= $welcome_desc ?></p>
             </section>
 
-            <section class="status-section">
-                <div class="status-card">
-                    <div class="status-info">
-                        <h2>Website Status</h2>
-                        <div class="status-value">
-                            <?php if (($siteStatus ?? 'inactive') === 'active'): ?>
-                                <span class="status-dot dot-active"></span>
-                                <span class="status-active">ACTIEF</span>
-                            <?php else: ?>
-                                <span class="status-dot dot-inactive"></span>
-                                <span class="status-inactive">INACTIEF</span>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                    <div>
-                        <?php if (($siteStatus ?? 'inactive') === 'active'): ?>
-                            <a href="/backoffice/site-status/toggle" class="status-toggle-btn btn-to-inactive">
-                                Website Deactiveren
-                            </a>
-                        <?php else: ?>
-                            <a href="/backoffice/site-status/toggle" class="status-toggle-btn btn-to-active">
-                                Website Activeren
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </section>
+
 
             <section class="stats-grid">
                 <div class="stat-card">
@@ -732,10 +714,19 @@
                     <div class="stat-value">1</div>
                     <div class="stat-label"><?= $users_label ?></div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⚡</div>
-                    <div class="stat-value"><?= $system_status_active ?></div>
-                    <div class="stat-label"><?= $system_status_label ?></div>
+                <div class="stat-card" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 15px; width: 100%;">
+                        <div class="stat-icon" style="margin: 0; color: <?= (($siteStatus ?? 'inactive') === 'active' ? '#22c55e' : '#ef4444') ?>; background: <?= (($siteStatus ?? 'inactive') === 'active' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)') ?>;">🌐</div>
+                        <div style="flex: 1;">
+                            <div class="stat-value" style="font-size: 1.25rem; color: <?= (($siteStatus ?? 'inactive') === 'active' ? '#22c55e' : '#ef4444') ?>;">
+                                <?= (($siteStatus ?? 'inactive') === 'active' ? 'ACTIEF' : 'INACTIEF') ?>
+                            </div>
+                            <div class="stat-label" style="font-size: 0.75rem;"><?= $website_status_label ?? 'Website Status' ?></div>
+                        </div>
+                    </div>
+                    <a href="/backoffice/site-status/toggle" class="btn-secondary" style="width: 100%; padding: 8px; font-size: 0.75rem; text-align: center; border-radius: 8px; font-weight: 700;">
+                        <?= (($siteStatus ?? 'inactive') === 'active' ? 'Deactiveren' : 'Activeren') ?>
+                    </a>
                 </div>
             </section>
 
