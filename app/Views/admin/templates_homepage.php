@@ -55,7 +55,7 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             display: flex;
         }
 
-        /* Sidebar Styling stays the same as dashboard for consistency */
+        /* Sidebar Styling (Identical to Dashboard) */
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
@@ -67,6 +67,73 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             display: flex;
             flex-direction: column;
             z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .sidebar-header img {
+            max-width: 130px;
+            height: auto;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 15px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(232, 24, 106, 0.05);
+            color: var(--accent-pink);
+        }
+
+        .nav-item.active {
+            position: relative;
+            background: rgba(232, 24, 106, 0.1) !important;
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-orange);
+            border-radius: 3px 3px 0 0;
+            z-index: 5;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .sidebar-footer p {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 500;
         }
 
         .main-wrapper {
@@ -236,6 +303,30 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+            }
+
+            .sidebar-header img {
+                max-width: 40px;
+            }
+
+            .nav-item span,
+            .user-info {
+                display: none;
+            }
+
+            .main-wrapper {
+                margin-left: 80px;
+            }
+
+            .sidebar-header,
+            .nav-item {
+                justify-content: center;
             }
         }
 

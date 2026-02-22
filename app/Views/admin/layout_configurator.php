@@ -37,6 +37,8 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             --glass-border: rgba(0, 0, 0, 0.05);
             --sidebar-width: 260px;
             --preview-bg: #cbd5e1;
+            --highlight-color: rgba(232, 24, 106, 0.2);
+            --highlight-border: #E8186A;
         }
 
         * {
@@ -51,6 +53,87 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             color: var(--text-main);
             display: flex;
             overflow: hidden;
+        }
+
+        /* Sidebar Styling (Identical to Dashboard) */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: #FFFFFF;
+            border-right: 1px solid var(--glass-border);
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .sidebar-header img {
+            max-width: 130px;
+            height: auto;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 15px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(232, 24, 106, 0.05);
+            color: var(--accent-pink);
+        }
+
+        .nav-item.active {
+            position: relative;
+            background: rgba(232, 24, 106, 0.1) !important;
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-orange);
+            border-radius: 3px 3px 0 0;
+            z-index: 5;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .sidebar-footer p {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 500;
         }
 
         .main-wrapper {
@@ -212,14 +295,25 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+            }
+            .sidebar-header img {
+                max-width: 40px;
+            }
+            .nav-item span, .user-info {
+                display: none;
+            }
+            .main-wrapper {
+                margin-left: 80px;
+            }
+            .sidebar-header, .nav-item {
+                justify-content: center;
             }
         }
 
@@ -236,10 +330,18 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             overflow-y: auto;
             background: #fff;
             border-right: 1px solid var(--glass-border);
+            scroll-behavior: smooth;
         }
 
         .config-section {
             margin-bottom: 40px;
+            border-radius: 16px;
+            transition: all 0.3s;
+        }
+
+        .config-section.highlighted {
+            background: rgba(232, 24, 106, 0.03);
+            box-shadow: 0 0 0 10px rgba(232, 24, 106, 0.03);
         }
 
         .config-section h2 {
@@ -255,6 +357,14 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
 
         .form-group {
             margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .form-group.highlighted {
+            background: var(--highlight-color);
+            border: 1px solid var(--highlight-border);
         }
 
         .form-label {
@@ -289,6 +399,12 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             margin-bottom: 15px;
             border: 1px solid #e2e8f0;
             position: relative;
+            transition: all 0.3s;
+        }
+
+        .row-item.highlighted {
+            background: var(--highlight-color);
+            border: 1px solid var(--highlight-border);
         }
 
         .col-item {
@@ -297,6 +413,13 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             border-radius: 8px;
             margin-top: 10px;
             border: 1px dashed #cbd5e1;
+            transition: all 0.3s;
+        }
+
+        .col-item.highlighted {
+            background: rgba(232, 24, 106, 0.1);
+            border-style: solid;
+            border-color: var(--accent-pink);
         }
 
         .btn-add {
@@ -337,9 +460,53 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             opacity: 1;
         }
 
+        .row-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .btn-action {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover:not(:disabled) {
+            background: #f1f5f9;
+            color: var(--text-main);
+            border-color: #cbd5e1;
+        }
+
+        .btn-action:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .btn-action.remove {
+            color: #ef4444;
+            border-color: #fca5a5;
+        }
+
+        .btn-action.remove:hover {
+            background: #fee2e2;
+        }
+
         /* Right: Live Preview */
         .preview-panel {
-            padding: 40px;
+            padding: 40px 40px 100px 40px;
             background: #f1f5f9;
             display: flex;
             align-items: flex-start;
@@ -351,7 +518,7 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             background: #fff;
             width: 100%;
             max-width: 900px;
-            min-height: 1000px;
+            min-height: 400px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
             border-radius: 4px;
             display: flex;
@@ -364,15 +531,14 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
         .pv-header {
             padding: 15px;
             border-bottom: 1px solid #eee;
-            display: flex;
+            display: grid;
             gap: 10px;
             background: #f8fafc;
-            height: 60px;
+            min-height: 80px;
             align-items: center;
         }
 
         .pv-main {
-            flex: 1;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -382,34 +548,11 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
         .pv-footer {
             padding: 20px;
             border-top: 1px solid #eee;
-            display: flex;
+            display: grid;
             gap: 10px;
             background: #f8fafc;
-            min-height: 80px;
+            min-height: 100px;
             margin-top: auto;
-        }
-
-        .pv-section-block {
-            background: #e2e8f0;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #64748b;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pv-section-block::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 75%, transparent 75%, transparent);
-            background-size: 20px 20px;
-            opacity: 0.1;
         }
 
         .pv-row {
@@ -430,6 +573,30 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             flex-direction: column;
             gap: 5px;
             color: #94a3b8;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .pv-col:hover {
+            border-color: var(--accent-pink);
+            background: rgba(232, 24, 106, 0.05);
+            transform: scale(1.02);
+            z-index: 10;
+        }
+
+        .pv-col.highlighted {
+            border-color: var(--accent-pink);
+            background: rgba(232, 24, 106, 0.05);
+            border-style: solid;
+            box-shadow: 0 0 15px rgba(232, 24, 106, 0.2);
+            z-index: 11;
+        }
+
+        .pv-col.pv-compact {
+            min-height: 60px;
+            padding: 5px;
         }
 
         .pv-col-type {
@@ -440,6 +607,14 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
 
         .pv-col-icon {
             font-size: 1.5rem;
+        }
+
+        .pv-compact .pv-col-icon {
+            font-size: 1.1rem;
+        }
+
+        .pv-compact .pv-col-type {
+            font-size: 0.55rem;
         }
 
         .save-bar {
@@ -531,7 +706,7 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
         <div class="config-container">
             <!-- Form Side -->
             <div class="config-panel" id="configPanel">
-                <div class="config-section">
+                <div class="config-section" id="section-header">
                     <h2><span>🎨</span> Header</h2>
                     <div class="form-group">
                         <label class="form-label">Aantal vlakken</label>
@@ -541,13 +716,13 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
                     <div id="headerSections"></div>
                 </div>
 
-                <div class="config-section">
+                <div class="config-section" id="section-main">
                     <h2><span>📄</span> Middenstuk</h2>
                     <div id="mainRows"></div>
                     <button class="btn-add" onclick="addRow()"><span>➕</span> Rij toevoegen</button>
                 </div>
 
-                <div class="config-section">
+                <div class="config-section" id="section-footer">
                     <h2><span>🏁</span> Footer</h2>
                     <div class="form-group">
                         <label class="form-label">Aantal vlakken</label>
@@ -604,6 +779,30 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             renderPreview();
         }
 
+        // --- Interactive Preview Handling ---
+        function handlePreviewClick(path, elementId) {
+            // 1. Highlight in preview
+            document.querySelectorAll('.pv-col').forEach(el => el.classList.remove('highlighted'));
+            const pvElement = document.getElementById(`pv-${elementId}`);
+            if (pvElement) pvElement.classList.add('highlighted');
+
+            // 2. Find and highlight in config panel
+            const configElement = document.getElementById(`config-${elementId}`);
+            if (configElement) {
+                // Remove existing highlights
+                document.querySelectorAll('.form-group, .row-item, .col-item, .config-section').forEach(el => el.classList.remove('highlighted'));
+                
+                // Add highlight to the specific input container
+                const container = configElement.closest('.form-group') || configElement.closest('.col-item') || configElement.closest('.row-item');
+                if (container) {
+                    container.classList.add('highlighted');
+                    
+                    // Scroll into view
+                    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
         // --- State Management ---
         function updateHeaderCount(val) {
             val = parseInt(val);
@@ -638,6 +837,24 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             renderPreview();
         }
 
+        function moveRow(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= state.main.rows.length) return;
+            
+            // Swap rows
+            const temp = state.main.rows[index];
+            state.main.rows[index] = state.main.rows[newIndex];
+            state.main.rows[newIndex] = temp;
+            
+            renderConfig();
+            renderPreview();
+            
+            // Re-highlight the moved row
+            setTimeout(() => {
+                handlePreviewClick(`content[${newIndex}][0]`, `row-${newIndex}-col-0`);
+            }, 100);
+        }
+
         function updateColCount(rowIndex, count) {
             count = parseInt(count);
             let row = state.main.rows[rowIndex];
@@ -659,8 +876,8 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             state.header.sections.forEach((sec, i) => {
                 hHtml += `<div class="form-group">
                     <label class="form-label">Vlak ${i + 1} content</label>
-                    <select class="form-select" onchange="updateSectionType('header', ${i}, this.value)">
-                        ${renderOptions(sec.type, ['logo', 'menu', 'text', 'cta', 'image', 'socials'])}
+                    <select class="form-select" id="config-header-${i}" onchange="updateSectionType('header', ${i}, this.value)">
+                        ${renderOptions(sec.type)}
                     </select>
                 </div>`;
             });
@@ -669,8 +886,15 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             // Main Rows
             let mHtml = '';
             state.main.rows.forEach((row, ri) => {
-                mHtml += `<div class="row-item">
-                    <button class="btn-remove" onclick="removeRow(${ri})">✖</button>
+                const isFirst = ri === 0;
+                const isLast = ri === state.main.rows.length - 1;
+                
+                mHtml += `<div class="row-item" id="config-row-${ri}">
+                    <div class="row-actions">
+                        <button class="btn-action" title="Omhoog" onclick="moveRow(${ri}, -1)" ${isFirst ? 'disabled' : ''}>↑</button>
+                        <button class="btn-action" title="Omlaag" onclick="moveRow(${ri}, 1)" ${isLast ? 'disabled' : ''}>↓</button>
+                        <button class="btn-action remove" title="Verwijderen" onclick="removeRow(${ri})">✖</button>
+                    </div>
                     <div class="form-group">
                         <label class="form-label">Rij ${ri + 1} kolommen</label>
                         <select class="form-select" onchange="updateColCount(${ri}, this.value)">
@@ -679,9 +903,9 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
                     </div>
                     <div class="cols-container">
                         ${row.columns.map((col, ci) => `
-                            <div class="col-item">
+                            <div class="col-item" id="config-container-row-${ri}-col-${ci}">
                                 <label class="form-label" style="font-size: 0.75rem;">Kolom ${ci + 1} type</label>
-                                <select class="form-select" onchange="updateColType(${ri}, ${ci}, this.value)">
+                                <select class="form-select" id="config-row-${ri}-col-${ci}" onchange="updateColType(${ri}, ${ci}, this.value)">
                                     ${renderOptions(col.type)}
                                 </select>
                             </div>
@@ -696,34 +920,38 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             state.footer.sections.forEach((sec, i) => {
                 fHtml += `<div class="form-group">
                     <label class="form-label">Vlak ${i + 1} content</label>
-                    <select class="form-select" onchange="updateSectionType('footer', ${i}, this.value)">
-                        ${renderOptions(sec.type, ['text', 'menu', 'socials', 'cta', 'logo'])}
+                    <select class="form-select" id="config-footer-${i}" onchange="updateSectionType('footer', ${i}, this.value)">
+                        ${renderOptions(sec.type)}
                     </select>
                 </div>`;
             });
             document.getElementById('footerSections').innerHTML = fHtml;
         }
 
-        function renderOptions(selected, filter = []) {
+        function renderOptions(selected) {
             return contentTypes
-                .filter(ct => filter.length === 0 || filter.includes(ct.id))
                 .map(ct => `<option value="${ct.id}" ${ct.id === selected ? 'selected' : ''}>${ct.icon} ${ct.name}</option>`)
                 .join('');
         }
 
         function renderPreview() {
             // Header Preview
-            document.getElementById('pvHeader').innerHTML = state.header.sections.map(sec => {
+            let hEl = document.getElementById('pvHeader');
+            hEl.style.gridTemplateColumns = `repeat(${state.header.sections.length}, 1fr)`;
+            hEl.innerHTML = state.header.sections.map((sec, i) => {
                 let info = contentTypes.find(ct => ct.id === sec.type);
-                return `<div class="pv-section-block" style="flex: 1; height: 100%;">${info.icon}</div>`;
+                return `<div class="pv-col pv-compact" id="pv-header-${i}" onclick="handlePreviewClick('header[${i}]', 'header-${i}')">
+                        <span class="pv-col-icon">${info.icon}</span>
+                        <span class="pv-col-type">${info.name}</span>
+                    </div>`;
             }).join('');
 
             // Main Preview
-            document.getElementById('pvMain').innerHTML = state.main.rows.map(row => {
+            document.getElementById('pvMain').innerHTML = state.main.rows.map((row, ri) => {
                 return `<div class="pv-row" style="grid-template-columns: repeat(${row.columns.length}, 1fr);">
-                    ${row.columns.map(col => {
+                    ${row.columns.map((col, ci) => {
                     let info = contentTypes.find(ct => ct.id === col.type);
-                    return `<div class="pv-col">
+                    return `<div class="pv-col" id="pv-row-${ri}-col-${ci}" onclick="handlePreviewClick('content[${ri}][${ci}]', 'row-${ri}-col-${ci}')">
                             <span class="pv-col-icon">${info.icon}</span>
                             <span class="pv-col-type">${info.name}</span>
                         </div>`;
@@ -732,9 +960,14 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             }).join('');
 
             // Footer Preview
-            document.getElementById('pvFooter').innerHTML = state.footer.sections.map(sec => {
+            let fEl = document.getElementById('pvFooter');
+            fEl.style.gridTemplateColumns = `repeat(${state.footer.sections.length}, 1fr)`;
+            fEl.innerHTML = state.footer.sections.map((sec, i) => {
                 let info = contentTypes.find(ct => ct.id === sec.type);
-                return `<div class="pv-section-block" style="flex: 1; height: 100%; min-height: 40px;">${info.icon}</div>`;
+                return `<div class="pv-col pv-compact" id="pv-footer-${i}" onclick="handlePreviewClick('footer[${i}]', 'footer-${i}')">
+                        <span class="pv-col-icon">${info.icon}</span>
+                        <span class="pv-col-type">${info.name}</span>
+                    </div>`;
             }).join('');
         }
 
@@ -768,6 +1001,10 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             }
             if (langSwitcher && !langSwitcher.contains(e.target)) {
                 langSwitcher.classList.remove('expanded');
+            }
+            if (e.target.closest('.preview-canvas') === null && e.target.closest('.config-panel') === null) {
+                // Clear highlights if clicking outside
+                document.querySelectorAll('.pv-col, .form-group, .row-item, .col-item').forEach(el => el.classList.remove('highlighted'));
             }
         });
 
