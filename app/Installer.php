@@ -80,7 +80,7 @@ class Installer
         $sql = preg_replace('/--.*$/m', '', $sql);
 
         // Replace Prefix
-        $sql = str_replace('FRCMS_', $this->prefix, $sql);
+        $sql = str_replace('FCMS_', $this->prefix, $sql);
 
         // Split by semicolon and execute each statement
         $statements = array_filter(array_map('trim', explode(';', $sql)));

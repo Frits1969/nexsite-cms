@@ -581,7 +581,7 @@
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_db_prefix ?></span>
                             <span
-                                class="setting-value"><code><?= htmlspecialchars($env['db_prefix'] ?? 'nscms_') ?></code></span>
+                                class="setting-value"><code><?= htmlspecialchars($env['db_prefix'] ?? 'fcms_') ?></code></span>
                         </div>
                         <div class="setting-row">
                             <span class="setting-label"><?= $label_install_date ?></span>
