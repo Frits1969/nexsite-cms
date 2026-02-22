@@ -12,6 +12,7 @@ $backoffice_title = $lang['backoffice_title'] ?? 'Fritsion Backoffice';
 $role_super_admin = $lang['role_super_admin'] ?? 'Super Admin';
 $nav_profile = $lang['nav_profile'] ?? 'Profiel';
 $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
+$nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard';
 ?>
 <!DOCTYPE html>
 <html lang="<?= $_SESSION['lang'] ?? 'nl' ?>">
@@ -35,7 +36,7 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             --text-muted: #64748b;
             --glass-bg: rgba(255, 255, 255, 0.8);
             --glass-border: rgba(0, 0, 0, 0.05);
-            --sidebar-width: 280px;
+            --sidebar-width: 260px;
             --wf-bg: #e2e8f0;
             --wf-hero: #cbd5e1;
             --wf-block: #94a3b8;
@@ -54,6 +55,7 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             display: flex;
         }
 
+        /* Sidebar Styling stays the same as dashboard for consistency */
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
@@ -65,74 +67,6 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             display: flex;
             flex-direction: column;
             z-index: 100;
-        }
-
-        .sidebar-header {
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .sidebar-header img {
-            max-width: 130px;
-            height: auto;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: 20px 15px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            color: #475569;
-            text-decoration: none;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .nav-item:hover,
-        .nav-item.active {
-            background: rgba(232, 24, 106, 0.05);
-            color: var(--accent-pink);
-        }
-
-        .nav-item.active {
-            background: rgba(232, 24, 106, 0.1) !important;
-            font-weight: 600;
-        }
-
-        .submenu {
-            padding-left: 40px;
-            margin-bottom: 10px;
-        }
-
-        .submenu-item {
-            display: block;
-            padding: 8px 0;
-            color: #64748b;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-
-        .submenu-item:hover,
-        .submenu-item.active {
-            color: var(--accent-pink);
-        }
-
-        .sidebar-footer {
-            padding: 20px;
-            border-top: 1px solid var(--glass-border);
-            text-align: center;
         }
 
         .main-wrapper {
@@ -157,9 +91,175 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             z-index: 90;
         }
 
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* User Widget */
+        .user-widget {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50px;
+            transition: background 0.3s;
+        }
+
+        .user-widget:hover {
+            background: rgba(232, 24, 106, 0.05);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 200px;
+            background: var(--secondary-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 10px;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            z-index: 110;
+        }
+
+        .user-menu.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .menu-item:hover {
+            background: rgba(232, 24, 106, 0.05);
+            color: var(--text-main);
+        }
+
+        .menu-item.logout {
+            color: #ef4444;
+        }
+
+        /* Language Switcher */
+        .lang-select {
+            display: flex;
+            position: relative;
+            align-items: center;
+            gap: 10px;
+            background: #f8fafc;
+            padding: 5px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            height: 38px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: fit-content;
+        }
+
+        .lang-select a {
+            display: none;
+            line-height: 0;
+        }
+
+        .lang-select a.active {
+            display: block;
+        }
+
+        .lang-select.expanded {
+            height: 80px;
+            flex-direction: column;
+            gap: 8px;
+            padding: 8px 5px;
+            overflow: visible;
+        }
+
+        .lang-select.expanded a {
+            display: block;
+        }
+
+        .flag-icon {
+            width: 32px;
+            height: 22px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .content {
             padding: 40px;
             flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header-section {
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .header-section p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
         }
 
         .template-grid {
@@ -171,7 +271,7 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
 
         .template-card {
             background: var(--secondary-bg);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 25px;
             border: 2px solid transparent;
             transition: all 0.3s;
@@ -180,16 +280,19 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
             display: flex;
             flex-direction: column;
+            border: 1px solid var(--glass-border);
         }
 
         .template-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-color: rgba(232, 24, 106, 0.2);
         }
 
         .template-card.selected {
             border-color: var(--accent-pink);
-            background: rgba(232, 24, 106, 0.02);
+            background: rgba(232, 24, 106, 0.01);
+            box-shadow: 0 10px 30px rgba(232, 24, 106, 0.08);
         }
 
         /* Wireframe Styles */
@@ -256,18 +359,19 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
         }
 
         .template-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
+            font-size: 1.25rem;
+            margin-bottom: 10px;
             color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-weight: 700;
         }
 
         .template-card p {
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .selected-badge {
@@ -276,11 +380,13 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             right: 15px;
             background: var(--accent-pink);
             color: white;
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 100px;
-            font-size: 0.7rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 800;
             display: none;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .template-card.selected .selected-badge {
@@ -296,21 +402,24 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: flex-end;
+            z-index: 100;
         }
 
         .btn-save {
             background: var(--accent-gradient);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 12px;
+            padding: 14px 40px;
+            border-radius: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(232, 24, 106, 0.3);
         }
 
         .btn-save:hover {
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(232, 24, 106, 0.4);
         }
 
         .alert {
@@ -321,6 +430,9 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             color: #166534;
             border: 1px solid #bbf7d0;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
     </style>
 </head>
@@ -382,19 +494,55 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
     <div class="main-wrapper">
         <header class="topbar">
             <div style="font-weight: 600; color: var(--text-muted);">
-                <?= $nav_templates ?> / Alleen homepage
+                <?= $nav_templates ?> / Homepage
+            </div>
+
+            <div class="topbar-actions">
+                <a href="/backoffice"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
+
+                <div class="user-widget" id="user-widget">
+                    <div class="user-avatar">
+                        <?php
+                        $name = $_SESSION['username'] ?? 'Admin';
+                        echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : ''));
+                        ?>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name"><?= $_SESSION['username'] ?? 'Admin' ?></span>
+                        <span class="user-role"><?= $role_super_admin ?></span>
+                    </div>
+                    <div class="user-menu" id="user-menu">
+                        <a href="/backoffice/profile" class="menu-item"><?= $nav_profile ?></a>
+                        <hr style="margin: 5px 0; border: none; border-top: 1px solid var(--glass-border);">
+                        <a href="/backoffice/logout" class="menu-item logout"><?= $nav_logout ?></a>
+                    </div>
+                </div>
+
+                <div class="lang-select" id="lang-switcher">
+                    <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'nl')">
+                        <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
+                    </a>
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'en')">
+                        <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
+                    </a>
+                </div>
             </div>
         </header>
 
         <main class="content">
             <?php if (isset($_GET['saved'])): ?>
-                <div class="alert">Homepage structuur succesvol opgeslagen!</div>
+                <div class="alert">✅ Homepage structuur succesvol opgeslagen!</div>
             <?php endif; ?>
 
-            <h1>Kies uw Homepage Structuur</h1>
-            <p style="color: var(--text-muted); margin-top: 10px; margin-bottom: 40px;">Selecteer de gewenste layout
-                voor uw startpagina.
-                Elke structuur is geoptimaliseerd voor een specifiek doel.</p>
+            <div class="header-section">
+                <h1>Kies uw Homepage Structuur</h1>
+                <p>Selecteer de gewenste layout voor uw startpagina. Elke structuur is geoptimaliseerd voor een
+                    specifiek doel.</p>
+            </div>
 
             <form action="/backoffice/templates/homepage/save" method="POST" id="templateForm">
                 <input type="hidden" name="template" id="selectedTemplateInput" value="<?= $currentTemplate ?>">
@@ -434,6 +582,34 @@ $nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
             element.classList.add('selected');
             document.getElementById('selectedTemplateInput').value = id;
         }
+
+        const userWidget = document.getElementById('user-widget');
+        const userMenu = document.getElementById('user-menu');
+        const langSwitcher = document.getElementById('lang-switcher');
+
+        function handleFlagClick(event, lang) {
+            const currentLang = '<?= $_SESSION['lang'] ?? 'nl' ?>';
+
+            if (currentLang === lang) {
+                event.preventDefault();
+                langSwitcher.classList.toggle('expanded');
+                return;
+            }
+        }
+
+        userWidget.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (userMenu && !userWidget.contains(e.target)) {
+                userMenu.classList.remove('active');
+            }
+            if (langSwitcher && !langSwitcher.contains(e.target)) {
+                langSwitcher.classList.remove('expanded');
+            }
+        });
     </script>
 </body>
 

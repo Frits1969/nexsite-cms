@@ -24,14 +24,16 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
         <a href="/backoffice/media" class="nav-item <?= $uri === '/backoffice/media' ? 'active' : '' ?>">
             <span><?= $nav_media ?></span>
         </a>
-        
-        <a href="/backoffice/templates" class="nav-item <?= strpos($uri, '/backoffice/templates') === 0 ? 'active' : '' ?>">
+
+        <a href="/backoffice/templates"
+            class="nav-item <?= strpos($uri, '/backoffice/templates') === 0 ? 'active' : '' ?>">
             <span><?= $nav_templates ?></span>
         </a>
         <?php if (strpos($uri, '/backoffice/templates') === 0): ?>
             <div class="submenu">
-                <a href="/backoffice/templates/homepage" class="submenu-item <?= $uri === '/backoffice/templates/homepage' ? 'active' : '' ?>">
-                   &nbsp; &nbsp; &bull; Alleen homepage
+                <a href="/backoffice/templates/homepage"
+                    class="submenu-item <?= $uri === '/backoffice/templates/homepage' ? 'active' : '' ?>">
+                    &nbsp; &nbsp; &bull; Homepage
                 </a>
             </div>
         <?php endif; ?>
@@ -56,6 +58,7 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
         margin-top: -5px;
         margin-bottom: 10px;
     }
+
     .submenu-item {
         display: block;
         padding: 10px 15px;
@@ -66,10 +69,13 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
         transition: all 0.2s;
         margin-left: 10px;
     }
-    .submenu-item:hover, .submenu-item.active {
+
+    .submenu-item:hover,
+    .submenu-item.active {
         color: var(--accent-pink);
         background: rgba(232, 24, 106, 0.03);
     }
+
     .submenu-item.active {
         font-weight: 700;
         background: rgba(232, 24, 106, 0.06);

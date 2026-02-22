@@ -8,9 +8,14 @@ $nav_templates = $lang['nav_templates'] ?? 'Templates';
 $nav_themes = $lang['nav_themes'] ?? 'Thema\'s';
 $nav_settings = $lang['nav_settings'] ?? 'Instellingen';
 $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
+$backoffice_title = $lang['backoffice_title'] ?? 'Fritsion Backoffice';
+$role_super_admin = $lang['role_super_admin'] ?? 'Super Admin';
+$nav_profile = $lang['nav_profile'] ?? 'Profiel';
+$nav_logout = $lang['nav_logout'] ?? 'Uitloggen';
+$nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard';
 ?>
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="<?= $_SESSION['lang'] ?? 'nl' ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -30,7 +35,7 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
             --text-muted: #64748b;
             --glass-bg: rgba(255, 255, 255, 0.8);
             --glass-border: rgba(0, 0, 0, 0.05);
-            --sidebar-width: 280px;
+            --sidebar-width: 260px;
             --preview-bg: #cbd5e1;
         }
 
@@ -56,6 +61,7 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
             flex-direction: column;
         }
 
+        /* Topbar Styling */
         .topbar {
             height: 70px;
             padding: 0 40px;
@@ -66,6 +72,155 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 90;
+            flex-shrink: 0;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* User Widget */
+        .user-widget {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50px;
+            transition: background 0.3s;
+        }
+
+        .user-widget:hover {
+            background: rgba(232, 24, 106, 0.05);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 200px;
+            background: var(--secondary-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 10px;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            z-index: 110;
+        }
+
+        .user-menu.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .menu-item:hover {
+            background: rgba(232, 24, 106, 0.05);
+            color: var(--text-main);
+        }
+
+        .menu-item.logout {
+            color: #ef4444;
+        }
+
+        /* Language Switcher */
+        .lang-select {
+            display: flex;
+            position: relative;
+            align-items: center;
+            gap: 10px;
+            background: #f8fafc;
+            padding: 5px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            height: 38px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: fit-content;
+        }
+
+        .lang-select a {
+            display: none;
+            line-height: 0;
+        }
+
+        .lang-select a.active {
+            display: block;
+        }
+
+        .lang-select.expanded {
+            height: 80px;
+            flex-direction: column;
+            gap: 8px;
+            padding: 8px 5px;
+            overflow: visible;
+        }
+
+        .lang-select.expanded a {
+            display: block;
+        }
+
+        .flag-icon {
+            width: 32px;
+            height: 22px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .config-container {
@@ -288,7 +443,7 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
         }
 
         .save-bar {
-            position: absolute;
+            position: fixed;
             bottom: 30px;
             right: 30px;
             z-index: 100;
@@ -303,11 +458,12 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 10px 20px rgba(232, 24, 106, 0.3);
-            transition: transform 0.2s;
+            transition: all 0.3s;
         }
 
         .btn-save:hover {
             transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(232, 24, 106, 0.4);
         }
 
         .alert-toast {
@@ -333,7 +489,42 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
     <div class="main-wrapper">
         <header class="topbar">
             <div style="font-weight: 600; color: var(--text-muted);">
-                <?= $nav_templates ?> / Homepage Configurator
+                <?= $nav_templates ?> / Homepage
+            </div>
+
+            <div class="topbar-actions">
+                <a href="/backoffice"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><?= $nav_back_to_dashboard ?></a>
+
+                <div class="user-widget" id="user-widget">
+                    <div class="user-avatar">
+                        <?php
+                        $name = $_SESSION['username'] ?? 'Admin';
+                        echo strtoupper(substr($name, 0, 1) . (strlen($name) > 1 ? substr($name, 1, 1) : ''));
+                        ?>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name"><?= $_SESSION['username'] ?? 'Admin' ?></span>
+                        <span class="user-role"><?= $role_super_admin ?></span>
+                    </div>
+                    <div class="user-menu" id="user-menu">
+                        <a href="/backoffice/profile" class="menu-item"><?= $nav_profile ?></a>
+                        <hr style="margin: 5px 0; border: none; border-top: 1px solid var(--glass-border);">
+                        <a href="/backoffice/logout" class="menu-item logout"><?= $nav_logout ?></a>
+                    </div>
+                </div>
+
+                <div class="lang-select" id="lang-switcher">
+                    <?php $selectedLang = $_SESSION['lang'] ?? 'nl'; ?>
+                    <a href="?lang=nl" class="<?= $selectedLang === 'nl' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'nl')">
+                        <img src="/assets/flags/nl.svg" alt="Nederlands" class="flag-icon">
+                    </a>
+                    <a href="?lang=en" class="<?= $selectedLang === 'en' ? 'active' : '' ?>"
+                        onclick="handleFlagClick(event, 'en')">
+                        <img src="/assets/flags/en.svg" alt="English" class="flag-icon">
+                    </a>
+                </div>
             </div>
         </header>
 
@@ -551,6 +742,34 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
             document.getElementById('layoutJsonInput').value = JSON.stringify(state);
             document.getElementById('layoutForm').submit();
         }
+
+        const userWidget = document.getElementById('user-widget');
+        const userMenu = document.getElementById('user-menu');
+        const langSwitcher = document.getElementById('lang-switcher');
+
+        function handleFlagClick(event, lang) {
+            const currentLang = '<?= $_SESSION['lang'] ?? 'nl' ?>';
+
+            if (currentLang === lang) {
+                event.preventDefault();
+                langSwitcher.classList.toggle('expanded');
+                return;
+            }
+        }
+
+        userWidget.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (userMenu && !userWidget.contains(e.target)) {
+                userMenu.classList.remove('active');
+            }
+            if (langSwitcher && !langSwitcher.contains(e.target)) {
+                langSwitcher.classList.remove('expanded');
+            }
+        });
 
         window.onload = init;
     </script>
