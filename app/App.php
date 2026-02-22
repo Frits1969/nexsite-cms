@@ -18,7 +18,7 @@ use Fritsion\Controllers\AdminController;
 
 class App
 {
-    const VERSION = '0.1.4';
+    const VERSION = '0.1.5';
     protected static $instance;
 
     public function __construct()

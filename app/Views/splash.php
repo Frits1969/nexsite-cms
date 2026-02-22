@@ -648,9 +648,9 @@ $bodyClass = $selectedLang ? 'selected-mode' : '';
                     <div class="form-group">
                         <label><?= $lang['db_prefix_label'] ?? 'Database Prefix' ?></label>
                         <div class="tip">
-                            <?= $lang['db_prefix_tip'] ?? 'Kies een voorvoegsel voor de tabellen (standaard: nscms_)' ?>
+                            <?= $lang['db_prefix_tip'] ?? 'Kies een voorvoegsel voor de tabellen (standaard: fcms_)' ?>
                         </div>
-                        <input type="text" name="db_prefix" class="form-input" value="nscms_" required>
+                        <input type="text" name="db_prefix" class="form-input" value="fcms_" required>
                     </div>
 
                     <!-- DB Name -->

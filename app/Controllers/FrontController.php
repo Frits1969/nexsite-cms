@@ -42,12 +42,23 @@ class FrontController extends BaseController
             return;
         }
 
-        // Fetch dynamic layout JSON from templates table
+        // Try to find the page marked as homepage
+        $homepagePage = null;
+        $pageRes = Database::query("SELECT p.*, t.layout_json FROM {$prefix}pages p LEFT JOIN {$prefix}templates t ON p.template_id = t.id WHERE p.is_homepage = 1 AND p.status = 'published' LIMIT 1");
+        if ($pageRes && $pageRes->num_rows > 0) {
+            $homepagePage = $pageRes->fetch_assoc();
+        }
+
         $layoutJson = '';
-        $tplRes = Database::query("SELECT layout_json FROM {$prefix}templates WHERE type = 'homepage' AND is_active = 1 LIMIT 1");
-        if ($tplRes && $tplRes->num_rows > 0) {
-            $row = $tplRes->fetch_assoc();
-            $layoutJson = $row['layout_json'];
+        if ($homepagePage && !empty($homepagePage['layout_json'])) {
+            $layoutJson = $homepagePage['layout_json'];
+        } else {
+            // Fallback: Fetch dynamic layout JSON from active homepage template
+            $tplRes = Database::query("SELECT layout_json FROM {$prefix}templates WHERE type = 'homepage' AND is_active = 1 LIMIT 1");
+            if ($tplRes && $tplRes->num_rows > 0) {
+                $row = $tplRes->fetch_assoc();
+                $layoutJson = $row['layout_json'];
+            }
         }
 
         if (empty($layoutJson)) {
@@ -58,7 +69,8 @@ class FrontController extends BaseController
 
         $this->view('front/home', [
             'settings' => $settings,
-            'homepageLayout' => $homepageLayout
+            'homepageLayout' => $homepageLayout,
+            'page' => $homepagePage
         ]);
     }
 

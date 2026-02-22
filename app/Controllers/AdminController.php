@@ -362,23 +362,50 @@ class AdminController extends BaseController
             exit;
         }
 
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
         $error = null;
         $success = null;
+
+        // Fetch templates
+        $templatesRes = $db->query("SELECT id, name, type FROM {$prefix}templates");
+        $templates = [];
+        if ($templatesRes) {
+            while ($row = $templatesRes->fetch_assoc()) {
+                $templates[] = $row;
+            }
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = $_POST['title'] ?? '';
             $slug = $_POST['slug'] ?? '';
             $content = $_POST['content'] ?? '';
             $status = $_POST['status'] ?? 'draft';
+            $templateId = !empty($_POST['template_id']) ? (int) $_POST['template_id'] : null;
+            $isHomepage = 0;
+
+            // Check if template is a homepage type
+            if ($templateId) {
+                $tplCheck = $db->query("SELECT type FROM {$prefix}templates WHERE id = $templateId");
+                if ($tplCheck && $tplCheck->num_rows > 0) {
+                    $tplRow = $tplCheck->fetch_assoc();
+                    if ($tplRow['type'] === 'homepage') {
+                        $isHomepage = 1;
+                        $slug = '/'; // Overwrite slug for homepage
+                    }
+                }
+            }
 
             if (empty($title) || empty($slug)) {
                 $error = "Titel en slug zijn verplicht.";
             } else {
-                $db = Database::connect();
-                $prefix = Database::getPrefix();
+                if ($isHomepage) {
+                    // Reset other homepages
+                    $db->query("UPDATE {$prefix}pages SET is_homepage = 0 WHERE is_homepage = 1");
+                }
 
-                $stmt = $db->prepare("INSERT INTO {$prefix}pages (title, slug, content, status) VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("ssss", $title, $slug, $content, $status);
+                $stmt = $db->prepare("INSERT INTO {$prefix}pages (title, slug, content, status, is_homepage, template_id) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("ssssii", $title, $slug, $content, $status, $isHomepage, $templateId);
 
                 if ($stmt->execute()) {
                     header('Location: /backoffice/pages?success=created');
@@ -392,7 +419,8 @@ class AdminController extends BaseController
 
         $this->view('admin/pages_edit', [
             'mode' => 'add',
-            'error' => $error
+            'error' => $error,
+            'templates' => $templates
         ]);
     }
 
@@ -413,12 +441,31 @@ class AdminController extends BaseController
             $slug = $_POST['slug'] ?? '';
             $content = $_POST['content'] ?? '';
             $status = $_POST['status'] ?? 'draft';
+            $templateId = !empty($_POST['template_id']) ? (int) $_POST['template_id'] : null;
+            $isHomepage = 0;
+
+            // Check if template is a homepage type
+            if ($templateId) {
+                $tplCheck = $db->query("SELECT type FROM {$prefix}templates WHERE id = $templateId");
+                if ($tplCheck && $tplCheck->num_rows > 0) {
+                    $tplRow = $tplCheck->fetch_assoc();
+                    if ($tplRow['type'] === 'homepage') {
+                        $isHomepage = 1;
+                        $slug = '/'; // Overwrite slug for homepage
+                    }
+                }
+            }
 
             if (empty($title) || empty($slug)) {
                 $error = "Titel en slug zijn verplicht.";
             } else {
-                $stmt = $db->prepare("UPDATE {$prefix}pages SET title = ?, slug = ?, content = ?, status = ? WHERE id = ?");
-                $stmt->bind_param("ssssi", $title, $slug, $content, $status, $id);
+                if ($isHomepage) {
+                    // Reset other homepages
+                    $db->query("UPDATE {$prefix}pages SET is_homepage = 0 WHERE is_homepage = 1");
+                }
+
+                $stmt = $db->prepare("UPDATE {$prefix}pages SET title = ?, slug = ?, content = ?, status = ?, is_homepage = ?, template_id = ? WHERE id = ?");
+                $stmt->bind_param("ssssiii", $title, $slug, $content, $status, $isHomepage, $templateId, $id);
 
                 if ($stmt->execute()) {
                     $success = "Pagina succesvol bijgewerkt.";
@@ -429,11 +476,21 @@ class AdminController extends BaseController
             }
         }
 
+        // Fetch current data
         $stmt = $db->prepare("SELECT * FROM {$prefix}pages WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $page = $stmt->get_result()->fetch_assoc();
         $stmt->close();
+
+        // Fetch templates
+        $templatesRes = $db->query("SELECT id, name, type FROM {$prefix}templates");
+        $templates = [];
+        if ($templatesRes) {
+            while ($row = $templatesRes->fetch_assoc()) {
+                $templates[] = $row;
+            }
+        }
 
         if (!$page) {
             header('Location: /backoffice/pages?error=not_found');
@@ -444,7 +501,8 @@ class AdminController extends BaseController
             'mode' => 'edit',
             'page' => $page,
             'error' => $error,
-            'success' => $success
+            'success' => $success,
+            'templates' => $templates
         ]);
     }
 
@@ -731,8 +789,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
 
         // Update active template in templates table
         $res = $db->query("SELECT id FROM {$prefix}templates WHERE type = 'content' AND is_active = 1 LIMIT 1");

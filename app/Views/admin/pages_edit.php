@@ -511,6 +511,24 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="template_id"><?= $label_template ?? 'Template' ?></label>
+                        <select id="template_id" name="template_id" class="form-control" onchange="checkTemplate(this)">
+                            <option value=""><?= $label_select_template ?? '-- Selecteer Template --' ?></option>
+                            <?php foreach ($templates as $tpl): ?>
+                                <option value="<?= $tpl['id'] ?>" data-type="<?= $tpl['type'] ?>" <?= ($page['template_id'] ?? '') == $tpl['id'] ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($tpl['name']) ?> (<?= ucfirst($tpl['type']) ?>)
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <?php if (($page['is_homepage'] ?? 0) == 1): ?>
+                        <div class="alert alert-success" style="margin-top: 10px; padding: 10px 15px; font-size: 0.85rem;">
+                            <span>🏠</span> <strong>Deze pagina is de actieve homepage.</strong>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="form-group">
                         <label for="status"><?= $label_status ?></label>
                         <select id="status" name="status" class="form-control">
                             <option value="draft" <?= ($page['status'] ?? '') === 'draft' ? 'selected' : '' ?>>
@@ -541,7 +559,15 @@
 
         // Simple slug generator
         titleInput.addEventListener('input', () => {
-            if ("<?= $mode ?>" === 'add' || !slugInput.value) {
+            const selectedOption = document.getElementById('template_id').selectedOptions[0];
+            const isHomepageTpl = selectedOption ? selectedOption.getAttribute('data-type') === 'homepage' : false;
+
+            if (isHomepageTpl) {
+                slugInput.value = '/';
+                return;
+            }
+
+            if ("<?= $mode ?>" === 'add' || !slugInput.value || slugInput.value === '/') {
                 const slug = titleInput.value
                     .toLowerCase()
                     .replace(/[^\w\s-]/g, '')
@@ -549,6 +575,31 @@
                     .replace(/^-+|-+$/g, '');
                 slugInput.value = slug;
             }
+        });
+
+        function checkTemplate(select) {
+            const selectedOption = select.selectedOptions[0];
+            const isHomepageTpl = selectedOption ? selectedOption.getAttribute('data-type') === 'homepage' : false;
+
+            if (isHomepageTpl) {
+                slugInput.value = '/';
+                slugInput.readOnly = true;
+            } else {
+                slugInput.readOnly = false;
+                if (slugInput.value === '/') {
+                    const slug = titleInput.value
+                        .toLowerCase()
+                        .replace(/[^\w\s-]/g, '')
+                        .replace(/[\s_]+/g, '-')
+                        .replace(/^-+|-+$/g, '');
+                    slugInput.value = slug;
+                }
+            }
+        }
+
+        // Initialize state
+        document.addEventListener('DOMContentLoaded', () => {
+            checkTemplate(document.getElementById('template_id'));
         });
 
         const userWidget = document.getElementById('user-widget');

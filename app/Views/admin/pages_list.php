@@ -525,7 +525,15 @@
                         <?php else: ?>
                             <?php foreach ($pages as $page): ?>
                                 <tr>
-                                    <td style="font-weight: 600;"><?= htmlspecialchars($page['title']) ?></td>
+                                    <td style="font-weight: 600;">
+                                        <?= htmlspecialchars($page['title']) ?>
+                                        <?php if (($page['is_homepage'] ?? 0) == 1): ?>
+                                            <span
+                                                style="display: inline-flex; align-items: center; justify-content: center; background: var(--accent-orange); color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: middle;">
+                                                HOUSE
+                                            </span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><code><?= htmlspecialchars($page['slug']) ?></code></td>
                                     <td>
                                         <span class="status-badge status-<?= $page['status'] ?>">
