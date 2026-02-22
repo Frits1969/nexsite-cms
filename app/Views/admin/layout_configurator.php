@@ -20,7 +20,7 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Layout Configurator | Fritsion CMS</title>
+    <title><?= $pageType === 'content' ? 'Contentpagina Layout' : 'Homepage Layout' ?> | Fritsion CMS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/logo/logo_fritsion_cms_favicon.png">
@@ -295,24 +295,37 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @media (max-width: 1024px) {
             .sidebar {
                 width: 80px;
             }
+
             .sidebar-header img {
                 max-width: 40px;
             }
-            .nav-item span, .user-info {
+
+            .nav-item span,
+            .user-info {
                 display: none;
             }
+
             .main-wrapper {
                 margin-left: 80px;
             }
-            .sidebar-header, .nav-item {
+
+            .sidebar-header,
+            .nav-item {
                 justify-content: center;
             }
         }
@@ -664,7 +677,7 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
     <div class="main-wrapper">
         <header class="topbar">
             <div style="font-weight: 600; color: var(--text-muted);">
-                <?= $nav_templates ?> / Homepage
+                <?= $nav_templates ?> / <?= $pageType === 'content' ? 'Contentpagina' : 'Homepage' ?>
             </div>
 
             <div class="topbar-actions">
@@ -743,7 +756,8 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             </div>
         </div>
 
-        <form action="/backoffice/templates/homepage/save" method="POST" id="layoutForm">
+        <form action="/backoffice/templates/<?= $pageType === 'content' ? 'content' : 'homepage' ?>/save" method="POST"
+            id="layoutForm">
             <input type="hidden" name="layout_json" id="layoutJsonInput">
             <div class="save-bar">
                 <button type="button" class="btn-save" onclick="saveLayout()">Configuratie Opslaan</button>
@@ -791,12 +805,12 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             if (configElement) {
                 // Remove existing highlights
                 document.querySelectorAll('.form-group, .row-item, .col-item, .config-section').forEach(el => el.classList.remove('highlighted'));
-                
+
                 // Add highlight to the specific input container
                 const container = configElement.closest('.form-group') || configElement.closest('.col-item') || configElement.closest('.row-item');
                 if (container) {
                     container.classList.add('highlighted');
-                    
+
                     // Scroll into view
                     container.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
@@ -840,15 +854,15 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
         function moveRow(index, direction) {
             const newIndex = index + direction;
             if (newIndex < 0 || newIndex >= state.main.rows.length) return;
-            
+
             // Swap rows
             const temp = state.main.rows[index];
             state.main.rows[index] = state.main.rows[newIndex];
             state.main.rows[newIndex] = temp;
-            
+
             renderConfig();
             renderPreview();
-            
+
             // Re-highlight the moved row
             setTimeout(() => {
                 handlePreviewClick(`content[${newIndex}][0]`, `row-${newIndex}-col-0`);
@@ -888,7 +902,7 @@ $nav_back_to_dashboard = $lang['nav_back_to_dashboard'] ?? 'Terug naar Dashboard
             state.main.rows.forEach((row, ri) => {
                 const isFirst = ri === 0;
                 const isLast = ri === state.main.rows.length - 1;
-                
+
                 mHtml += `<div class="row-item" id="config-row-${ri}">
                     <div class="row-actions">
                         <button class="btn-action" title="Omhoog" onclick="moveRow(${ri}, -1)" ${isFirst ? 'disabled' : ''}>↑</button>

@@ -41,6 +41,8 @@ return [
     'nav_pages' => "Pagina's",
     'nav_media' => 'Media',
     'nav_templates' => 'Templates',
+    'nav_homepage' => 'Homepage',
+    'nav_content_page' => 'Contentpagina',
     'nav_themes' => "Thema's",
     'nav_settings' => 'Instellingen',
     'nav_visit_site' => 'Bezoek Website',

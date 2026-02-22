@@ -7,6 +7,8 @@ $nav_media = $lang['nav_media'] ?? 'Media';
 $nav_templates = $lang['nav_templates'] ?? 'Templates';
 $nav_themes = $lang['nav_themes'] ?? 'Thema\'s';
 $nav_settings = $lang['nav_settings'] ?? 'Instellingen';
+$nav_homepage = $lang['nav_homepage'] ?? 'Homepage';
+$nav_content_page = $lang['nav_content_page'] ?? 'Contentpagina';
 $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
 ?>
 <aside class="sidebar">
@@ -33,7 +35,13 @@ $nav_visit_site = $lang['nav_visit_site'] ?? 'Website bekijken';
             <div class="submenu">
                 <a href="/backoffice/templates/homepage"
                     class="submenu-item <?= $uri === '/backoffice/templates/homepage' ? 'active' : '' ?>">
-                    &nbsp; &nbsp; &bull; Homepage
+                    &nbsp; &nbsp; &bull;
+                    <?= $nav_homepage ?>
+                </a>
+                <a href="/backoffice/templates/content"
+                    class="submenu-item <?= $uri === '/backoffice/templates/content' ? 'active' : '' ?>">
+                    &nbsp; &nbsp; &bull;
+                    <?= $nav_content_page ?>
                 </a>
             </div>
         <?php endif; ?>

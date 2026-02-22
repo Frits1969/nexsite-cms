@@ -584,7 +584,61 @@ class AdminController extends BaseController
         }
 
         $this->view('admin/layout_configurator', [
-            'layoutJson' => $layoutJson
+            'layoutJson' => $layoutJson,
+            'pageType' => 'homepage'
+        ]);
+    }
+
+    public function contentLayoutConfigurator()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
+
+        // Fetch current layout JSON
+        $layoutJson = '';
+        $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'content_layout_json'");
+        if ($res && $res->num_rows > 0) {
+            $row = $res->fetch_assoc();
+            $layoutJson = $row['setting_value'];
+        }
+
+        // Default layout if empty
+        if (empty($layoutJson)) {
+            $defaultLayout = [
+                'header' => [
+                    'sections' => [
+                        ['type' => 'logo'],
+                        ['type' => 'menu'],
+                        ['type' => 'cta']
+                    ]
+                ],
+                'main' => [
+                    'rows' => [
+                        [
+                            'columns' => [
+                                ['type' => 'text']
+                            ]
+                        ]
+                    ]
+                ],
+                'footer' => [
+                    'sections' => [
+                        ['type' => 'text'],
+                        ['type' => 'socials']
+                    ]
+                ]
+            ];
+            $layoutJson = json_encode($defaultLayout);
+        }
+
+        $this->view('admin/layout_configurator', [
+            'layoutJson' => $layoutJson,
+            'pageType' => 'content'
         ]);
     }
 
@@ -622,6 +676,43 @@ class AdminController extends BaseController
         }
 
         header('Location: /backoffice/templates/homepage?saved=1');
+        exit;
+    }
+
+    public function saveContentLayoutConfig()
+    {
+        if (!isset($_SESSION['user_id']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /backoffice/login');
+            exit;
+        }
+
+        $layoutJson = $_POST['layout_json'] ?? '';
+
+        // Basic validation
+        if (!json_decode($layoutJson)) {
+            header('Location: /backoffice/templates/content?error=invalid_json');
+            exit;
+        }
+
+        $db = \Fritsion\Database::connect();
+        $prefix = \Fritsion\Database::getPrefix();
+
+        // Check if exists
+        $res = $db->query("SELECT id FROM {$prefix}settings WHERE setting_key = 'content_layout_json'");
+
+        if ($res && $res->num_rows > 0) {
+            $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = 'content_layout_json'");
+            $stmt->bind_param("s", $layoutJson);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            $stmt = $db->prepare("INSERT INTO {$prefix}settings (setting_key, setting_value) VALUES ('content_layout_json', ?)");
+            $stmt->bind_param("s", $layoutJson);
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        header('Location: /backoffice/templates/content?saved=1');
         exit;
     }
 

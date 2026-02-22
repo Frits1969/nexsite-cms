@@ -98,6 +98,10 @@ class App
                     $controller->layoutConfigurator();
                 } elseif ($uri === '/backoffice/templates/homepage/save') {
                     $controller->saveLayoutConfig();
+                } elseif ($uri === '/backoffice/templates/content') {
+                    $controller->contentLayoutConfigurator();
+                } elseif ($uri === '/backoffice/templates/content/save') {
+                    $controller->saveContentLayoutConfig();
                 } else {
                     $controller->index();
                 }
