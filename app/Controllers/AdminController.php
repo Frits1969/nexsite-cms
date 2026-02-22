@@ -750,7 +750,7 @@ class AdminController extends BaseController
             $stmt->close();
         } else {
             // Create a default if none active
-            $stmt = $db->prepare("INSERT INTO {$prefix}templates (name, type, layout_json, is_active) VALUES ('Gepersonaliseerde Homepage', 'homepage', ?, 1)");
+            $stmt = $db->prepare("INSERT INTO {$prefix}templates (name, type, layout_json, is_active) VALUES ('Homepage', 'homepage', ?, 1)");
             $stmt->bind_param("s", $layoutJson);
             $stmt->execute();
             $stmt->close();
@@ -803,7 +803,7 @@ class AdminController extends BaseController
             $stmt->close();
         } else {
             // Create a default if none active
-            $stmt = $db->prepare("INSERT INTO {$prefix}templates (name, type, layout_json, is_active) VALUES ('Gepersonaliseerde Contentpagina', 'content', ?, 1)");
+            $stmt = $db->prepare("INSERT INTO {$prefix}templates (name, type, layout_json, is_active) VALUES ('Contentpagina', 'content', ?, 1)");
             $stmt->bind_param("s", $layoutJson);
             $stmt->execute();
             $stmt->close();

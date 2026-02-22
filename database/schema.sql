@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS FCMS_templates (
 
 -- Default Templates
 INSERT INTO FCMS_templates (name, type, layout_json, is_active, icon, preview_type) VALUES 
-('Standaard Homepage', 'homepage', '{"header":{"sections":[{"type":"logo"},{"type":"menu"},{"type":"cta"}]},"main":{"rows":[{"columns":[{"type":"text"},{"type":"image"}]}]},"footer":{"sections":[{"type":"text"},{"type":"socials"}]}}', 1, '🏠', 'usps'),
-('Standaard Contentpagina', 'content', '{"header":{"sections":[{"type":"logo"},{"type":"menu"},{"type":"cta"}]},"main":{"rows":[{"columns":[{"type":"text"}]}]},"footer":{"sections":[{"type":"text"},{"type":"socials"}]}}', 1, '📄', 'usps');
+('Homepage', 'homepage', '{"header":{"sections":[{"type":"logo"},{"type":"menu"},{"type":"cta"}]},"main":{"rows":[{"columns":[{"type":"text"},{"type":"image"}]}]},"footer":{"sections":[{"type":"text"},{"type":"socials"}]}}', 1, '🏠', 'usps'),
+('Contentpagina', 'content', '{"header":{"sections":[{"type":"logo"},{"type":"menu"},{"type":"cta"}]},"main":{"rows":[{"columns":[{"type":"text"}]}]},"footer":{"sections":[{"type":"text"},{"type":"socials"}]}}', 1, '📄', 'usps');
 
 
