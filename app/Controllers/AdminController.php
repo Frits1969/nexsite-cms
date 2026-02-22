@@ -3,6 +3,9 @@
 namespace Fritsion\Controllers;
 
 use Fritsion\Controllers\BaseController;
+use Fritsion\Database;
+use Fritsion\Config;
+use Fritsion\App;
 
 class AdminController extends BaseController
 {
@@ -24,8 +27,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
 
         // Fetch stats
         $pageCount = 0;
@@ -97,8 +100,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
         $userId = $_SESSION['user_id'];
         $error = null;
         $success = null;
@@ -191,8 +194,8 @@ class AdminController extends BaseController
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            $db = \Fritsion\Database::connect();
-            $prefix = \Fritsion\Database::getPrefix();
+            $db = Database::connect();
+            $prefix = Database::getPrefix();
 
             $stmt = $db->prepare("SELECT id, username, password_hash FROM {$prefix}users WHERE username = ? AND status = 'active'");
             $stmt->bind_param("s", $username);
@@ -226,8 +229,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
         $error = null;
         $success = null;
 
@@ -283,7 +286,7 @@ class AdminController extends BaseController
                     }
 
                     // Reload config to reflect changes immediately in the current request if needed
-                    \Fritsion\Config::load($envPath);
+                    Config::load($envPath);
                 }
 
                 $success = "Instellingen succesvol bijgewerkt.";
@@ -304,14 +307,14 @@ class AdminController extends BaseController
 
         // Environment settings
         $env = [
-            'app_name' => \Fritsion\Config::get('APP_NAME'),
-            'app_url' => \Fritsion\Config::get('APP_URL'),
-            'db_host' => \Fritsion\Config::get('DB_HOST'),
-            'db_name' => \Fritsion\Config::get('DB_DATABASE'),
-            'db_user' => \Fritsion\Config::get('DB_USERNAME'),
-            'db_prefix' => \Fritsion\Config::get('DB_PREFIX'),
-            'language' => \Fritsion\Config::get('DEFAULT_LANGUAGE', 'nl'),
-            'version' => \Fritsion\App::VERSION
+            'app_name' => Config::get('APP_NAME'),
+            'app_url' => Config::get('APP_URL'),
+            'db_host' => Config::get('DB_HOST'),
+            'db_name' => Config::get('DB_DATABASE'),
+            'db_user' => Config::get('DB_USERNAME'),
+            'db_prefix' => Config::get('DB_PREFIX'),
+            'language' => Config::get('DEFAULT_LANGUAGE', 'nl'),
+            'version' => App::VERSION
         ];
 
         $this->view('admin/settings', [
@@ -336,8 +339,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
 
         $result = $db->query("SELECT * FROM {$prefix}pages ORDER BY created_at DESC");
         $pages = [];
@@ -371,8 +374,8 @@ class AdminController extends BaseController
             if (empty($title) || empty($slug)) {
                 $error = "Titel en slug zijn verplicht.";
             } else {
-                $db = \Fritsion\Database::connect();
-                $prefix = \Fritsion\Database::getPrefix();
+                $db = Database::connect();
+                $prefix = Database::getPrefix();
 
                 $stmt = $db->prepare("INSERT INTO {$prefix}pages (title, slug, content, status) VALUES (?, ?, ?, ?)");
                 $stmt->bind_param("ssss", $title, $slug, $content, $status);
@@ -400,8 +403,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
         $error = null;
         $success = null;
 
@@ -452,8 +455,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
 
         $stmt = $db->prepare("DELETE FROM {$prefix}pages WHERE id = ?");
         $stmt->bind_param("i", $id);
@@ -474,8 +477,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
 
         // Get current status
         $stmt = $db->prepare("SELECT status FROM {$prefix}pages WHERE id = ?");
@@ -503,8 +506,8 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
 
         // Check current status
         $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'site_status'");
@@ -542,18 +545,27 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
 
-        // Fetch current layout JSON
+        // Fetch current active layout from templates table
         $layoutJson = '';
-        $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'homepage_layout_json'");
+        $res = $db->query("SELECT layout_json FROM {$prefix}templates WHERE type = 'homepage' AND is_active = 1 LIMIT 1");
         if ($res && $res->num_rows > 0) {
             $row = $res->fetch_assoc();
-            $layoutJson = $row['setting_value'];
+            $layoutJson = $row['layout_json'];
         }
 
-        // Default layout if empty
+        // Fallback to settings if table is empty (migration) or if no active template found
+        if (empty($layoutJson)) {
+            $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'homepage_layout_json'");
+            if ($res && $res->num_rows > 0) {
+                $row = $res->fetch_assoc();
+                $layoutJson = $row['setting_value'];
+            }
+        }
+
+        // Default layout if completely empty
         if (empty($layoutJson)) {
             $defaultLayout = [
                 'header' => [
@@ -596,15 +608,24 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
 
-        // Fetch current layout JSON
+        // Fetch current active layout from templates table
         $layoutJson = '';
-        $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'content_layout_json'");
+        $res = $db->query("SELECT layout_json FROM {$prefix}templates WHERE type = 'content' AND is_active = 1 LIMIT 1");
         if ($res && $res->num_rows > 0) {
             $row = $res->fetch_assoc();
-            $layoutJson = $row['setting_value'];
+            $layoutJson = $row['layout_json'];
+        }
+
+        // Fallback to settings if table is empty (migration) or if no active template found
+        if (empty($layoutJson)) {
+            $res = $db->query("SELECT setting_value FROM {$prefix}settings WHERE setting_key = 'content_layout_json'");
+            if ($res && $res->num_rows > 0) {
+                $row = $res->fetch_assoc();
+                $layoutJson = $row['setting_value'];
+            }
         }
 
         // Default layout if empty
@@ -657,12 +678,28 @@ class AdminController extends BaseController
             exit;
         }
 
-        $db = \Fritsion\Database::connect();
-        $prefix = \Fritsion\Database::getPrefix();
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
 
-        // Check if exists
+        // Update active template in templates table
+        $res = $db->query("SELECT id FROM {$prefix}templates WHERE type = 'homepage' AND is_active = 1 LIMIT 1");
+        if ($res && $res->num_rows > 0) {
+            $row = $res->fetch_assoc();
+            $tplId = $row['id'];
+            $stmt = $db->prepare("UPDATE {$prefix}templates SET layout_json = ? WHERE id = ?");
+            $stmt->bind_param("si", $layoutJson, $tplId);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            // Create a default if none active
+            $stmt = $db->prepare("INSERT INTO {$prefix}templates (name, type, layout_json, is_active) VALUES ('Gepersonaliseerde Homepage', 'homepage', ?, 1)");
+            $stmt->bind_param("s", $layoutJson);
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        // Also update settings for backward compatibility/quick access
         $res = $db->query("SELECT id FROM {$prefix}settings WHERE setting_key = 'homepage_layout_json'");
-
         if ($res && $res->num_rows > 0) {
             $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = 'homepage_layout_json'");
             $stmt->bind_param("s", $layoutJson);
@@ -697,9 +734,25 @@ class AdminController extends BaseController
         $db = \Fritsion\Database::connect();
         $prefix = \Fritsion\Database::getPrefix();
 
-        // Check if exists
-        $res = $db->query("SELECT id FROM {$prefix}settings WHERE setting_key = 'content_layout_json'");
+        // Update active template in templates table
+        $res = $db->query("SELECT id FROM {$prefix}templates WHERE type = 'content' AND is_active = 1 LIMIT 1");
+        if ($res && $res->num_rows > 0) {
+            $row = $res->fetch_assoc();
+            $tplId = $row['id'];
+            $stmt = $db->prepare("UPDATE {$prefix}templates SET layout_json = ? WHERE id = ?");
+            $stmt->bind_param("si", $layoutJson, $tplId);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            // Create a default if none active
+            $stmt = $db->prepare("INSERT INTO {$prefix}templates (name, type, layout_json, is_active) VALUES ('Gepersonaliseerde Contentpagina', 'content', ?, 1)");
+            $stmt->bind_param("s", $layoutJson);
+            $stmt->execute();
+            $stmt->close();
+        }
 
+        // Also update settings
+        $res = $db->query("SELECT id FROM {$prefix}settings WHERE setting_key = 'content_layout_json'");
         if ($res && $res->num_rows > 0) {
             $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = 'content_layout_json'");
             $stmt->bind_param("s", $layoutJson);

@@ -42,8 +42,18 @@ class FrontController extends BaseController
             return;
         }
 
-        // Fetch dynamic layout JSON
-        $layoutJson = $settings['homepage_layout_json'] ?? '';
+        // Fetch dynamic layout JSON from templates table
+        $layoutJson = '';
+        $tplRes = Database::query("SELECT layout_json FROM {$prefix}templates WHERE type = 'homepage' AND is_active = 1 LIMIT 1");
+        if ($tplRes && $tplRes->num_rows > 0) {
+            $row = $tplRes->fetch_assoc();
+            $layoutJson = $row['layout_json'];
+        }
+
+        if (empty($layoutJson)) {
+            $layoutJson = $settings['homepage_layout_json'] ?? '';
+        }
+
         $homepageLayout = !empty($layoutJson) ? json_decode($layoutJson, true) : null;
 
         $this->view('front/home', [

@@ -53,3 +53,25 @@ CREATE TABLE IF NOT EXISTS FRCMS_pages (
     INDEX idx_slug (slug),
     INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Templates Table: Layout definitions
+CREATE TABLE IF NOT EXISTS FRCMS_templates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    type ENUM('homepage', 'content') NOT NULL,
+    layout_json LONGTEXT NOT NULL,
+    preview_type VARCHAR(50) DEFAULT 'usps',
+    icon VARCHAR(50) DEFAULT '📄',
+    description TEXT,
+    is_active TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_type (type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Default Templates
+INSERT INTO FRCMS_templates (name, type, layout_json, is_active, icon, preview_type) VALUES 
+('Standaard Homepage', 'homepage', '{"header":{"sections":[{"type":"logo"},{"type":"menu"},{"type":"cta"}]},"main":{"rows":[{"columns":[{"type":"text"},{"type":"image"}]}]},"footer":{"sections":[{"type":"text"},{"type":"socials"}]}}', 1, '🏠', 'usps'),
+('Standaard Contentpagina', 'content', '{"header":{"sections":[{"type":"logo"},{"type":"menu"},{"type":"cta"}]},"main":{"rows":[{"columns":[{"type":"text"}]}]},"footer":{"sections":[{"type":"text"},{"type":"socials"}]}}', 1, '📄', 'usps');
+
+
