@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $pages_title ?> | Fritsion CMS</title>
+    <link rel="icon" type="image/png" href="/assets/logo/logo_fritsion_cms_favicon.png">
+    <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -191,33 +193,32 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
+            width: 38px;
+            height: 38px;
+            background: rgba(0, 0, 0, 0.03);
             border: 1px solid var(--glass-border);
             border-radius: 8px;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 600;
+            color: var(--text-main);
+            font-size: 1.1rem;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
+            background: rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px) scale(1.05);
             border-color: var(--text-muted);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .btn-danger {
-            background: rgba(239, 68, 68, 0.1);
             color: var(--accent-red);
-            border-color: rgba(239, 68, 68, 0.2);
         }
 
         .btn-danger:hover {
-            background: var(--accent-red);
-            color: white;
+            color: var(--accent-red);
+            border-color: var(--accent-red);
         }
 
         /* Table Styling */
@@ -548,17 +549,17 @@
                                             </a>
                                         <?php else: ?>
                                             <a href="/backoffice/pages/toggle/<?= $page['id'] ?>" class="btn-secondary"
-                                                title="<?= $btn_publish ?? 'Publiceren' ?>"
-                                                style="color: var(--accent-orange); border-color: rgba(240, 150, 27, 0.2);">
+                                                title="<?= $btn_publish ?? 'Publiceren' ?>">
                                                 <span>🔒</span>
                                             </a>
                                         <?php endif; ?>
-                                        <a href="/backoffice/pages/edit/<?= $page['id'] ?>" class="btn-secondary">
-                                            <?= $btn_edit ?>
+                                        <a href="/backoffice/pages/edit/<?= $page['id'] ?>" class="btn-secondary"
+                                            title="<?= $btn_edit ?>">
+                                            <span>✏️</span>
                                         </a>
                                         <a href="/backoffice/pages/delete/<?= $page['id'] ?>" class="btn-secondary btn-danger"
-                                            onclick="return confirm('<?= $confirm_delete_page ?>')">
-                                            <?= $btn_delete ?>
+                                            title="<?= $btn_delete ?>" onclick="return confirm('<?= $confirm_delete_page ?>')">
+                                            <span>🗑️</span>
                                         </a>
                                     </td>
                                 </tr>

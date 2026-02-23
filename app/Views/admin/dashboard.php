@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/logo/logo_fritsion_cms_favicon.png">
     <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
+    <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
     <style>
         :root {
             --primary-bg: #F1F4F9;
@@ -316,12 +317,14 @@
         .status-active {
             background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .status-inactive {
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -661,7 +664,7 @@
         <!-- Main Content Area -->
         <main class="content">
             <section class="welcome-card">
-                <h1><?= $welcome_back ?>, <?= $_SESSION['username'] ?? 'Admin' ?>!</h1>
+                <h1><?= $welcome_back ?> <?= $_SESSION['username'] ?? 'Admin' ?>!</h1>
                 <p><?= $welcome_desc ?></p>
             </section>
 
@@ -694,7 +697,8 @@
                                 <?= (($siteStatus ?? 'inactive') === 'active' ? 'ACTIEF' : 'INACTIEF') ?>
                             </div>
                             <div class="stat-label" style="font-size: 0.75rem;">
-                                <?= $website_status_label ?? 'Website Status' ?></div>
+                                <?= $website_status_label ?? 'Website Status' ?>
+                            </div>
                         </div>
                     </div>
                     <a href="/backoffice/site-status/toggle" class="btn-secondary"
@@ -716,21 +720,21 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
                                 <div>
-                                    <span style="font-weight: 500;">Tijdelijke Home</span>
-                                    <br><small style="color: var(--text-muted);">/ (Root)</small>
+                                    <a href="/backoffice/pages" style="text-decoration: none; color: inherit;">
+                                        <span style="font-weight: 500;">Tijdelijke Home</span>
+                                        <br><small style="color: var(--text-muted);">/ (Root)</small>
+                                    </a>
                                 </div>
-                                <a href="/" target="_blank"
-                                    style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
                             </div>
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
                                 <div>
-                                    <span style="font-weight: 500;">Demo Pagina </span> <span
-                                        style="font-size: 0.7rem; background: var(--blue); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">DEMO</span>
-                                    <br><small style="color: var(--text-muted);">/demo</small>
+                                    <a href="/backoffice/pages" style="text-decoration: none; color: inherit;">
+                                        <span style="font-weight: 500;">Demo Pagina </span> <span
+                                            style="font-size: 0.7rem; background: var(--blue); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">DEMO</span>
+                                        <br><small style="color: var(--text-muted);">/demo</small>
+                                    </a>
                                 </div>
-                                <a href="/demo" target="_blank"
-                                    style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
                             </div>
                             <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
                                 <?= $no_other_pages_found ?>
@@ -740,15 +744,12 @@
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--glass-border);">
                                     <div>
-                                        <span style="font-weight: 500;"><?= htmlspecialchars($page['title']) ?></span>
-                                        <br><small
-                                            style="color: var(--text-muted);">/<?= htmlspecialchars($page['slug']) ?></small>
-                                    </div>
-                                    <div style="display: flex; gap: 15px;">
-                                        <a href="/<?= htmlspecialchars($page['slug']) ?>" target="_blank"
-                                            style="color: var(--accent-orange); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $view_label ?></a>
                                         <a href="/backoffice/pages/edit/<?= $page['id'] ?>"
-                                            style="color: var(--accent-color); text-decoration: none; font-size: 0.85rem; font-weight: 600;"><?= $btn_edit ?></a>
+                                            style="text-decoration: none; color: inherit;">
+                                            <span style="font-weight: 500;"><?= htmlspecialchars($page['title']) ?></span>
+                                            <br><small
+                                                style="color: var(--text-muted);">/<?= htmlspecialchars($page['slug']) ?></small>
+                                        </a>
                                     </div>
                                 </div>
                             <?php endforeach; ?>

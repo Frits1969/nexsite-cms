@@ -20,6 +20,7 @@ class FrontController extends BaseController
         }
 
         $siteStatus = $settings['site_status'] ?? 'inactive';
+        $isAdmin = isset($_SESSION['user_id']);
 
         // 2. Check if there are any published pages
         $pageResult = Database::query("SELECT COUNT(*) as count FROM {$prefix}pages WHERE status = 'published'");
@@ -30,13 +31,13 @@ class FrontController extends BaseController
         }
 
         // 3. Logic for what to show
-        if ($siteStatus === 'inactive') {
+        if ($siteStatus === 'inactive' && !$isAdmin) {
             // Site explicitly set to inactive
             $this->view('front/maintenance');
             return;
         }
 
-        if ($pageCount === 0) {
+        if ($pageCount === 0 && !$isAdmin) {
             // Site is active but has no content yet
             $this->view('front/maintenance', ['no_content' => true]);
             return;
@@ -44,7 +45,8 @@ class FrontController extends BaseController
 
         // Try to find the page marked as homepage
         $homepagePage = null;
-        $pageRes = Database::query("SELECT p.*, t.layout_json FROM {$prefix}pages p LEFT JOIN {$prefix}templates t ON p.template_id = t.id WHERE p.is_homepage = 1 AND p.status = 'published' LIMIT 1");
+        $statusFilter = $isAdmin ? "('published', 'draft')" : "('published')";
+        $pageRes = Database::query("SELECT p.*, t.layout_json FROM {$prefix}pages p LEFT JOIN {$prefix}templates t ON p.template_id = t.id WHERE p.is_homepage = 1 AND p.status IN $statusFilter LIMIT 1");
         if ($pageRes && $pageRes->num_rows > 0) {
             $homepagePage = $pageRes->fetch_assoc();
         }

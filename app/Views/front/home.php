@@ -1,5 +1,88 @@
 <?php
 $layout = $homepageLayout;
+$pageData = json_decode($page['content'] ?? '{}', true);
+
+function getDeepValue($obj, $path)
+{
+    if (!$path)
+        return null;
+    $parts = explode('.', $path);
+    foreach ($parts as $part) {
+        if (isset($obj[$part])) {
+            $obj = $obj[$part];
+        } else {
+            return null;
+        }
+    }
+    return $obj;
+}
+
+function renderBlock($type, $path, $pageData, $settings)
+{
+    $data = getDeepValue($pageData, $path) ?: [];
+
+    switch ($type) {
+        case 'text':
+            $title = $data['title'] ?? '';
+            $text = $data['text'] ?? '';
+            return "<div>" . ($title ? "<h1>" . htmlspecialchars($title) . "</h1>" : "") . "<p>" . nl2br(htmlspecialchars($text)) . "</p></div>";
+
+        case 'image':
+            $url = $data['url'] ?? '';
+            $alt = $data['alt'] ?? '';
+            return $url ? '<img src="' . htmlspecialchars($url) . '" alt="' . htmlspecialchars($alt) . '">' : '';
+
+        case 'cta':
+            $title = $data['title'] ?? 'Klaar om te starten?';
+            $btnText = $data['button_text'] ?? 'Registeer nu';
+            $url = $data['url'] ?? '#';
+            return '<div><h3>' . htmlspecialchars($title) . '</h3><a href="' . htmlspecialchars($url) . '" class="type-cta">' . htmlspecialchars($btnText) . '</a></div>';
+
+        case 'logo':
+            $url = $data['url'] ?? '/assets/logo/logo_fritsion_cms.png';
+            return '<img src="' . htmlspecialchars($url) . '" alt="Logo" class="logo">';
+
+        case 'menu':
+            $items = explode(',', $data['items'] ?? 'Home, Over ons, Contact');
+            $html = '<nav style="display:flex; gap:20px;">';
+            foreach ($items as $item) {
+                $html .= '<a href="#" style="text-decoration:none; color:inherit; font-weight:600;">' . htmlspecialchars(trim($item)) . '</a>';
+            }
+            return $html . '</nav>';
+
+        case 'usps':
+            $usps = [$data['usp_1'] ?? 'Snelheid', $data['usp_2'] ?? 'Veiligheid', $data['usp_3'] ?? 'Kwaliteit'];
+            $html = '<div class="type-usp-grid">';
+            foreach ($usps as $usp) {
+                $html .= '<div class="usp-card">' . htmlspecialchars($usp) . '</div>';
+            }
+            return $html . '</div>';
+
+        case 'socials':
+            $fb = $data['facebook'] ?? '';
+            $ig = $data['instagram'] ?? '';
+            $html = '<div style="display:flex; gap:15px;">';
+            if ($fb)
+                $html .= '<a href="' . htmlspecialchars($fb) . '" style="text-decoration:none;">FB</a>';
+            if ($ig)
+                $html .= '<a href="' . htmlspecialchars($ig) . '" style="text-decoration:none;">IG</a>';
+            return $html . '</div>';
+
+        case 'video':
+            $url = $data['url'] ?? '';
+            return '<div style="background:#000; padding:100px; text-align:center; color:white; border-radius:24px;">▶ Video Placeholder</div>';
+
+        case 'html':
+            return $data['code'] ?? '';
+
+        case 'map':
+            $addr = $data['address'] ?? 'Locatie';
+            return '<div style="background:#e2e8f0; height:300px; display:flex; align-items:center; justify-content:center; border-radius:24px; color:#64748b;">📍 ' . htmlspecialchars($addr) . '</div>';
+
+        default:
+            return "Block: $type";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -7,7 +90,9 @@ $layout = $homepageLayout;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($settings['site_name'] ?? 'Fritsion Website') ?></title>
+    <title><?= htmlspecialchars($page['title'] ?? $settings['site_name'] ?? 'Fritsion Website') ?></title>
+    <link rel="icon" type="image/png" href="/assets/logo/logo_fritsion_cms_favicon.png">
+    <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@700&display=swap"
         rel="stylesheet">
     <style>
@@ -39,11 +124,10 @@ $layout = $homepageLayout;
             padding: 0 20px;
         }
 
-        /* Dynamic Header */
         header {
             background: #fff;
             border-bottom: 1px solid #e2e8f0;
-            sticky;
+            position: sticky;
             top: 0;
             z-index: 100;
         }
@@ -60,13 +144,13 @@ $layout = $homepageLayout;
             display: flex;
             align-items: center;
             gap: 20px;
+            flex: 1;
         }
 
         .logo {
             height: 40px;
         }
 
-        /* Main Content */
         main {
             padding: 60px 0;
         }
@@ -82,11 +166,6 @@ $layout = $homepageLayout;
             min-height: 100px;
         }
 
-        /* Styles for content types */
-        .content-block {
-            padding: 20px 0;
-        }
-
         .type-text h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 3.5rem;
@@ -98,12 +177,19 @@ $layout = $homepageLayout;
             -webkit-text-fill-color: transparent;
         }
 
+        .type-text h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
         .type-text p {
             font-size: 1.25rem;
             color: var(--muted);
         }
 
-        .type-image img {
+        .col img {
             width: 100%;
             border-radius: 24px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
@@ -117,11 +203,12 @@ $layout = $homepageLayout;
             text-decoration: none;
             display: inline-block;
             font-weight: 700;
+            box-shadow: 0 10px 20px rgba(232, 24, 106, 0.2);
         }
 
         .type-usp-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
 
@@ -130,9 +217,10 @@ $layout = $homepageLayout;
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02);
+            font-weight: 600;
+            text-align: center;
         }
 
-        /* Footer */
         footer {
             background: #1A1336;
             color: white;
@@ -159,63 +247,35 @@ $layout = $homepageLayout;
 <body>
 
     <?php if ($layout): ?>
-        <!-- Header -->
         <header>
             <div class="container header-inner">
-                <?php foreach ($layout['header']['sections'] as $sec): ?>
-                    <div class="h-section">
-                        <?php if ($sec['type'] === 'logo'): ?>
-                            <img src="/assets/logo/logo_fritsion_cms.png" alt="Logo" class="logo">
-                        <?php elseif ($sec['type'] === 'menu'): ?>
-                            <nav>Menu Placeholder</nav>
-                        <?php elseif ($sec['type'] === 'cta'): ?>
-                            <a href="#" class="type-cta" style="padding: 10px 20px; font-size: 0.9rem;">Start Nu</a>
-                        <?php else: ?>
-                            <span><?= ucfirst($sec['type']) ?></span>
-                        <?php endif; ?>
+                <?php foreach ($layout['header']['sections'] as $i => $sec): ?>
+                    <div class="h-section"
+                        style="justify-content: <?= $i === 0 ? 'flex-start' : ($i === 1 ? 'center' : 'flex-end') ?>;">
+                        <?= renderBlock($sec['type'], "header.sections.$i", $pageData, $settings) ?>
                     </div>
                 <?php endforeach; ?>
             </div>
         </header>
 
-        <!-- Main -->
         <main class="container">
-            <?php foreach ($layout['main']['rows'] as $row): ?>
+            <?php foreach ($layout['main']['rows'] as $ri => $row): ?>
                 <div class="row" style="grid-template-columns: repeat(<?= count($row['columns']) ?>, 1fr);">
-                    <?php foreach ($row['columns'] as $col): ?>
-                        <div class="col type-<?= $col['type'] ?>">
-                            <?php if ($col['type'] === 'text'): ?>
-                                <h1>Welkom bij <?= $settings['site_name'] ?></h1>
-                                <p><?= $settings['site_description'] ?></p>
-                            <?php elseif ($col['type'] === 'image'): ?>
-                                <img src="https://via.placeholder.com/600x400?text=Beeld+Placeholder" alt="Image">
-                            <?php elseif ($col['type'] === 'cta'): ?>
-                                <a href="#" class="type-cta">Klik hier</a>
-                            <?php elseif ($col['type'] === 'usps'): ?>
-                                <div class="type-usp-grid">
-                                    <div class="usp-card">🚀 Snelheid</div>
-                                    <div class="usp-card">🛡️ Veiligheid</div>
-                                    <div class="usp-card">💎 Kwaliteit</div>
-                                </div>
-                            <?php else: ?>
-                                <div style="background: #eee; padding: 40px; border-radius: 12px; text-align: center;">
-                                    <strong><?= strtoupper($col['type']) ?></strong> Block
-                                </div>
-                            <?php endif; ?>
+                    <?php foreach ($row['columns'] as $ci => $col): ?>
+                        <div class="col block-<?= $col['type'] ?>">
+                            <?= renderBlock($col['type'], "main.rows.$ri.columns.$ci", $pageData, $settings) ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
             <?php endforeach; ?>
         </main>
 
-        <!-- Footer -->
         <footer>
             <div class="container footer-inner"
                 style="grid-template-columns: repeat(<?= count($layout['footer']['sections']) ?>, 1fr);">
-                <?php foreach ($layout['footer']['sections'] as $sec): ?>
-                    <div>
-                        <h3><?= ucfirst($sec['type']) ?></h3>
-                        <p>Informatie over <?= $sec['type'] ?>.</p>
+                <?php foreach ($layout['footer']['sections'] as $i => $sec): ?>
+                    <div class="f-section">
+                        <?= renderBlock($sec['type'], "footer.sections.$i", $pageData, $settings) ?>
                     </div>
                 <?php endforeach; ?>
             </div>

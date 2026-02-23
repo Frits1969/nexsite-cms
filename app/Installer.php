@@ -8,9 +8,9 @@ class Installer
     private $errors = [];
     private $prefix;
 
-    public function __construct($host, $user, $pass, $dbname, $prefix = 'frcms_')
+    public function __construct($host, $user, $pass, $dbname, $prefix = 'fcms_')
     {
-        $this->prefix = $prefix;
+        $this->prefix = strtolower($prefix);
         try {
             $this->db = new \mysqli($host, $user, $pass, $dbname);
 
@@ -80,7 +80,7 @@ class Installer
         $sql = preg_replace('/--.*$/m', '', $sql);
 
         // Replace Prefix
-        $sql = str_replace('FCMS_', $this->prefix, $sql);
+        $sql = str_replace('fcms_', $this->prefix, $sql);
 
         // Split by semicolon and execute each statement
         $statements = array_filter(array_map('trim', explode(';', $sql)));

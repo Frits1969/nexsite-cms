@@ -5,8 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demo Pagina | Fritsion CMS</title>
+    <link rel="icon" type="image/png" href="/assets/logo/logo_fritsion_cms_favicon.png">
+    <link rel="shortcut icon" href="/assets/logo/logo_fritsion_cms_favicon.ico">
     <!-- Google Fonts: Inter & Outfit -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --purple: #3B2A8C;
@@ -77,7 +81,7 @@
             padding: 100px 5% 150px;
             text-align: center;
             background: radial-gradient(circle at top right, rgba(232, 24, 106, 0.07), transparent),
-                        radial-gradient(circle at bottom left, rgba(240, 150, 27, 0.07), transparent);
+                radial-gradient(circle at bottom left, rgba(240, 150, 27, 0.07), transparent);
         }
 
         .hero h1 {
@@ -172,7 +176,9 @@
         }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
@@ -188,7 +194,8 @@
 
     <section class="hero">
         <h1>De Toekomst van CMS</h1>
-        <p>Ervaar de kracht van Fritsion. Een modulair systeem ontworpen voor snelheid, flexibiliteit en een ongekende gebruikerservaring.</p>
+        <p>Ervaar de kracht van Fritsion. Een modulair systeem ontworpen voor snelheid, flexibiliteit en een ongekende
+            gebruikerservaring.</p>
         <div class="puzzle-demo">
             <span style="background: var(--orange);"></span>
             <span style="background: var(--pink);"></span>

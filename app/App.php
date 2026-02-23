@@ -102,6 +102,10 @@ class App
                     $controller->contentLayoutConfigurator();
                 } elseif ($uri === '/backoffice/templates/content/save') {
                     $controller->saveContentLayoutConfig();
+                } elseif (preg_match('#^/backoffice/templates/get/(\d+)$#', $uri, $matches)) {
+                    $controller->getTemplate($matches[1]);
+                } elseif ($uri === '/backoffice/media/upload') {
+                    $controller->uploadMedia();
                 } else {
                     $controller->index();
                 }

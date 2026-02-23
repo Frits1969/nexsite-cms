@@ -399,28 +399,36 @@ class AdminController extends BaseController
             if (empty($title) || empty($slug)) {
                 $error = "Titel en slug zijn verplicht.";
             } else {
-                if ($isHomepage) {
-                    // Reset other homepages
-                    $db->query("UPDATE {$prefix}pages SET is_homepage = 0 WHERE is_homepage = 1");
-                }
-
-                $stmt = $db->prepare("INSERT INTO {$prefix}pages (title, slug, content, status, is_homepage, template_id) VALUES (?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssssii", $title, $slug, $content, $status, $isHomepage, $templateId);
-
-                if ($stmt->execute()) {
-                    header('Location: /backoffice/pages?success=created');
-                    exit;
+                // Check if slug already exists
+                $slugCheck = $db->query("SELECT id FROM {$prefix}pages WHERE slug = '" . $db->real_escape_string($slug) . "' LIMIT 1");
+                if ($slugCheck && $slugCheck->num_rows > 0) {
+                    $error = "Deze slug bestaat al. Kies een unieke slug.";
+                    $page = ['title' => $title, 'slug' => $slug, 'content' => $content, 'status' => $status, 'template_id' => $templateId];
                 } else {
-                    $error = "Er is een fout opgetreden: " . $db->error;
+                    if ($isHomepage) {
+                        // Reset other homepages
+                        $db->query("UPDATE {$prefix}pages SET is_homepage = 0 WHERE is_homepage = 1");
+                    }
+
+                    $stmt = $db->prepare("INSERT INTO {$prefix}pages (title, slug, content, status, is_homepage, template_id) VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("ssssii", $title, $slug, $content, $status, $isHomepage, $templateId);
+
+                    if ($stmt->execute()) {
+                        header('Location: /backoffice/pages?success=created');
+                        exit;
+                    } else {
+                        $error = "Er is een fout opgetreden: " . $db->error;
+                    }
+                    $stmt->close();
                 }
-                $stmt->close();
             }
         }
 
         $this->view('admin/pages_edit', [
             'mode' => 'add',
             'error' => $error,
-            'templates' => $templates
+            'templates' => $templates,
+            'page' => $page ?? null
         ]);
     }
 
@@ -459,29 +467,38 @@ class AdminController extends BaseController
             if (empty($title) || empty($slug)) {
                 $error = "Titel en slug zijn verplicht.";
             } else {
-                if ($isHomepage) {
-                    // Reset other homepages
-                    $db->query("UPDATE {$prefix}pages SET is_homepage = 0 WHERE is_homepage = 1");
-                }
-
-                $stmt = $db->prepare("UPDATE {$prefix}pages SET title = ?, slug = ?, content = ?, status = ?, is_homepage = ?, template_id = ? WHERE id = ?");
-                $stmt->bind_param("ssssiii", $title, $slug, $content, $status, $isHomepage, $templateId, $id);
-
-                if ($stmt->execute()) {
-                    $success = "Pagina succesvol bijgewerkt.";
+                // Check if slug already exists (excluding current page)
+                $slugCheck = $db->query("SELECT id FROM {$prefix}pages WHERE slug = '" . $db->real_escape_string($slug) . "' AND id != $id LIMIT 1");
+                if ($slugCheck && $slugCheck->num_rows > 0) {
+                    $error = "Deze slug bestaat al. Kies een unieke slug.";
+                    $page = ['id' => $id, 'title' => $title, 'slug' => $slug, 'content' => $content, 'status' => $status, 'template_id' => $templateId, 'is_homepage' => $isHomepage];
                 } else {
-                    $error = "Er is een fout opgetreden: " . $db->error;
+                    if ($isHomepage) {
+                        // Reset other homepages
+                        $db->query("UPDATE {$prefix}pages SET is_homepage = 0 WHERE is_homepage = 1");
+                    }
+
+                    $stmt = $db->prepare("UPDATE {$prefix}pages SET title = ?, slug = ?, content = ?, status = ?, is_homepage = ?, template_id = ? WHERE id = ?");
+                    $stmt->bind_param("ssssiii", $title, $slug, $content, $status, $isHomepage, $templateId, $id);
+
+                    if ($stmt->execute()) {
+                        $success = "Pagina succesvol bijgewerkt.";
+                    } else {
+                        $error = "Er is een fout opgetreden: " . $db->error;
+                    }
+                    $stmt->close();
                 }
-                $stmt->close();
             }
         }
 
-        // Fetch current data
-        $stmt = $db->prepare("SELECT * FROM {$prefix}pages WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $page = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
+        // Fetch current data if not already set by error handler
+        if (!isset($page)) {
+            $stmt = $db->prepare("SELECT * FROM {$prefix}pages WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $page = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+        }
 
         // Fetch templates
         $templatesRes = $db->query("SELECT id, name, type FROM {$prefix}templates");
@@ -827,4 +844,81 @@ class AdminController extends BaseController
         exit;
     }
 
+    public function uploadMedia()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Unauthorized']);
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
+            $file = $_FILES['file'];
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+            $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+
+            if (!in_array($extension, $allowedExtensions)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Invalid file type. Only images are allowed.']);
+                exit;
+            }
+
+            // Check mime type for extra security
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $file['tmp_name']);
+            finfo_close($finfo);
+
+            if (strpos($mimeType, 'image/') !== 0) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Invalid file content.']);
+                exit;
+            }
+
+            $uploadDir = __DIR__ . '/../../public/uploads/';
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $filename = uniqid('media_') . '.' . $extension;
+            $targetPath = $uploadDir . $filename;
+
+            if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true, 'url' => '/uploads/' . $filename]);
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Upload failed.']);
+            }
+            exit;
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+        exit;
+    }
+
+    public function getTemplate($id)
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Unauthorized']);
+            exit;
+        }
+
+        $db = Database::connect();
+        $prefix = Database::getPrefix();
+        $id = (int) $id;
+
+        $res = $db->query("SELECT * FROM {$prefix}templates WHERE id = $id");
+        if ($res && $res->num_rows > 0) {
+            header('Content-Type: application/json');
+            echo json_encode($res->fetch_assoc());
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Template not found']);
+        }
+        exit;
+    }
 }

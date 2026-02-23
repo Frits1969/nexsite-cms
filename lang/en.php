@@ -84,7 +84,7 @@ return [
     'confirm_changes_tip' => 'Enter your **current password** to save the changes.',
     'label_current_password' => 'Current Password',
     // Dashboard specific
-    'welcome_back' => 'Welcome back',
+    'welcome_back' => 'Welcome',
     'welcome_desc' => 'Your website has been successfully installed and is ready for use. Start creating beautiful pages or adjust your settings in the sidebar.',
     'pages_label' => 'Pages',
     'media_files_label' => 'Media Files',

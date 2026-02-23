@@ -84,7 +84,7 @@ return [
     'confirm_changes_tip' => 'Voer je **huidige wachtwoord** in om de wijzigingen op te slaan.',
     'label_current_password' => 'Huidig Wachtwoord',
     // Dashboard specific
-    'welcome_back' => 'Welkom terug',
+    'welcome_back' => 'Welkom',
     'welcome_desc' => 'Je website is succesvol geïnstalleerd en klaar voor gebruik. Begin met het maken van prachtige pagina\'s of pas je instellingen aan in de sidebar.',
     'pages_label' => 'Pagina\'s',
     'media_files_label' => 'Media Bestanden',
