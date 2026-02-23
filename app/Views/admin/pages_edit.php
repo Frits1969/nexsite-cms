@@ -681,7 +681,7 @@
             'text': { name: 'Tekst', icon: '📝', fields: [{ name: 'title', type: 'text', label: 'Titel' }, { name: 'text', type: 'textarea', label: 'Inhoud' }] },
             'image': { name: 'Afbeelding', icon: '🖼️', fields: [{ name: 'url', type: 'image', label: 'Afbeelding' }, { name: 'alt', type: 'text', label: 'Alt tekst' }] },
             'cta': { name: 'Call to Action', icon: '🎯', fields: [{ name: 'title', type: 'text', label: 'Titel' }, { name: 'button_text', type: 'text', label: 'Button tekst' }, { name: 'url', type: 'text', label: 'Link' }] },
-            'logo': { name: 'Logo', icon: '✨', fields: [{ name: 'url', type: 'image', label: 'Logo' }] },
+            'logo': { name: 'Logo', icon: '✨', fields: [] },
             'menu': { name: 'Menu', icon: '☰', fields: [{ name: 'items', type: 'text', label: 'Menu items (komma gescheiden)' }] },
             'socials': { name: 'Socials', icon: '📱', fields: [{ name: 'facebook', type: 'text', label: 'Facebook URL' }, { name: 'instagram', type: 'text', label: 'Instagram URL' }] },
             'usps': { name: 'USP\'s', icon: '🚀', fields: [{ name: 'usp_1', type: 'text', label: 'USP 1' }, { name: 'usp_2', type: 'text', label: 'USP 2' }, { name: 'usp_3', type: 'text', label: 'USP 3' }] },
@@ -762,6 +762,18 @@
             blockDiv.className = 'block-item';
 
             let fieldsHtml = `<div class="block-header"><span class="block-icon">${def.icon}</span> ${def.name}</div>`;
+
+            if (type === 'logo') {
+                const logoUrl = siteSettings.site_logo || '/assets/logo/logo_fritsion_cms.png';
+                fieldsHtml += `
+                    <div style="padding: 15px; background: #fff; border-radius: 10px; border: 1px solid var(--glass-border); text-align: center;">
+                        <img src="${logoUrl}" style="max-height: 50px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;">
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">
+                            Systeembrede instelling. Wijzig dit logo via <a href="/backoffice/settings" target="_blank" style="color: var(--accent-pink);">Instellingen</a>.
+                        </div>
+                    </div>
+                `;
+            }
 
             def.fields.forEach(field => {
                 const value = getDeepValue(pageData, `${path}.${field.name}`) || '';
@@ -953,7 +965,7 @@
                 case 'cta': return `<div><h3>${data.title || 'Klaar om te starten?'}</h3><a href="#" class="cta-button">${data.button_text || 'Registeer nu'}</a></div>`;
                 case 'logo':
                     if (siteSettings.hide_logo === '1') return '';
-                    const logoUrl = data.url || siteSettings.site_logo || '/assets/logo/logo_fritsion_cms.png';
+                    const logoUrl = siteSettings.site_logo || '/assets/logo/logo_fritsion_cms.png';
                     return `<img src="${logoUrl}" class="logo">`;
                 case 'menu': return `<div class="nav-placeholder">${(data.items || 'Home, Over ons, Producten, Contact').split(',').map(i => `<span>${i.trim()}</span>`).join('')}</div>`;
                 case 'usps': return `<div class="usp-grid"><div class="usp-card">🚀 ${data.usp_1 || 'Snelle Levering'}</div><div class="usp-card">🛡️ ${data.usp_2 || 'Veilig Betalen'}</div><div class="usp-card">💎 ${data.usp_3 || 'Top Kwaliteit'}</div></div>`;

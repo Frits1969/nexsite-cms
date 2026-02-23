@@ -42,7 +42,7 @@ function renderBlock($type, $path, $pageData, $settings)
             if (($settings['hide_logo'] ?? '0') === '1') {
                 return '';
             }
-            $url = $data['url'] ?? $settings['site_logo'] ?? '/assets/logo/logo_fritsion_cms.png';
+            $url = $settings['site_logo'] ?? '/assets/logo/logo_fritsion_cms.png';
             if (empty($url))
                 $url = '/assets/logo/logo_fritsion_cms.png';
             return '<img src="' . htmlspecialchars($url) . '" alt="Logo" class="logo">';
