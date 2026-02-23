@@ -30,7 +30,7 @@ function renderBlock($type, $path, $pageData, $settings)
         case 'image':
             $url = $data['url'] ?? '';
             $alt = $data['alt'] ?? '';
-            return $url ? '<img src="' . htmlspecialchars($url) . '" alt="' . htmlspecialchars($alt) . '">' : '';
+            return $url ? '<img src="' . htmlspecialchars($url) . '" alt="' . htmlspecialchars($alt) . '">' : '<div class="placeholder-image">Afbeelding niet geüpload</div>';
 
         case 'cta':
             $title = $data['title'] ?? 'Klaar om te starten?';
@@ -39,7 +39,12 @@ function renderBlock($type, $path, $pageData, $settings)
             return '<div><h3>' . htmlspecialchars($title) . '</h3><a href="' . htmlspecialchars($url) . '" class="type-cta">' . htmlspecialchars($btnText) . '</a></div>';
 
         case 'logo':
-            $url = $data['url'] ?? '/assets/logo/logo_fritsion_cms.png';
+            if (($settings['hide_logo'] ?? '0') === '1') {
+                return '';
+            }
+            $url = $data['url'] ?? $settings['site_logo'] ?? '/assets/logo/logo_fritsion_cms.png';
+            if (empty($url))
+                $url = '/assets/logo/logo_fritsion_cms.png';
             return '<img src="' . htmlspecialchars($url) . '" alt="Logo" class="logo">';
 
         case 'menu':
@@ -70,14 +75,14 @@ function renderBlock($type, $path, $pageData, $settings)
 
         case 'video':
             $url = $data['url'] ?? '';
-            return '<div style="background:#000; padding:100px; text-align:center; color:white; border-radius:24px;">▶ Video Placeholder</div>';
+            return '<div style="background:linear-gradient(135deg, #1A1336 0%, #3B2A8C 100%); padding:80px; text-align:center; color:white; border-radius:24px; font-weight:700;">▶ Video Placeholder' . ($url ? '<br><small style="font-weight:400; opacity:0.7;">' . htmlspecialchars($url) . '</small>' : '') . '</div>';
 
         case 'html':
             return $data['code'] ?? '';
 
         case 'map':
             $addr = $data['address'] ?? 'Locatie';
-            return '<div style="background:#e2e8f0; height:300px; display:flex; align-items:center; justify-content:center; border-radius:24px; color:#64748b;">📍 ' . htmlspecialchars($addr) . '</div>';
+            return '<div style="background:#e0f2fe; height:300px; display:flex; align-items:center; justify-content:center; border-radius:24px; color:#0369a1; font-weight:600;">📍 Kaart: ' . htmlspecialchars($addr) . '</div>';
 
         default:
             return "Block: $type";
@@ -166,7 +171,7 @@ function renderBlock($type, $path, $pageData, $settings)
             min-height: 100px;
         }
 
-        .type-text h1 {
+        .block-text h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 3.5rem;
             line-height: 1.1;
@@ -177,14 +182,14 @@ function renderBlock($type, $path, $pageData, $settings)
             -webkit-text-fill-color: transparent;
         }
 
-        .type-text h2 {
+        .block-text h2 {
             font-family: 'Outfit', sans-serif;
             font-size: 2.5rem;
             margin-bottom: 15px;
             color: var(--primary);
         }
 
-        .type-text p {
+        .block-text p {
             font-size: 1.25rem;
             color: var(--muted);
         }
@@ -193,17 +198,41 @@ function renderBlock($type, $path, $pageData, $settings)
             width: 100%;
             border-radius: 24px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            display: block;
+        }
+
+        .placeholder-image {
+            background: #f1f5f9;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            color: #cbd5e1;
+            font-weight: 600;
         }
 
         .type-cta {
             background: var(--accent-gradient);
-            color: white;
+            color: white !important;
             padding: 15px 35px;
             border-radius: 50px;
             text-decoration: none;
             display: inline-block;
             font-weight: 700;
             box-shadow: 0 10px 20px rgba(232, 24, 106, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .type-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(232, 24, 106, 0.3);
+        }
+
+        .block-cta h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
         }
 
         .type-usp-grid {
@@ -225,6 +254,7 @@ function renderBlock($type, $path, $pageData, $settings)
             background: #1A1336;
             color: white;
             padding: 80px 0;
+            margin-top: 80px;
         }
 
         .footer-inner {
@@ -237,8 +267,14 @@ function renderBlock($type, $path, $pageData, $settings)
                 grid-template-columns: 1fr !important;
             }
 
-            .type-text h1 {
+            .block-text h1 {
                 font-size: 2.5rem;
+            }
+
+            .header-inner {
+                flex-direction: column;
+                height: auto;
+                padding: 20px;
             }
         }
     </style>
@@ -249,7 +285,7 @@ function renderBlock($type, $path, $pageData, $settings)
     <?php if ($layout): ?>
         <header>
             <div class="container header-inner">
-                <?php foreach ($layout['header']['sections'] as $i => $sec): ?>
+                <?php foreach ($layout['header']['sections'] ?? [] as $i => $sec): ?>
                     <div class="h-section"
                         style="justify-content: <?= $i === 0 ? 'flex-start' : ($i === 1 ? 'center' : 'flex-end') ?>;">
                         <?= renderBlock($sec['type'], "header.sections.$i", $pageData, $settings) ?>
@@ -259,9 +295,9 @@ function renderBlock($type, $path, $pageData, $settings)
         </header>
 
         <main class="container">
-            <?php foreach ($layout['main']['rows'] as $ri => $row): ?>
-                <div class="row" style="grid-template-columns: repeat(<?= count($row['columns']) ?>, 1fr);">
-                    <?php foreach ($row['columns'] as $ci => $col): ?>
+            <?php foreach ($layout['main']['rows'] ?? [] as $ri => $row): ?>
+                <div class="row" style="grid-template-columns: repeat(<?= count($row['columns'] ?? []) ?>, 1fr);">
+                    <?php foreach ($row['columns'] ?? [] as $ci => $col): ?>
                         <div class="col block-<?= $col['type'] ?>">
                             <?= renderBlock($col['type'], "main.rows.$ri.columns.$ci", $pageData, $settings) ?>
                         </div>
@@ -272,8 +308,8 @@ function renderBlock($type, $path, $pageData, $settings)
 
         <footer>
             <div class="container footer-inner"
-                style="grid-template-columns: repeat(<?= count($layout['footer']['sections']) ?>, 1fr);">
-                <?php foreach ($layout['footer']['sections'] as $i => $sec): ?>
+                style="grid-template-columns: repeat(<?= count($layout['footer']['sections'] ?? []) ?>, 1fr);">
+                <?php foreach ($layout['footer']['sections'] ?? [] as $i => $sec): ?>
                     <div class="f-section">
                         <?= renderBlock($sec['type'], "footer.sections.$i", $pageData, $settings) ?>
                     </div>

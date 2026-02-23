@@ -552,6 +552,71 @@
                         </div>
                     </div>
 
+                    <!-- Branding Section -->
+                    <div class="settings-card">
+                        <h3><span>✨</span> Branding</h3>
+                        <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 15px;">
+                            <span class="setting-label">Website Logo</span>
+                            <div class="logo-preview-container"
+                                style="display: flex; align-items: center; gap: 20px; width: 100%;">
+                                <div id="branding-logo-preview"
+                                    style="width: 100px; height: 100px; background: #f8fafc; border: 1px dashed var(--glass-border); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;"
+                                    onclick="document.getElementById('branding_logo_file').click()">
+                                    <?php if (!empty($settings['site_logo'])): ?>
+                                        <img src="<?= $settings['site_logo'] ?>"
+                                            style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                    <?php else: ?>
+                                        <span style="font-size: 2rem;">🖼️</span>
+                                    <?php endif; ?>
+                                </div>
+                                <div style="flex: 1;">
+                                    <button type="button" class="btn-secondary"
+                                        style="width: 100%; margin-bottom: 10px;"
+                                        onclick="document.getElementById('branding_logo_file').click()">Logo
+                                        Uploaden</button>
+                                    <input type="file" id="branding_logo_file" style="display: none;" accept="image/*"
+                                        onchange="uploadBrandingLogo(this)">
+                                    <input type="hidden" name="site_logo" id="site_logo_path"
+                                        value="<?= htmlspecialchars($settings['site_logo'] ?? '') ?>">
+                                    <p style="font-size: 0.75rem; color: var(--text-muted);">Aanbevolen: PNG of SVG met
+                                        transparante achtergrond.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting-row" style="align-items: center;">
+                            <span class="setting-label">Geen logo tonen op website</span>
+                            <span class="setting-value">
+                                <label class="switch"
+                                    style="position: relative; display: inline-block; width: 50px; height: 24px;">
+                                    <input type="checkbox" name="hide_logo" value="1" <?= ($settings['hide_logo'] ?? '0') === '1' ? 'checked' : '' ?> style="opacity: 0; width: 0; height: 0;">
+                                    <span class="slider"
+                                        style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 24px;"></span>
+                                </label>
+                            </span>
+                        </div>
+                        <style>
+                            input:checked+.slider {
+                                background-color: var(--accent-pink) !important;
+                            }
+
+                            .slider:before {
+                                position: absolute;
+                                content: "";
+                                height: 18px;
+                                width: 18px;
+                                left: 3px;
+                                bottom: 3px;
+                                background-color: white;
+                                transition: .4s;
+                                border-radius: 50%;
+                            }
+
+                            input:checked+.slider:before {
+                                transform: translateX(26px);
+                            }
+                        </style>
+                    </div>
+
                     <!-- Database & System -->
                     <div class="settings-card">
                         <h3><span>⚙️</span> <?= $system_db_title ?></h3>
@@ -637,6 +702,39 @@
                 langSwitcher.classList.remove('expanded');
             }
         });
+
+        async function uploadBrandingLogo(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const preview = document.getElementById('branding-logo-preview');
+            const pathInput = document.getElementById('site_logo_path');
+
+            preview.innerHTML = '<span>⏳</span>';
+
+            try {
+                const response = await fetch('/backoffice/media/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    preview.innerHTML = `<img src="${result.url}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
+                    pathInput.value = result.url;
+                } else {
+                    alert('Upload mislukt: ' + result.message);
+                    preview.innerHTML = '<span style="font-size: 2rem;">🖼️</span>';
+                }
+            } catch (error) {
+                console.error('Error uploading logo:', error);
+                alert('Er is een fout opgetreden bij het uploaden.');
+                preview.innerHTML = '<span style="font-size: 2rem;">🖼️</span>';
+            }
+        }
     </script>
 </body>
 

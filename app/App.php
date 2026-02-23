@@ -114,7 +114,7 @@ class App
                 $controller->demo();
             } else {
                 $controller = new FrontController();
-                $controller->index();
+                $controller->index($uri);
             }
             return;
         }

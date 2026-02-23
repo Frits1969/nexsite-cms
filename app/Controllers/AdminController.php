@@ -238,24 +238,37 @@ class AdminController extends BaseController
             $siteName = $_POST['site_name'] ?? '';
             $siteDesc = $_POST['site_desc'] ?? '';
             $siteDomain = $_POST['site_domain'] ?? '';
+            $siteLogo = $_POST['site_logo'] ?? '';
+            $hideLogo = isset($_POST['hide_logo']) ? '1' : '0';
             $dbUser = $_POST['db_user'] ?? '';
             $dbPass = $_POST['db_pass'] ?? '';
 
             try {
                 // 1. Update Database settings
-                $stmt = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = ?");
+                $stmtUpdate = $db->prepare("UPDATE {$prefix}settings SET setting_value = ? WHERE setting_key = ?");
+                $stmtInsert = $db->prepare("INSERT INTO {$prefix}settings (setting_key, setting_value) VALUES (?, ?)");
 
                 $dbSettings = [
                     'site_name' => $siteName,
                     'site_description' => $siteDesc,
-                    'site_domain' => $siteDomain
+                    'site_domain' => $siteDomain,
+                    'site_logo' => $siteLogo,
+                    'hide_logo' => $hideLogo
                 ];
 
                 foreach ($dbSettings as $key => $value) {
-                    $stmt->bind_param("ss", $value, $key);
-                    $stmt->execute();
+                    // First check if it exists, if not INSERT
+                    $check = $db->query("SELECT id FROM {$prefix}settings WHERE setting_key = '" . $db->real_escape_string($key) . "'");
+                    if ($check && $check->num_rows > 0) {
+                        $stmtUpdate->bind_param("ss", $value, $key);
+                        $stmtUpdate->execute();
+                    } else {
+                        $stmtInsert->bind_param("ss", $key, $value);
+                        $stmtInsert->execute();
+                    }
                 }
-                $stmt->close();
+                $stmtUpdate->close();
+                $stmtInsert->close();
 
                 // 2. Update .env file
                 $envPath = __DIR__ . '/../../.env';
@@ -424,11 +437,21 @@ class AdminController extends BaseController
             }
         }
 
+        // Fetch site settings for branding
+        $settingsRes = $db->query("SELECT setting_key, setting_value FROM {$prefix}settings");
+        $siteSettings = [];
+        if ($settingsRes) {
+            while ($row = $settingsRes->fetch_assoc()) {
+                $siteSettings[$row['setting_key']] = $row['setting_value'];
+            }
+        }
+
         $this->view('admin/pages_edit', [
             'mode' => 'add',
             'error' => $error,
             'templates' => $templates,
-            'page' => $page ?? null
+            'page' => $page ?? null,
+            'siteSettings' => $siteSettings
         ]);
     }
 
@@ -514,12 +537,22 @@ class AdminController extends BaseController
             exit;
         }
 
+        // Fetch site settings for branding
+        $settingsRes = $db->query("SELECT setting_key, setting_value FROM {$prefix}settings");
+        $siteSettings = [];
+        if ($settingsRes) {
+            while ($row = $settingsRes->fetch_assoc()) {
+                $siteSettings[$row['setting_key']] = $row['setting_value'];
+            }
+        }
+
         $this->view('admin/pages_edit', [
             'mode' => 'edit',
             'page' => $page,
             'error' => $error,
             'success' => $success,
-            'templates' => $templates
+            'templates' => $templates,
+            'siteSettings' => $siteSettings
         ]);
     }
 

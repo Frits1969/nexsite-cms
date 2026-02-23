@@ -673,6 +673,7 @@
         const previewFrame = document.getElementById('preview-frame');
         const contentJsonInput = document.getElementById('content-json');
 
+        const siteSettings = <?= json_encode($siteSettings ?? []) ?>;
         let currentTemplate = null;
         let pageData = <?= json_encode(json_decode($page['content'] ?? '{}', true)) ?>;
 
@@ -883,6 +884,7 @@
             let html = `
                 <html>
                 <head>
+                    <base href="/">
                     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@700&display=swap" rel="stylesheet">
                     <style>
                         body { font-family: 'Inter', sans-serif; margin: 0; color: #1a1336; background: #fff; overflow-x: hidden; }
@@ -949,7 +951,10 @@
                 case 'text': return `<div>${data.title ? `<h2>${data.title}</h2>` : ''}<p>${(data.text || 'Tekstblok...').replace(/\n/g, '<br>')}</p></div>`;
                 case 'image': return data.url ? `<img src="${data.url}" alt="${data.alt || ''}">` : `<div style="background:#f1f5f9; height:200px; display:flex; align-items:center; justify-content:center; border-radius:20px; color:#cbd5e1;">Afbeelding</div>`;
                 case 'cta': return `<div><h3>${data.title || 'Klaar om te starten?'}</h3><a href="#" class="cta-button">${data.button_text || 'Registeer nu'}</a></div>`;
-                case 'logo': return data.url ? `<img src="${data.url}" class="logo">` : `<img src="/assets/logo/logo_fritsion_cms.png" class="logo">`;
+                case 'logo':
+                    if (siteSettings.hide_logo === '1') return '';
+                    const logoUrl = data.url || siteSettings.site_logo || '/assets/logo/logo_fritsion_cms.png';
+                    return `<img src="${logoUrl}" class="logo">`;
                 case 'menu': return `<div class="nav-placeholder">${(data.items || 'Home, Over ons, Producten, Contact').split(',').map(i => `<span>${i.trim()}</span>`).join('')}</div>`;
                 case 'usps': return `<div class="usp-grid"><div class="usp-card">🚀 ${data.usp_1 || 'Snelle Levering'}</div><div class="usp-card">🛡️ ${data.usp_2 || 'Veilig Betalen'}</div><div class="usp-card">💎 ${data.usp_3 || 'Top Kwaliteit'}</div></div>`;
                 case 'socials': return `<div style="display:flex; gap:15px; font-size:0.9rem;">${data.facebook ? 'FB ' : ''}${data.instagram ? 'IG ' : ''}</div>`;
@@ -1026,6 +1031,16 @@
                 event.preventDefault();
                 langSwitcher.classList.toggle('expanded');
                 return;
+            }
+
+            // Check if there are unsaved changes
+            // We can compare current pageData with initial pageData if we wanted to be fancy
+            // But for now, a simple check if any input has been made is safer
+            if (Object.keys(pageData).length > 0) {
+                if (!confirm('U heeft mogelijk niet-opgeslagen wijzigingen. Reeds ingevoerde gegevens gaan verloren bij het wisselen van taal. Doorgaan?')) {
+                    event.preventDefault();
+                    langSwitcher.classList.remove('expanded');
+                }
             }
         }
     </script>
